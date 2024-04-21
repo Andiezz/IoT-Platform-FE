@@ -10,6 +10,8 @@ export enum PAGE_ROUTE {
   PROFILE = '/profile',
   PROFILE_CHANGE_PASSWORD = '/profile/change-password',
   LOGOUT = '/logout',
-  ACCESS_DENIED = '/access-denied'
+  ACCESS_DENIED = '/access-denied',
+
+  DASHBOARD_SYSTEM = '/system',
 }
 

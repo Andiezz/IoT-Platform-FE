@@ -59,7 +59,7 @@ const ChangePasswordPage: FC = () => {
   };
 
   const onClickCancel = () => {
-    navigator(`${PAGE_ROUTE.DASHBOARD}`);
+    navigator(``);
   };
 
   const onFinish = async (values: IUpdatePasswordBody) => {
@@ -127,9 +127,11 @@ const ChangePasswordPage: FC = () => {
                               if (!value) {
                                 setInputPassCheck1(false);
                                 return Promise.reject(
-                                  `${t(
-                                    i18nKey.validation.common.requiredField
-                                  )}`
+                                  new Error(
+                                    `${t(
+                                      i18nKey.validation.common.requiredField
+                                    )}`
+                                  )
                                 );
                               }
                               if (
@@ -140,10 +142,12 @@ const ChangePasswordPage: FC = () => {
                               ) {
                                 setInputPassCheck1(false);
                                 return Promise.reject(
-                                  t(
-                                    i18nKey.validation.emailOrPassword
-                                      .passwordPattern
-                                  ) as string
+                                  new Error(
+                                    t(
+                                      i18nKey.validation.emailOrPassword
+                                        .passwordPattern
+                                    ) as string
+                                  )
                                 );
                               }
                               setInputPassCheck1(true);
@@ -153,7 +157,7 @@ const ChangePasswordPage: FC = () => {
                         ]}>
                         <Input.Password
                           type="password"
-                          prefix={<img src={IconPassword} />}
+                          prefix={<img src={IconPassword} alt="icon-password" />}
                         />
                       </Form.Item>
                     </Col>
@@ -191,9 +195,7 @@ const ChangePasswordPage: FC = () => {
                               if (!value) {
                                 setInputPassCheck1(false);
                                 return Promise.reject(
-                                  `${t(
-                                    i18nKey.validation.common.requiredField
-                                  )}`
+                                  new Error(`${t(i18nKey.validation.common.requiredField)}`)
                                 );
                               }
                               setInputPassCheck1(true);

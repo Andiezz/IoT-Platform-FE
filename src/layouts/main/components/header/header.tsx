@@ -22,21 +22,18 @@ import { i18nKey } from 'src/locales/i18n';
 import { useTranslation } from 'react-i18next';
 import { IUserStore } from 'src/store/user.store';
 import useStore from 'src/hooks/use-store';
-import { IClientService } from 'src/services/websocket/client.service';
-import CustomNotification from 'src/components/notification/notification';
-import { INotificationStore } from 'src/store/notification/notification.store';
+import { SocketService } from 'src/services/socket.service';
 
 export interface IProp {
   toggleCollapsed?: () => void;
 }
 
 const AppHeader: FC = () => {
-  const notificationStore: INotificationStore = useStore('notificationStore');
   const authService: IAuthenticationService = useService(
     'authenticationService'
   );
-  const socketService: IClientService = useService('socketService');
-  const [isSeeAll, setSeeAll] = useState<boolean>(false);
+  const socketService: SocketService = useService('socketService');
+  const [isSeeAll, setIsSeeAll] = useState<boolean>(false);
   const navigator = useNavigate();
   const [openNotifi, setOpenNotifi] = useState(false);
   const [open, setOpen] = useState(false);
@@ -67,18 +64,9 @@ const AppHeader: FC = () => {
   };
 
   const handleSetSeeAll = (value: boolean) => {
-    setSeeAll(value);
+    setIsSeeAll(value);
   };
 
-  const notificationAvatar = () => (
-    <Badge count={notificationStore.totalUnread}>
-      <Avatar
-        onClick={() => setOpenNotifi((prev) => !prev)}
-        className={styles.headerRight_btn_noti}>
-        <BellFilled className={styles.headerRight_btn_noti_number} />
-      </Avatar>
-    </Badge>
-  );
   const HeaderMenu = () => {
     return (
       <div className={styles.menu_container}>
@@ -118,26 +106,6 @@ const AppHeader: FC = () => {
       justify={'end'}
       align={'middle'}>
       <div className={styles.headerRight_btn}>
-        {screen.xs || isSeeAll ? (
-          <>
-            {notificationAvatar()}
-            <CustomNotification
-              open={openNotifi}
-              handleSetNotify={handleSetNotify}
-              isSeeAll={isSeeAll}
-              handleSetSeeAll={handleSetSeeAll}
-            />
-          </>
-        ) : (
-          <CustomNotification
-            open={openNotifi}
-            handleSetNotify={handleSetNotify}
-            isSeeAll={isSeeAll}
-            handleSetSeeAll={handleSetSeeAll}>
-            {notificationAvatar()}
-          </CustomNotification>
-        )}
-
         <Popover
           placement="bottomRight"
           content={HeaderMenu}

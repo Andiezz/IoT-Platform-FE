@@ -48,69 +48,6 @@ const publicRoutes: RouteType[] = [
 
 const privateRoutes: RouteType[] = [
   {
-    path: PAGE_ROUTE.DASHBOARD,
-    element: lazy(() => import('src/pages/dashboard/dashboard'))
-  },
-  {
-    path: PAGE_ROUTE.DASHBOARD_ALARM,
-    element: lazy(() => import('src/pages/alarm/alarm'))
-  },
-  {
-    path: PAGE_ROUTE.DASHBOARD_TENANT,
-    element: lazy(() => import('src/pages/tenant/tenant'))
-  },
-  {
-    path: PAGE_ROUTE.DASHBOARD_TENANT_DETAIL,
-    element: lazy(() => import('src/pages/tenant/tenant-detail/tenant-detail'))
-  },
-  {
-    path: PAGE_ROUTE.DASHBOARD_PLANT,
-    element: lazy(() => import('src/pages/plant/plant'))
-  },
-  {
-    path: PAGE_ROUTE.DASHBOARD_PLANT_CREATE,
-    element: lazy(
-      () => import('src/pages/plant/request-form/request-form.page')
-    )
-  },
-  {
-    path: PAGE_ROUTE.DASHBOARD_PLANT_UPDATE,
-    element: lazy(
-      () => import('src/pages/plant/request-form/request-form.page')
-    )
-  },
-  {
-    path: PAGE_ROUTE.DASHBOARD_OVERVIEW_EMS,
-    element: lazy(
-      () => import('src/pages/dashboard/overview/ems-overview/ems-overview')
-    )
-  },
-  {
-    path: PAGE_ROUTE.DASHBOARD_OVERVIEW_TENANT,
-    element: lazy(() => import('src/pages/dashboard/dashboard'))
-  },
-  {
-    path: PAGE_ROUTE.DASHBOARD_OVERVIEW_CELL_DRIVER,
-    element: lazy(
-      () =>
-        import(
-          'src/pages/dashboard/overview/cell-driver-overview/cell-driver-overview'
-        )
-    )
-  },
-  {
-    path: PAGE_ROUTE.DASHBOARD_OVERVIEW_CELL,
-    element: lazy(
-      () => import('src/pages/dashboard/overview/cell-overview/cell-overview')
-    )
-  },
-  {
-    path: PAGE_ROUTE.DASHBOARD_OVERVIEW_PLANT,
-    element: lazy(
-      () => import('src/pages/dashboard/overview/ems-overview/ems-overview')
-    )
-  },
-  {
     path: PAGE_ROUTE.ACCOUNT_MANAGEMENT,
     element: lazy(
       () =>
@@ -146,36 +83,6 @@ const privateRoutes: RouteType[] = [
     element: lazy(
       () =>
         import('src/pages/profile/component/change-password/change-password')
-    )
-  },
-  {
-    path: PAGE_ROUTE.USER_PERMISSION,
-    element: lazy(
-      () =>
-        import('src/pages/system-management/users-permissions/users-permission')
-    )
-  },
-  {
-    path: PAGE_ROUTE.TENANT_DETAIL,
-    element: lazy(() => import('src/pages/tenant/tenant-detail/tenant-detail'))
-  },
-  {
-    path: PAGE_ROUTE.DASHBOARD_PLANT_DETAIL,
-    element: lazy(() => import('src/pages/plant/plant-detail/plant-detail'))
-  },
-  {
-    path: PAGE_ROUTE.COMMAND_LOGS,
-    element: lazy(
-      () => import('src/pages/system-management/command-logs/command-logs')
-    )
-  },
-  {
-    path: PAGE_ROUTE.USER_ACTIVITY_LOGS,
-    element: lazy(
-      () =>
-        import(
-          'src/pages/system-management/user-activity-logs/user-activity-logs'
-        )
     )
   },
   {

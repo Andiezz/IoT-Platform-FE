@@ -6,11 +6,10 @@ import styles from './menu.module.less';
 import { observer } from 'mobx-react-lite';
 import { IAuthenticationService } from 'src/services/authentication.service';
 import useService from 'src/hooks/use-service';
-import { Permission } from 'src/constants/user';
 import { PAGE_ROUTE } from 'src/constants/route';
 
 interface IMenuItem {
-  requiredPermission?: Array<Permission>;
+  requiredPermission?: Array<any>;
   children?: IMenuItem[];
 }
 
@@ -24,17 +23,13 @@ const AppMenu: React.FC<IProps> = ({ setMenuBar }: IProps) => {
   const authService: IAuthenticationService = useService(
     'authenticationService'
   );
-  const listMyPermission =
-    authService.permissionRole?.groups.map((group) => group.permission.key) ||
-    [];
+  const listMyPermission: any[] = [];
 
   // set active menu
   const getSelectedKeys = (pathname: string) => {
     const selectedKeys: [] = [];
 
-    if (pathname === PAGE_ROUTE.DASHBOARD || pathname.includes('overview')) {
-      selectedKeys.push(PAGE_ROUTE.DASHBOARD as never);
-    } else {
+
       menuItems.forEach((item: any, index: number) => {
         if (pathname.includes(item?.key as string) && index !== 0)
           selectedKeys.push(item?.key as never);
@@ -43,7 +38,7 @@ const AppMenu: React.FC<IProps> = ({ setMenuBar }: IProps) => {
           if (pathname.includes(x.key)) selectedKeys.push(x?.key as never);
         });
       });
-    }
+    
 
     return selectedKeys;
   };
@@ -51,7 +46,7 @@ const AppMenu: React.FC<IProps> = ({ setMenuBar }: IProps) => {
   const recursion = (item: IMenuItem, menu: IMenuItem[]) => {
     if (!item.children) {
       if (item.requiredPermission?.length) {
-        const isShowMenu = item.requiredPermission.every((permission) =>
+        const isShowMenu: boolean = item.requiredPermission.every((permission: any) =>
           listMyPermission.includes(permission)
         );
         delete item.requiredPermission;
@@ -83,8 +78,7 @@ const AppMenu: React.FC<IProps> = ({ setMenuBar }: IProps) => {
       !menuItem.children && menuItem?.onClick();
     },
     children:
-      menuItem.children &&
-      menuItem.children.map((itemChildren: any) => {
+      menuItem?.children?.map((itemChildren: any) => {
         return {
           ...itemChildren,
           onClick: () => {
