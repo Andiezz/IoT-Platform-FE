@@ -1,0 +1,96 @@
+{
+  "name": "exro-iot-frontend",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@ant-design/icons": "^5.0.1",
+    "@googlemaps/markerclusterer": "^2.0.15",
+    "@react-google-maps/api": "^2.18.1",
+    "@testing-library/jest-dom": "^5.16.5",
+    "@testing-library/react": "^13.4.0",
+    "@testing-library/user-event": "^13.5.0",
+    "@types/jest": "^27.5.2",
+    "@types/node": "^16.18.23",
+    "antd": "^5.6.3",
+    "antd-img-crop": "^4.12.2",
+    "apexcharts": "^3.42.0",
+    "axios": "^1.3.5",
+    "chart.js": "^4.3.0",
+    "chartjs-adapter-moment": "^1.0.1",
+    "chartjs-plugin-zoom": "^2.0.1",
+    "craco-less": "^2.1.0-alpha.0",
+    "echarts": "^5.4.2",
+    "i18next": "^22.4.14",
+    "lodash": "^4.17.21",
+    "mobx": "^6.9.0",
+    "mobx-react-lite": "^3.4.3",
+    "moment-timezone": "^0.5.43",
+    "react": "^18.2.0",
+    "react-apexcharts": "^1.4.1",
+    "react-chartjs-2": "^5.2.0",
+    "react-dom": "^18.2.0",
+    "react-i18next": "^12.2.0",
+    "react-infinite-scroller": "^1.2.6",
+    "react-router-dom": "^6.10.0",
+    "react-scripts": "^5.0.1",
+    "use-places-autocomplete": "^4.0.0",
+    "web-vitals": "^2.1.4",
+    "yarn": "^1.22.19"
+  },
+  "scripts": {
+    "start": " env-cmd -f .env.local craco start",
+    "build:env": "env-cmd -f .env.$NODE_ENV craco --max_old_space_size=16384 build --nomaps",
+    "build:release": "GENERATE_SOURCEMAP=false env-cmd -f .env craco --max_old_space_size=16384 build --nomaps",
+    "build": "craco build",
+    "test": "craco test",
+    "eject": "craco eject",
+    "lint": "eslint \"{src,test}/**/*.ts\" --fix",
+    "lint:prettier": "prettier -c --write \"src/**/*\" --end-of-line auto",
+    "lint:fix": "eslint --fix --cache --ext .js,.jsx,.ts,.tsx --format=pretty ./src ",
+    "lint-staged": "lint-staged"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "jest": {
+    "transformIgnorePatterns": [
+      "/node_modules/(?!antd|@ant-design|rc-.+?|@babel/runtime).+(js|jsx)$"
+    ]
+  },
+  "lint-staged": {
+    "**/*.{js,jsx,ts,tsx}": "npm run lint-staged:js",
+    "**/*.{js,jsx,tsx,ts,less,md,json}": [
+      "prettier --write"
+    ]
+  },
+  "devDependencies": {
+    "@craco/craco": "^7.1.0",
+    "@types/lodash": "^4.14.195",
+    "@types/react": "^18.0.33",
+    "@types/react-dom": "^18.0.11",
+    "@types/react-infinite-scroller": "^1.2.3",
+    "@types/react-router-dom": "^5.3.3",
+    "@typescript-eslint/eslint-plugin": "^5.57.1",
+    "env-cmd": "^10.1.0",
+    "eslint": "^8.38.0",
+    "less": "^4.1.3",
+    "less-loader": "^11.1.0",
+    "prettier": "^2.8.7",
+    "typescript": "^4.9.5"
+  }
+}

@@ -1,0 +1,66 @@
+.wrapperTable {
+    * {
+        font-size: 12px !important;
+    }
+    position: relative;
+    padding: 12px 12px 0px;
+    background: #FFFFFF;
+    border-radius: 8px;
+    .tableCommandLogsManagement {
+        
+        table {
+            font-size: 12px;
+        }
+
+        thead th {
+            background-color: rgba(43, 122, 232, 0.1) !important;
+            border-radius: 0 !important;
+        }
+        .tag {
+            font-style: normal;
+            font-weight: 500;
+        }
+    }
+}
+.wrapOptionSearch {
+    margin-right: 12px;
+    [class~='ant-select-selection-placeholder'] {
+        color: #000;
+   }
+}
+
+[class~='ant-table-column-sorters'] {
+    justify-content: unset !important;
+}
+
+[class~='ant-table-column-title'] {
+    flex: unset !important;
+}
+
+[class~='ant-table-thead'] {
+    tr {
+      th:first-child {
+        border-end-start-radius: 8px !important;
+        border-start-start-radius: 8px !important;
+      }
+      th:last-child {
+        border-start-end-radius: 8px !important;
+        border-end-end-radius: 8px !important;
+      }
+    } 
+  }
+  .plantLocations {
+    > div > div:nth-last-child(1) {
+      width: 90% !important;
+    }
+    .tableLocationPlant {
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
+      // width: 90%;
+      [class~='ant-typography'] {
+        margin-bottom: 0px !important;
+        color: #2b7ae8;
+      }
+    }
+  }

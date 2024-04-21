@@ -1,0 +1,98 @@
+.headerRight {
+  display: flex;
+  text-align: center;
+  &_btn {
+    [class~='ant-badge .ant-badge-count'] {
+      top: 3px;
+    }
+    
+    &_user {
+      width: 36px;
+      height: 36px;
+      background-color: #FFFFFF;
+      color: #2B7AE8;
+      margin-left: 16px;
+      span {
+        line-height: 36px;
+      }
+    }
+    &_noti {
+      width: 36px;
+      height: 36px;
+      background-color: #ffffff;
+      cursor: pointer;
+       &_number {
+          color: #2B7AE8;
+          font-size: 2rem;
+          top: 3px !important;
+       }
+    }
+  }
+}
+.menu {
+  &_container {
+    display: flex;
+    flex-direction: column;
+    width: 200px;
+    .item {
+      padding: 12px 5px;
+      border-radius: 4px;
+      cursor: pointer;
+      color: #212426;
+      &_title {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      &:hover {
+        background-color: rgba(0, 0,0, 0.05);
+        color: #FF8060;
+      }
+      &:first-child{
+        margin-top: 10px;
+      }
+    }
+  }
+}
+
+.bodyModal {
+
+  [class~='ant-modal-content'] {
+    padding: 16px;
+  }
+  
+  .header {
+    &_title {
+      font-size: 16px;
+      font-weight: 700;
+      line-height: 20px;
+    }
+
+    &_desc {
+      margin-top: 16px;
+      display: block;
+    }
+  }
+
+  .footer {
+    margin-top: 24px;
+    button {
+      width: 100%;
+    }
+
+    &_cancel {
+      background-color: #F5F7FA;
+      span {
+        color: #848484;
+      }
+    }
+
+    &_submit {
+      background-color: #FF8060;
+      span {
+        color: #ffffff;
+      }
+    }
+  }
+}

@@ -1,0 +1,83 @@
+.wrapperForm {
+  &_header {
+    &_title {
+      font-size: 24px !important;
+      font-weight: 600 !important;
+      margin: 0 !important;
+      color: #212426 !important;
+    }
+    &_btn {
+      text-align: right;
+    }
+  }
+  .subForm {
+    padding: 24px;
+    background-color: #ffff;
+  }
+
+  &_layout {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    footer {
+      background-color: #ffffff;
+      padding: 12px 12px 40px 12px;
+    }
+
+    &_btn {
+      button {
+        width: 100%;
+      }
+    }
+  }
+}
+
+.bodyModal {
+
+  [class~='ant-modal-content'] {
+    padding: 16px;
+  }
+  
+  .header {
+    &_title {
+      font-size: 16px;
+      font-weight: 700;
+      line-height: 20px;
+    }
+
+    &_desc {
+      margin-top: 16px;
+      display: block;
+    }
+  }
+
+  .footer {
+    margin-top: 24px;
+    button {
+      width: 100%;
+    }
+
+    &_cancel {
+      background-color: #F5F7FA;
+      span {
+        color: #848484;
+      }
+    }
+
+    &_submit {
+      background-color: #2B7AE8;
+      span {
+        color: #ffffff;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 576px) {
+  .wrapperForm {
+    .subForm {
+      padding: 16px;
+    }
+  }
+}

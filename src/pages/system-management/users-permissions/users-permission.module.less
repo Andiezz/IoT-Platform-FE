@@ -1,0 +1,125 @@
+.permission {
+    &_header {
+        background-color: #ffffff;
+        padding: 16px 32px;
+        &_title {
+            font-size: 24px !important;
+            color: #212426;
+            margin: 0 !important;
+        }
+    }
+    
+    &_btn {
+        &_update {
+            font-weight: 700;
+            color: #ffffff !important;
+            &:disabled {
+                background-color: #2B7AE866 !important;
+            }
+        }
+        &_cancel {
+            font-weight: 700;
+        }
+    }
+
+    &_content {
+        padding: 32px;
+    }
+    &_form {
+        background-color: #ffffff;
+        padding: 12px;
+        border-radius: 8px;
+        color: #212426;
+
+        &_header {
+            background: rgba(43, 122, 232, 0.1);
+            border-radius: 8px;
+            padding: 12px 12px;
+            line-height: 18px;
+            font-weight: 700;
+            div {
+                font-size: 12px;
+            }
+        }
+
+        &_item {
+            border-bottom: 1px solid #F0F3FA;
+            padding: 8.75px 12px;
+            [class~='ant-form-item'] {margin: 0 !important;}
+        }
+    }
+    .iconTooltip{
+       color: #848484;
+            font-size: 17px;
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            margin-left: 5px;
+    }
+
+    [class~='ant-checkbox-checked'] [class~='ant-checkbox-inner']{
+        background-color: #2b7ae8 !important;
+    }
+    [class~='ant-checkbox-inner']:after{
+        border-color: #fff !important;
+    }
+    [class~='ant-col'] {
+        font-size: 12px ;
+    }
+
+}
+.collapse{
+    [class~='ant-collapse-header'] { 
+        border-bottom: 1px solid #F0F3FA;
+        // padding: 12px 0 !important;
+    }
+    [class~='ant-collapse-content-box'] {
+        padding: 0 !important;
+    }
+    [class~='ant-collapse-header-text']{
+        font-size: 12px !important;
+        flex: none !important;
+        margin-inline-end: initial !important;
+    }
+}
+
+
+
+@media screen and (max-width: 992px) {
+    .permission {
+        &_header {
+            padding: 16px;
+            &_title {
+                font-size: 18px !important;
+            }
+        }
+       
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .permission {
+        &_content {
+             padding: 12px !important;
+        }
+     }
+}
+
+@media screen and (max-width: 576px) {
+    .permission {
+       &_btn {
+        margin-top: 24px;
+        justify-content: space-between;
+        [class~='ant-col'] {
+            width: 50%;
+        }
+        Button {
+            width: 100%;
+        }
+       }
+
+       &_content {
+        padding: 0 !important;
+   }
+    }
+}

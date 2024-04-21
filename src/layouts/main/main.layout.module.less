@@ -1,0 +1,102 @@
+.container {
+  max-height: 100vh;
+  height: 100%;
+  min-height: 100vh;
+  &_content {
+    overflow: auto;
+    height: 100%;
+    max-height: 100vh;
+    position: relative;
+  }
+
+  &_headerSider {
+    padding: 0px 16px;
+  }
+
+  &_headerContent {
+    padding: 0px 16px;
+    width: 100%;
+  }
+
+  &_logoApp {
+    display: flex;
+    width: 40px;
+  }
+
+  &_sidebar {
+    position: relative;
+    // width: 300px !important;
+
+    img {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      cursor: pointer;
+    }
+  }
+
+  &_slider {
+    max-width: 280px !important;
+    height: 100vh;
+    z-index: 4;
+    flex-basis: 280px !important;
+
+    &_collapsed{
+      flex-basis: 80px !important;
+    }
+  }
+
+  &_collapse {
+    position: relative;
+    height: 100%;
+
+    img {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      cursor: pointer;
+    }
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .container {
+    &_slider {
+      display: none;
+    }
+    &_sidebar {
+      img {
+        margin-left: 15px;
+      }
+    }
+    &_headerContent {
+      padding-left: 20px !important;
+    }
+    &_content {
+      margin-left: 0 !important;
+    }
+  }
+}
+
+@media screen and (max-width: 576px) {
+  .container {
+    &_barMenu {
+      display: flex;
+      padding-right: 16px;
+    }
+
+    &_headerContent {
+      padding-left: 0px !important;
+    }
+    &_sidebar {
+      margin: 0px 10px;
+      img {
+        margin-left: 0px !important;
+      }
+    }
+    &_content {
+      margin-left: 0 !important;
+    }
+  }
+}

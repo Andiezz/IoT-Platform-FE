@@ -1,0 +1,112 @@
+* {
+  margin: 0;
+  letter-spacing: 0px;
+  box-sizing: border-box;
+  font-family: DM Sans, sans-serif !important;
+}
+
+@font-face {
+  font-family: DM Sans;
+  src: url(./assets/font/DMSans-Regular.ttf);
+}
+@font-face {
+  font-family: 'DM Sans SemiBold';
+  src: url(./assets/font/DMSans-Medium.ttf);
+}
+@font-face {
+  font-family: 'FONTSPRING Sans';
+  src: url(./assets/font/Fontspring-DEMO-commuterssans-semibold.otf);
+}
+
+html {
+  font-size: 10px;
+  min-height: 100vh;
+}
+
+body {
+  margin: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+.form-title-centered {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+#chart-container {
+  position: relative;
+  height: 22vh;
+  width: 100%;
+  @media (max-width: 1600px) {
+    min-height: 20vh;
+    height: 100%;
+  }
+}
+
+h1,
+h2,
+h3,
+h4 {
+  // font-family: 'FONTSPRING Sans' !important;
+}
+.ant-typography {
+  font-family: DM Sans, sans-serif ;
+}
+
+.ant-tag {
+  border-radius: 40px;
+  border-color: transparent;
+}
+
+.ant-pagination .ant-pagination-item-active {
+  background: linear-gradient(110.77deg, #2b7ae8 0.8%, #59bdf0 100%);
+  > a {
+    color: #fff;
+    &:hover {
+      color: #fff;
+    }
+  }
+}
+.ant-divider-vertical {
+  border-inline-start: 1px solid #dbdee5;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 30px #ffffff inset !important;
+  background-color: #ffffff !important;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+  border-radius: 10px;
+  margin-left: 30px;
+}
+::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+}
+::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  background-color: darkgrey;
+}
+.ant-avatar {
+  border: 1px solid rgba(200, 200, 200, 0.4);
+}
+.canvas-container {
+  height: 60vh;
+  cursor: zoom-in;
+  @media (max-width: 1600px) {
+    height: 60vh;
+  }
+}

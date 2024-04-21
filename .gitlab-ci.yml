@@ -1,0 +1,11 @@
+.template-project: &project
+  project: devops/auto-devops
+  ref: master
+
+include:
+  - file: auto-devops.yml
+    << : *project
+  - file: reactjs.gitlab-ci.yml
+    << : *project
+  - file: s3cloudfront.gitlab-ci.yml
+    << : *project
