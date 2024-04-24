@@ -4,7 +4,6 @@ import {
   IAccountListStore
 } from './account-management/account-management-list.store';
 import { IUserStore, UserStore } from './user.store';
-import eventEmitter from 'src/store/event';
 import ConfigurationStore, { IConfiguration } from './configuration.store';
 
 export interface IRootStore {
@@ -27,8 +26,6 @@ export class RootStore implements IRootStore {
     this.listAccountManagementListStore = new AccountManagementListStore(
       this.httpClient
     );
-
-    eventEmitter.on('logout', () => {});
   }
 }
 

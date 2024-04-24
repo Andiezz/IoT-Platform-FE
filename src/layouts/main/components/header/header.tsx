@@ -1,19 +1,16 @@
+import React from 'react';
 import {
   Avatar,
-  Badge,
   Button,
   Col,
-  Grid,
   Modal,
   Popover,
   Row,
   Typography
 } from 'antd';
-
 import { observer } from 'mobx-react-lite';
-import React, { FC, useState } from 'react';
+import { FC, useState } from 'react';
 import styles from './header.module.less';
-import { BellFilled } from '@ant-design/icons';
 import { PAGE_ROUTE } from 'src/constants/route';
 import { Link, useNavigate } from 'react-router-dom';
 import { IAuthenticationService } from 'src/services/authentication.service';
@@ -33,9 +30,7 @@ const AppHeader: FC = () => {
     'authenticationService'
   );
   const socketService: SocketService = useService('socketService');
-  const [isSeeAll, setIsSeeAll] = useState<boolean>(false);
   const navigator = useNavigate();
-  const [openNotifi, setOpenNotifi] = useState(false);
   const [open, setOpen] = useState(false);
   const [openPopupProfile, setOpenPopupProfile] = useState<boolean>(false);
   const onLogoutClick = () => {
@@ -48,7 +43,6 @@ const AppHeader: FC = () => {
   const onCancel = () => {
     setOpen(false);
   };
-  const screen = Grid.useBreakpoint();
   const onSubmit = () => {
     authService
       .logout()
@@ -57,14 +51,6 @@ const AppHeader: FC = () => {
         navigator(PAGE_ROUTE.LOGIN);
       })
       .catch();
-  };
-
-  const handleSetNotify = (value: boolean) => {
-    setOpenNotifi(value);
-  };
-
-  const handleSetSeeAll = (value: boolean) => {
-    setIsSeeAll(value);
   };
 
   const HeaderMenu = () => {

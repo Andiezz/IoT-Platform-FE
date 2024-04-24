@@ -9,13 +9,13 @@ export type ThemeType = {
 
 const theme: ThemeType = {
 	token: {
-		colorPrimary: '#2B7AE8',
+		colorPrimary: '#102044',
     controlHeight: 40,
     colorFill: '#FFFFFF'
 	},
   components:{
     Layout: {
-      colorBgHeader: '#2B7AE8',
+      colorBgHeader: '#102044',
       colorBgMenu: 'red',
       Sider:{
         colorBgBase: 'red'

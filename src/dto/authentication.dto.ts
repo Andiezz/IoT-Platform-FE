@@ -7,11 +7,9 @@ import { Role } from 'src/interfaces/user';
 
 export interface ILoginResponse {
   id: string;
-  name: string;
   role: Role;
   token: string;
   email: string;
-  tenant: string;
   refreshToken: string;
 }
 
@@ -40,7 +38,7 @@ export class LogoutDTO extends DTO {
     super();
     this.refresh_token = localStorage.getItem(USER_REFRESH_TOKEN);
     this.body = {
-      token: this.refresh_token || ''
+      token: this.refresh_token ?? ''
     };
   }
 }

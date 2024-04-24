@@ -15,7 +15,7 @@ import {
 } from 'src/constants/app';
 import { ForgotPasswordDTO } from 'src/dto/forgot-password.dto';
 import eventEmitter from 'src/store/event';
-import { PermissionRole } from 'src/dto/account-management-list.dto';
+import { Role } from 'src/interfaces/user';
 import {
   ChangeForgotPasswordDTO,
   IChangePasswordBody
@@ -28,13 +28,13 @@ import {
 export interface IAuthenticationService {
   isAuthenticated: boolean;
   otpToken?: string | null;
-  permissionRole: PermissionRole | null;
+  role: Role | null;
   login(form: LogInDTO): Promise<ResponseDTO<ILoginResponse>>;
   logout(): Promise<boolean>;
   forgotPassword(values: ForgotPasswordDTO): Promise<boolean | string>;
   changeForgotPassword(values: IChangePasswordBody): Promise<ResponseDTO<any>>;
   activeAccount(body: IBodyActiveAccount): Promise<ResponseDTO<any>>;
-  setPermissionRole(permissionRole: PermissionRole | null,isRememberMe: boolean): void;
+  setRole(role: Role | null,isRememberMe: boolean): void;
 }
 
 export class AuthenticationService implements IAuthenticationService {
@@ -43,14 +43,14 @@ export class AuthenticationService implements IAuthenticationService {
   @observable
   otpToken?: string | null = null;
   @observable
-  permissionRole: PermissionRole | null = null;
+  role: Role | null = null;
   constructor(private readonly httpService: IHttpService) {
     const localToken =
-      localStorage.getItem(USER_ACCESS_TOKEN) ||
+      localStorage.getItem(USER_ACCESS_TOKEN) ??
       sessionStorage.getItem(USER_ACCESS_TOKEN);
-    this.permissionRole = JSON.parse(
-      sessionStorage.getItem(PERMISSION_ROLE) ||
-        localStorage.getItem(PERMISSION_ROLE) ||
+    this.role = JSON.parse(
+      sessionStorage.getItem(PERMISSION_ROLE) ??
+        localStorage.getItem(PERMISSION_ROLE) ??
         'null'
     );
     this.isAuthenticated = !!localToken;
@@ -62,13 +62,13 @@ export class AuthenticationService implements IAuthenticationService {
     this.isAuthenticated = isAuthenticated;
   }
   
-  setPermissionRole(permissionRole: PermissionRole | null,isRememberMe: boolean) {
+  setRole(role: Role | null,isRememberMe: boolean) {
     runInAction(() => {
-      this.permissionRole = permissionRole;
+      this.role = role;
       if (isRememberMe) {
-        localStorage.setItem(PERMISSION_ROLE, JSON.stringify(permissionRole));        
+        localStorage.setItem(PERMISSION_ROLE, JSON.stringify(role));        
       } else {
-        sessionStorage.setItem(PERMISSION_ROLE, JSON.stringify(permissionRole));
+        sessionStorage.setItem(PERMISSION_ROLE, JSON.stringify(role));
       }
     });
   }
@@ -85,13 +85,13 @@ export class AuthenticationService implements IAuthenticationService {
         this.isAuthenticated = true;
         const { token, role } = result?.data || {};
         this.otpToken = token;
-        this.permissionRole = role || null;
+        this.role = role ?? null;
       });
 
       if (form.body.rememberMe) {
         this.httpService.setRememberMe(true);
         this.httpService.setToken(result.data.token, result.data.refreshToken);
-        this.setPermissionRole(result.data.role || null, true)
+        this.setRole(result.data.role || null, true)
       } else {
         this.httpService.setRememberMe(false);
         this.httpService.setSession(
@@ -99,7 +99,7 @@ export class AuthenticationService implements IAuthenticationService {
           result.data.refreshToken
         );
         this.httpService.setToken('', result.data.refreshToken);
-        this.setPermissionRole(result.data.role || null, false)
+        this.setRole(result.data.role || null, false)
       }
     }
     return result;
@@ -127,14 +127,14 @@ export class AuthenticationService implements IAuthenticationService {
   public async forgotPassword(
     values: ForgotPasswordDTO
   ): Promise<boolean | string> {
-    const result: ResponseDTO<String> = await this.httpService.request<
+    const result: ResponseDTO<string> = await this.httpService.request<
       ForgotPasswordDTO,
       string
     >(values);
     if (result.responseCode === HTTP_STATUS_RESPONSE_KEY.SUCCESS) {
       return true;
     }
-    return result.message || '';
+    return result.message ?? '';
   }
 
   public async changeForgotPassword(

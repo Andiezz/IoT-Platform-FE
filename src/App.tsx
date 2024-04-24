@@ -8,7 +8,8 @@ import { IocProvider } from './context/service.context';
 import ioc from './services/container';
 import AppRouters from './routes/app-router';
 import theme from './theme/overriding';
-const ExroApp: FC = () => {
+
+const App: FC = () => {
 	return (
 		<React.StrictMode>
 			<I18nextProvider i18n={i18n}>
@@ -24,4 +25,4 @@ const ExroApp: FC = () => {
 	);
 };
 
-export default ExroApp;
+export default App;

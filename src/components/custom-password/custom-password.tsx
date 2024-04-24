@@ -1,82 +1,35 @@
 import { Form, Input } from 'antd';
 import { Rule } from 'antd/lib/form';
 import { NamePath } from 'antd/lib/form/interface';
-import React, { ChangeEvent } from 'react';
+import React, { FC } from 'react';
 import styles from './custom-password.module.less';
-import { EyeInvisibleOutlined, EyeTwoTone } from '@ant-design/icons';
-
+import IconPassword from '../../assets/icons/Login-password-check.svg';
+import {ReactComponent as IconEyeSleep} from '../../assets/icons/Login-eye.svg';
+import {ReactComponent as IconEyes} from '../../assets/icons/Login-eyes.svg';
 export type CustomPasswordInputType = 'text' | 'password';
 
 export interface ICustomPasswordProps {
-  name: string | NamePath | undefined;
-  rules?: Rule[];
-  dependencies?: NamePath[];
-  disabled?: boolean;
-  placeholder?: string;
-  tabIndex: number;
-  onChange?: (value: string) => void;
-  value?: string;
+	name?: string | NamePath;
+	dependencies?: NamePath[];
+	disabled?: boolean;
+	placeholder?: string;
+	initValue?: string | number;
+	rules?: Rule[];
+  	tabIndex?: number;
 }
 
-export interface ICustomPasswordInputProps {
-  disabled?: boolean;
-  placeholder?: string;
-  tabIndex: number;
-  onChange?: (value: string) => void;
-  value?: string;
-}
+const CustomPassword: FC<ICustomPasswordProps> = ({ name, rules, dependencies, disabled, placeholder, tabIndex}) => {
 
-const CustomPasswordInput: React.FC<ICustomPasswordInputProps> = ({
-  disabled,
-  placeholder,
-  tabIndex,
-  onChange,
-  value
-}) => {
-  const renderIcon = (visible: boolean) => {
-    return visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />;
-  };
-  return (
-    <Input.Password
-      onChange={(e: ChangeEvent<HTMLInputElement>) => {
-        if (onChange) onChange(e.target.value);
-      }}
-      autoComplete="new-password"
-      type="password"
-      disabled={disabled}
-      placeholder={placeholder}
-      tabIndex={tabIndex}
-      value={value}
-      iconRender={(visible) => renderIcon(visible)}
-      id="password"
-    />
-  );
+	return (
+		<div className={styles.inputContainer}>
+			<div className={styles.inputContainer}>
+				<Form.Item noStyle name={name} rules={rules} dependencies={dependencies} required={false}>
+					<Input.Password iconRender={(visible)=>visible ? <IconEyes/>: <IconEyeSleep/>} disabled={disabled} placeholder={placeholder} tabIndex={tabIndex} 
+					prefix={<img src={IconPassword}></img>} autoComplete="on"/>
+				</Form.Item>
+			</div>
+		</div>
+	);
 };
 
-const CustomPassword: React.FC<ICustomPasswordProps> = ({
-  disabled,
-  placeholder,
-  tabIndex,
-  onChange,
-  value,
-  name,
-  rules,
-  dependencies
-}) => {
-  return (
-    <div className={styles.inputContainer}>
-      <div className={styles.inputContainer}>
-        <Form.Item noStyle name={name} rules={rules} dependencies={dependencies} required={false}>
-          <CustomPasswordInput
-            disabled={disabled}
-            placeholder={placeholder}
-            tabIndex={tabIndex}
-            onChange={onChange}
-            value={value}
-          />
-        </Form.Item>
-      </div>
-    </div>
-  );
-};
 export default CustomPassword;

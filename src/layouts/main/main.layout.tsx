@@ -1,20 +1,16 @@
 import { Col, Drawer, Layout, Row, theme } from 'antd';
 import { observer } from 'mobx-react-lite';
 import React, { useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import AppLogo from '../../assets/icons/logo-white.png';
 import menuIcon from '../../assets/icons/menu.svg';
-import { LIMIT_RECORD } from 'src/constants';
 import { HTTP_STATUS_RESPONSE_KEY } from 'src/constants/api';
 import useMenuProfile from 'src/constants/menu-profile';
 import { PAGE_ROUTE } from 'src/constants/route';
 import useService from 'src/hooks/use-service';
 import useStore from 'src/hooks/use-store';
 import { IUserInfo } from 'src/interfaces/user';
-import { i18nKey } from 'src/locales/i18n';
 import { IAuthenticationService } from 'src/services/authentication.service';
-import { IHttpService } from 'src/services/http.service';
 import { IUserService } from 'src/services/user.service';
 import eventEmitter from 'src/store/event';
 import { IUserStore } from 'src/store/user.store';
@@ -22,7 +18,6 @@ import AppHeader from './components/header/header';
 import AppMenu from './components/menu/menu';
 import ProfileMenu from './components/profile/menu';
 import styles from './main.layout.module.less';
-import { ISocketService } from 'src/services/socket.service';
 
 const { Header, Sider, Content } = Layout;
 
@@ -30,7 +25,6 @@ const MainLayout: React.FC = () => {
   const {
     token: { colorBgContainer }
   } = theme.useToken();
-  const { t } = useTranslation();
   const [collapsed, setCollapsed] = useState(false);
   const [menuBar, setMenuBar] = useState(false);
   const userStore: IUserStore = useStore('userStore');
@@ -42,8 +36,6 @@ const MainLayout: React.FC = () => {
     'authenticationService'
   );
   const navigator = useNavigate();
-  const socketService: ISocketService = useService('socketService');
-  const httpService: IHttpService = useService('httpService');
 
   const getProfile = async () => {
     const res = await userService.getUserProfile();

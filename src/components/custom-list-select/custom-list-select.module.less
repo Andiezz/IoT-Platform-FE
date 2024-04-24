@@ -1,0 +1,28 @@
+ .container{
+    [class~='ant-checkbox-group']{
+        width: 100% !important;
+        [class~='ant-list']{
+            width: 100% !important;
+            overflow: hidden !important;
+            &:active,&:hover,&:focus{
+                overflow: auto !important;
+            }
+        }
+    }
+    [class~='ant-row']{
+        margin-left: 0px !important;
+        margin-right: 0px !important;
+    }
+    [class~='ant-list-items'] > div{
+        padding: 10.5px 14px !important;
+    }
+    &_controlSelect{
+        // box-sizing: border-box;
+        border-bottom: 1px solid #F0F3FA;
+        padding: 10.5px 12px;
+    }
+    &_listSelected{
+        width: 100% !important;
+    }
+
+ }

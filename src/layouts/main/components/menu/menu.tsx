@@ -4,9 +4,6 @@ import { useLocation } from 'react-router-dom';
 import useMenuItem from 'src/hooks/use-menu-item';
 import styles from './menu.module.less';
 import { observer } from 'mobx-react-lite';
-import { IAuthenticationService } from 'src/services/authentication.service';
-import useService from 'src/hooks/use-service';
-import { PAGE_ROUTE } from 'src/constants/route';
 
 interface IMenuItem {
   requiredPermission?: Array<any>;
@@ -20,10 +17,6 @@ interface IProps {
 const AppMenu: React.FC<IProps> = ({ setMenuBar }: IProps) => {
   const menuItems = useMenuItem();
   const location = useLocation();
-  const authService: IAuthenticationService = useService(
-    'authenticationService'
-  );
-  const listMyPermission: any[] = [];
 
   // set active menu
   const getSelectedKeys = (pathname: string) => {
@@ -45,16 +38,6 @@ const AppMenu: React.FC<IProps> = ({ setMenuBar }: IProps) => {
 
   const recursion = (item: IMenuItem, menu: IMenuItem[]) => {
     if (!item.children) {
-      if (item.requiredPermission?.length) {
-        const isShowMenu: boolean = item.requiredPermission.every((permission: any) =>
-          listMyPermission.includes(permission)
-        );
-        delete item.requiredPermission;
-        isShowMenu && menu.push(item);
-      } else {
-        delete item.requiredPermission;
-        menu.push(item);
-      }
       return menu;
     } else {
       const menuChildren = item.children.reduce(

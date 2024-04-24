@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { i18nKey } from 'src/locales/i18n';
 import { useTranslation } from 'react-i18next';
 import {
@@ -11,7 +11,7 @@ import {
   Typography,
   message
 } from 'antd';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import CustomPassword from 'src/components/custom-password/custom-password';
 import { PAGE_ROUTE } from 'src/constants/route';
 import styles from './login.module.less';
@@ -23,7 +23,6 @@ import IconEmail from 'src/assets/icons/Login-mail.svg';
 import IconProfile from 'src/assets/icons/Login-profile.svg';
 import { ILoginResponse, LogInDTO } from 'src/dto/authentication.dto';
 import { messageResponse } from 'src/constants/message-response';
-import useStore from 'src/hooks/use-store';
 import { ResponseDTO } from 'src/dto/base.dto';
 import { HTTP_STATUS_RESPONSE_KEY } from 'src/constants/api';
 
@@ -36,7 +35,6 @@ const LoginPage: React.FC = () => {
   const [iconEmail, setIconEmail] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [t] = useTranslation();
-  const navigator = useNavigate();
 
   const onFormFinish = async (values: ILoginForm) => {
     setSubmitting(true);
@@ -79,12 +77,6 @@ const LoginPage: React.FC = () => {
   const forcus = () => {
     setIconEmail(true);
   };
-
-  useEffect(() => {
-    if (authService.isAuthenticated) {
-      navigator(``);
-    }
-  }, []);
 
   return (
     <Form
