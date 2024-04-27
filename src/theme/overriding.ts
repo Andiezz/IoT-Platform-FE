@@ -1,23 +1,23 @@
 export type ThemeType = {
-	token: {
-		[key: string]: unknown;
-	};
+  token: {
+    [key: string]: unknown;
+  };
   components: {
-    [key: string]: unknown
-  }
+    [key: string]: unknown;
+  };
 };
 
 const theme: ThemeType = {
-	token: {
-		colorPrimary: '#102044',
+  token: {
+    colorPrimary: '#183e97',
     controlHeight: 40,
     colorFill: '#FFFFFF'
-	},
-  components:{
+  },
+  components: {
     Layout: {
-      colorBgHeader: '#102044',
+      colorBgHeader: '#183e97',
       colorBgMenu: 'red',
-      Sider:{
+      Sider: {
         colorBgBase: 'red'
       }
     },

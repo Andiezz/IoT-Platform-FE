@@ -1,0 +1,82 @@
+.wrapper {
+  &_form {
+    // margin-left: 32px;
+    .subForm {
+      padding: 24px;
+      background-color: #ffff;
+    }
+    .changeAvatar {
+      margin: 26px auto;
+      // margin: auto;
+      .uploadImg {
+        text-align: center;
+      }
+    }
+  }
+}
+
+.bodyModal {
+  [class~='ant-modal-content'] {
+    padding: 16px;
+  }
+
+  .header {
+    &_title {
+      font-size: 16px;
+      font-weight: 700;
+      line-height: 20px;
+    }
+
+    &_desc {
+      margin-top: 16px;
+      display: block;
+    }
+  }
+
+  .footer {
+    margin-top: 24px;
+    button {
+      width: 100%;
+    }
+
+    &_cancel {
+      background-color: #f5f7fa;
+      span {
+        color: #848484;
+      }
+    }
+
+    &_submit {
+      background-color: #ff8060;
+      span {
+        color: #ffffff;
+      }
+    }
+  }
+}
+
+[class~='ant-input'] {
+  color: #212426 !important;
+}
+
+[class~='ant-select-selector'] {
+  color: #212426 !important;
+}
+.footerBtn {
+  display: none;
+}
+
+@media screen and (max-width: 576px) {
+  .footerBtn {
+    background-color: #fff;
+    display: flex;
+    padding: 16px;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+  }
+  .formProfile {
+    margin-bottom: 50px;
+  }
+}

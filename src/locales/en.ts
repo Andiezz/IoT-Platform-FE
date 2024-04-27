@@ -58,6 +58,7 @@ const en = {
   },
 
   menu: {
+    dashboard: 'Dashboard',
     systemManagement: 'System Management',
     accountManagement: 'Account Management',
     rolesAndPermissions: 'Roles & Permissions',

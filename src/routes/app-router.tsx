@@ -54,30 +54,34 @@ const privateRoutes: RouteType[] = [
   {
     path: PAGE_ROUTE.ACCOUNT_MANAGEMENT,
     element: lazy(
-      () =>
-        import(
-          'src/pages/account-management/account-management'
-        )
+      () => import('src/pages/account-management/account-management')
     )
   },
   {
     path: PAGE_ROUTE.NEW_ACCOUNT,
     element: lazy(
       () =>
-        import(
-          'src/pages/account-management/new-account/create-account-form'
-        )
+        import('src/pages/account-management/new-account/create-account-form')
     )
   },
   {
     path: PAGE_ROUTE.UPDATE_ACCOUNT,
     element: lazy(
       () =>
-        import(
-          'src/pages/account-management/new-account/create-account-form'
-        )
+        import('src/pages/account-management/new-account/create-account-form')
     )
   },
+  {
+    path: PAGE_ROUTE.PROFILE,
+    element: lazy(() => import('src/pages/profile/my-profile'))
+  },
+  {
+    path: PAGE_ROUTE.PROFILE_CHANGE_PASSWORD,
+    element: lazy(
+      () =>
+        import('src/pages/profile/component/change-password/change-password')
+    )
+  }
 ];
 
 const renderRoute = (routes: RouteType[]) =>
