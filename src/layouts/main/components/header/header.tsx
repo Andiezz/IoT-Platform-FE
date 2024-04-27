@@ -1,4 +1,3 @@
-import React from 'react';
 import {
   Avatar,
   Button,
@@ -9,7 +8,7 @@ import {
   Typography
 } from 'antd';
 import { observer } from 'mobx-react-lite';
-import { FC, useState } from 'react';
+import React, { FC, useState } from 'react';
 import styles from './header.module.less';
 import { PAGE_ROUTE } from 'src/constants/route';
 import { Link, useNavigate } from 'react-router-dom';
@@ -62,15 +61,15 @@ const AppHeader: FC = () => {
           ) : (
             <Avatar
               style={{ backgroundColor: '#BCBCC0' }}
-              size={40}>{`${userStore.userInfo?.first_name
+              size={40}>{`${userStore.userInfo?.firstName
               ?.toUpperCase()
               ?.trim()
-              ?.charAt(0)}${userStore.userInfo?.last_name
+              ?.charAt(0)}${userStore.userInfo?.lastName
               ?.toUpperCase()
               ?.trim()
               ?.charAt(0)}`}</Avatar>
           )}
-          <p>{`${userStore.userInfo?.first_name} ${userStore.userInfo?.last_name}`}</p>
+          <p>{`${userStore.userInfo?.firstName} ${userStore.userInfo?.lastName}`}</p>
         </div>
         <Link to={PAGE_ROUTE.PROFILE}>
           <div className={styles.item}>{t(i18nKey.menu.myProfile)}</div>
@@ -110,10 +109,10 @@ const AppHeader: FC = () => {
               className={styles.headerRight_btn_user}
               style={{ cursor: 'pointer', color: 'BCBCC0' }}
               size={40}>
-              {`${userStore.userInfo?.first_name
+              {`${userStore.userInfo?.firstName
                 ?.toUpperCase()
                 ?.trim()
-                ?.charAt(0)}${userStore.userInfo?.last_name
+                ?.charAt(0)}${userStore.userInfo?.lastName
                 ?.toUpperCase()
                 ?.trim()
                 ?.charAt(0)}`}

@@ -1,3 +1,5 @@
+import { Role } from 'src/interfaces/user';
+
 const accountEntity = {
   title: {
     settings: 'Settings',
@@ -30,7 +32,15 @@ const accountEntity = {
     updateAccount: 'Update Account',
     changeAvatar: 'Change Avatar',
     generateNewActivationLink: 'Generate New Activation'
-  }
+  },
+  role: {
+    admin: 'Admin',
+    viewer: 'Viewer'
+  },
+  roleKeyToText: {
+    [Role.ADMIN]: 'Admin',
+    [Role.USER]: 'User',
+  },
 };
 
 export default accountEntity;

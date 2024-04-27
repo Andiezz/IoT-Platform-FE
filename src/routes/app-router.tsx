@@ -46,7 +46,39 @@ const publicRoutes: RouteType[] = [
   }
 ];
 
-const privateRoutes: RouteType[] = [];
+const privateRoutes: RouteType[] = [
+  {
+    path: PAGE_ROUTE.DASHBOARD,
+    element: lazy(() => import('src/pages/dashboard/dashboard'))
+  },
+  {
+    path: PAGE_ROUTE.ACCOUNT_MANAGEMENT,
+    element: lazy(
+      () =>
+        import(
+          'src/pages/account-management/account-management'
+        )
+    )
+  },
+  {
+    path: PAGE_ROUTE.NEW_ACCOUNT,
+    element: lazy(
+      () =>
+        import(
+          'src/pages/account-management/new-account/create-account-form'
+        )
+    )
+  },
+  {
+    path: PAGE_ROUTE.UPDATE_ACCOUNT,
+    element: lazy(
+      () =>
+        import(
+          'src/pages/account-management/new-account/create-account-form'
+        )
+    )
+  },
+];
 
 const renderRoute = (routes: RouteType[]) =>
   routes.map((r) => {

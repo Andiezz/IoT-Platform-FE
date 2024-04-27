@@ -11,7 +11,7 @@ import {
   Typography,
   message
 } from 'antd';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import CustomPassword from 'src/components/custom-password/custom-password';
 import { PAGE_ROUTE } from 'src/constants/route';
 import styles from './login.module.less';
@@ -35,6 +35,7 @@ const LoginPage: React.FC = () => {
   const [iconEmail, setIconEmail] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [t] = useTranslation();
+  const navigator = useNavigate();
 
   const onFormFinish = async (values: ILoginForm) => {
     setSubmitting(true);
@@ -47,6 +48,7 @@ const LoginPage: React.FC = () => {
         setSubmitting(false);
         if (rs.responseCode === HTTP_STATUS_RESPONSE_KEY.SUCCESS) {
           message.success(`${t(i18nKey.validation.common.loginSuccess)}`);
+          navigator(PAGE_ROUTE.DASHBOARD);
         }
         if (rs.message === messageResponse.inactiveAccountNotification) {
           message.error(

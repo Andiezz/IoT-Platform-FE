@@ -6,8 +6,8 @@ interface IProps {
   sizeAvatar: number;
 }
 const RenderAvatar = ({ owner, sizeAvatar }: IProps) => {
-  const firstLetterFirstName = owner.first_name.trim().charAt(0).toUpperCase();
-  const firstLetterLastName = owner.last_name.trim().charAt(0).toUpperCase();
+  const firstLetterFirstName = owner.firstName.trim().charAt(0).toUpperCase();
+  const firstLetterLastName = owner.lastName.trim().charAt(0).toUpperCase();
 
   return (
     <Tooltip title={owner.email}>

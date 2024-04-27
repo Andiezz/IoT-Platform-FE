@@ -29,9 +29,9 @@ const ChangePassword: React.FC = () => {
   const changePasswordNew = async (values: IChangePasswordBody) => {
     await authService
       .activeAccount({
-        new_password: values.newPassword,
-        confirm_new_password: values.confirmPassword,
-        activation_code: token
+        newPassword: values.newPassword,
+        confirmNewPassword: values.confirmPassword,
+        activationCode: token
       })
       .then((res) => {
         if (res.responseCode === HTTP_STATUS_RESPONSE_KEY.SUCCESS) {

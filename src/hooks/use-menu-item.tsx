@@ -17,7 +17,7 @@ const useMenuItem = () => {
   const menu: MenuItem[] = [
     {
       label: t(i18nKey.menu.systemManagement),
-      key: PAGE_ROUTE.DASHBOARD_SYSTEM,
+      key: PAGE_ROUTE.DASHBOARD,
       icon: location.pathname.includes(PAGE_ROUTE.ACCOUNT_MANAGEMENT),
       children: [
         {

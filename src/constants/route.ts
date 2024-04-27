@@ -1,6 +1,7 @@
 export enum PAGE_ROUTE {
   LOGIN = '/login',
   NOT_FOUND = '/404',
+  DASHBOARD = '/',
   FORGOT_PASSWORD = '/forgot-password',
   CHANGE_PASSWORD = '/change-password',
   ACCOUNT_MANAGEMENT = '/account',
@@ -11,7 +12,5 @@ export enum PAGE_ROUTE {
   PROFILE_CHANGE_PASSWORD = '/profile/change-password',
   LOGOUT = '/logout',
   ACCESS_DENIED = '/access-denied',
-
-  DASHBOARD_SYSTEM = '/system',
 }
 

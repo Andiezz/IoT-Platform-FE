@@ -3,9 +3,9 @@ import { DTO } from './base.dto';
 import { ENDPOINT, HTTP_METHOD } from 'src/constants/api';
 
 export interface IBodyActiveAccount {
-    activation_code: string | null,
-    new_password: string;
-    confirm_new_password: string;
+    activationCode: string | null,
+    newPassword: string;
+    confirmNewPassword: string;
 }
   export class ActiveAccountDTO extends DTO {
     public param: object | undefined;

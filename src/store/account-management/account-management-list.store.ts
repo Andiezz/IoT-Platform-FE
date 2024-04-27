@@ -10,7 +10,6 @@ import {
   GetAccountDetailDTO,
   GetListUserAssignDTO,
   GetNewLinkActiveAccount,
-  GetRoleDTO,
   GetUserAssignByEmailDTO,
   IAccountManagement,
   IAccountManagementItem,
@@ -24,6 +23,7 @@ import {
 import {
   IAccountInfo,
   IUserResponseGetByEmail,
+  IUserRole,
   Role
 } from 'src/interfaces/user';
 
@@ -31,7 +31,7 @@ const DEFAULT_SORT_COLUMN = 'updateTime';
 
 export interface IAccountListStore {
   listAccountManagement: IAccountManagementItem[];
-  listRole: Role[];
+  listRole: IUserRole[];
   totalPages: number;
   totalRecords: number;
   pageSize: number;
@@ -61,7 +61,7 @@ export interface IAccountListStore {
 }
 export class AccountManagementListStore implements IAccountListStore {
   listAccountManagement: IAccountManagementItem[] = [];
-  listRole: Role[] = [];
+  listRole: IUserRole[] = [];
   totalPages = 0;
   totalRecords = 0;
   pageSize = PAGINATION_CONFIGURATION.DEFAULT_PAGE_SIZE;
@@ -152,16 +152,15 @@ export class AccountManagementListStore implements IAccountListStore {
   }
 
   public async getRole(): Promise<boolean> {
-    const getRole = new GetRoleDTO();
-    const res: ResponseDTO<Role[]> = await this.http.request(getRole);
-    if (res.responseCode === HTTP_STATUS_RESPONSE_KEY.SUCCESS) {
-      runInAction(() => {
-        res.data && (this.listRole = res.data);
-      });
-      return true;
-    }
-    return false;
+    runInAction(() => {
+      this.listRole = [
+        { _id: '1', name: 'admin', role: Role.ADMIN },
+        { _id: '2', name: 'user', role: Role.USER }
+      ];
+    });
+    return true;
   }
+
   public async getUserAssignByEmail(
     body: IBodyGetUserAssignByEmail
   ): Promise<ResponseDTO<IUserResponseGetByEmail>> {

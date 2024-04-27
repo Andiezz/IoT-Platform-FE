@@ -3,14 +3,20 @@ export enum Role {
   USER = 'user'
 }
 
+export interface IUserRole {
+  _id: string;
+  name: string;
+  role: Role;
+}
+
 export interface IUserInfo {
   id: string;
   email: string;
   name: string;
-  first_name: string;
-  last_name: string;
-  phone_number: string;
-  phone_code: string;
+  firstName: string;
+  lastName: string;
+  phoneNumber: string;
+  phoneCode: string;
   role: Role;
   avatar?: string;
 }
@@ -19,18 +25,18 @@ export interface IUserResponseGetByEmail {
   _id: string;
   email: string;
   avatar?: string;
-  first_name: string;
-  last_name: string;
+  firstName: string;
+  lastName: string;
 }
 
 export interface IAccountInfo {
   id: string;
-  first_name: string;
-  last_name: string;
+  firstName: string;
+  lastName: string;
   email: string;
-  phone_code: string;
-  phone_number: string;
-  is_active: true;
+  phoneCode: string;
+  phoneNumber: string;
+  isActive: true;
   role: Role;
   tenants: string[];
 }

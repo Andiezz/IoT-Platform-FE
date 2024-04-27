@@ -76,6 +76,7 @@ const en = {
     name: 'Name',
     owner: 'Owner',
     tel: 'TEL',
+    operations: 'Operations',
   },
 
   button: {
@@ -106,7 +107,9 @@ const en = {
     resetPasswordUnavailable:
       'Password reset request cannot be made to this email until it has been activated.',
     adminPermissionDenied:
-      'You do not have permission to view/update service admin (Admin).'
+      'You do not have permission to view/update service admin (Admin).',
+    updateAccountUnavailable:
+      'Updates to this user account cannot be made until it has been activated. Please activate the account first before making any changes.',
   }
 };
 

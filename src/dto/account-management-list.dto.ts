@@ -14,35 +14,27 @@ export interface IAccountManagement {
 
 export interface IAccountManagementItem {
   _id?: string;
-  first_name?: string;
-  last_name?: string;
+  firstName?: string;
+  lastName?: string;
   email?: string;
-  phone_code?: number;
-  phone_number?: number;
-  is_active?: boolean;
+  phoneCode?: number;
+  phoneNumber?: number;
+  isActive?: boolean;
   avatar?: string;
-  is_first_login?: boolean;
-  is_expired_activation_code?: boolean;
-  user_manage?: [];
-  user_manage_tenant: {
-    tenant: {
-      _id: string;
-      name: string;
-      status: unknown;
-    };
-  }[];
+  isFirstLogin?: boolean;
+  isExpiredActivationCode?: boolean;
+  role: Role;
 }
 
 export interface IAccountManagementListRequest {
   q?: string;
-  role_id?: string;
-  is_active?: boolean;
+  isActive?: boolean;
   sortOption?: {
     column?: string;
     sortDirection?: TABLE_SORT_DIRECTION;
   };
-  sort_by?: string;
-  sort_order?: TABLE_SORT_DIRECTION;
+  sortBy?: string;
+  sortOrder?: TABLE_SORT_DIRECTION;
   page?: number;
   pageSize?: number;
   limit?: number;
@@ -69,29 +61,29 @@ export class ListAccountManagementDTO extends DTO {
 export interface ResponseAccountDTO {
   _id: string;
   email: string;
-  first_name: string;
-  last_name: string;
+  firstName: string;
+  lastName: string;
 }
 export interface ResponseActiveLinkDTO {
   email: string;
 }
 export interface BodyCreateAccountDTO {
-  first_name: string;
-  last_name: string;
+  firstName: string;
+  lastName: string;
   email: string;
-  phone_code: string;
-  phone_number: string;
-  role_id: string;
+  phoneCode: string;
+  phoneNumber: string;
+  role: string;
 }
 
 export interface BodyUpdateAccountDTO {
-  first_name: string;
-  last_name: string;
+  firstName: string;
+  lastName: string;
   email: string;
-  phone_code: string;
-  phone_number: string;
-  role_id?: string;
-  is_active: boolean;
+  phoneCode: string;
+  phoneNumber: string;
+  role: string;
+  isActive: boolean;
 }
 
 export class UpdateAccountDTO extends DTO {
@@ -117,18 +109,6 @@ export class CreateAccountDTO extends DTO {
   constructor(body: BodyCreateAccountDTO) {
     super();
     this.body = body;
-  }
-}
-
-export class GetRoleDTO extends DTO {
-  public param: object | undefined;
-  public query: object | undefined;
-  public body: undefined;
-  public url: string = ENDPOINT.GET_LIST_ROLE;
-  public method: HTTP_METHOD = HTTP_METHOD.GET;
-  public readonly responseType: ResponseType = 'json';
-  constructor() {
-    super();
   }
 }
 
@@ -181,8 +161,7 @@ export class GetUserAssignByEmailDTO extends DTO {
   public query: object | undefined;
   public body: unknown | undefined;
   public url: string = ENDPOINT.GET_USER_ASSIGN_BY_EMAIL;
-  public method: HTTP_METHOD = HTTP_METHOD.POST
-  ;
+  public method: HTTP_METHOD = HTTP_METHOD.POST;
   public readonly responseType: ResponseType = 'json';
   constructor(body: IBodyGetUserAssignByEmail) {
     super();
