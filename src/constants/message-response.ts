@@ -12,4 +12,9 @@ export const messageResponse = {
   createAccount: {
     existingEmail: 'This email address has already existed'
   },
+  thingExistingName: 'thing-name-existed',
+  thingNotFound: 'thing-not-found',
+  deviceExistingName: 'device-name-exist',
+  noPermission: 'no-permission',
+  deviceNotExist: 'device-not-exist',
 };

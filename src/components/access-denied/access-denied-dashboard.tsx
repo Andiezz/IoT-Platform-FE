@@ -13,7 +13,7 @@ const AccessDeniedDashboard = () => {
         <AccessDeniedIcon />
       </div>
       <div className={styles.label} style={{ textAlign: 'center' }}>
-        {t(i18nKey.httpResponseMessage._500_Dashboard_No_Plant_Data)}
+        {t(i18nKey.httpResponseMessage._500_Dashboard_No_Thing_Data)}
       </div>
     </div>
   );

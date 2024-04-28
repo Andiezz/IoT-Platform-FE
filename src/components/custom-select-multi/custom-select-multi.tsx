@@ -13,12 +13,8 @@ interface IProps {
   value?: string[];
   onChange?: (value: string[]) => void;
 }
-const CustomMultiSelect = ({
-  options,
-  value = [],
-  onChange
-}: IProps) => {
-  const [valueSearchPlant, setValueSearchPlant] = useState<string>('');
+const CustomMultiSelect = ({ options, value = [], onChange }: IProps) => {
+  const [valueSearchThing, setValueSearchThing] = useState<string>('');
 
   const handleClickItemSelect = (item: IOption) => {
     const newValue = [...value, item.value].filter(
@@ -27,10 +23,10 @@ const CustomMultiSelect = ({
     onChange?.(newValue);
   };
 
-  const renderDropDownSelectPlant = (options: Array<IOption>) => {
+  const renderDropDownSelectThing = (options: Array<IOption>) => {
     const listOptionFilter: Array<IOption> =
       options?.filter((item: IOption) =>
-        item?.label?.includes(valueSearchPlant)
+        item?.label?.includes(valueSearchThing)
       ) || [];
 
     const generateStyle = (item: IOption) => {
@@ -73,12 +69,12 @@ const CustomMultiSelect = ({
               }}
               prefix={<SearchOutlined style={{ color: '#1890ff' }} />}
               onChange={(e) => {
-                setValueSearchPlant(e.target.value);
+                setValueSearchThing(e.target.value);
               }}
             />
 
             <div className={styles.dropDownSelect}>
-              {renderDropDownSelectPlant(options)}
+              {renderDropDownSelectThing(options)}
             </div>
           </div>
         );

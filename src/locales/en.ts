@@ -27,7 +27,7 @@ const en = {
       'The server acting as a gateway did not receive a timely response from the upstream server.',
     _500_Dashboard_No_Tenant_Data:
       "You're currently not part of any Tenants...",
-    _500_Dashboard_No_Plant_Data: "You're currently not part of any Plants"
+    _500_Dashboard_No_Thing_Data: "You're currently not part of any Things"
   },
 
   status: {
@@ -39,10 +39,10 @@ const en = {
     succeeded: 'Succeeded',
     failed: 'Failed',
     queued: 'Queued',
-    'open': 'Open',
-    'closed': 'Closed',
-    'connected': 'Connected',
-    'disconnected': 'Disconnected',
+    open: 'Open',
+    closed: 'Closed',
+    connected: 'Connected',
+    disconnected: 'Disconnected'
   },
 
   confirmationPopup: {
@@ -77,7 +77,7 @@ const en = {
     name: 'Name',
     owner: 'Owner',
     tel: 'TEL',
-    operations: 'Operations',
+    operations: 'Operations'
   },
 
   button: {
@@ -110,7 +110,7 @@ const en = {
     adminPermissionDenied:
       'You do not have permission to view/update service admin (Admin).',
     updateAccountUnavailable:
-      'Updates to this user account cannot be made until it has been activated. Please activate the account first before making any changes.',
+      'Updates to this user account cannot be made until it has been activated. Please activate the account first before making any changes.'
   }
 };
 

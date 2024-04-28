@@ -22,8 +22,8 @@ const accountEntity = {
   },
 
   placeholder: {
-    search: 'Search by Tenant, Plant, Location, Full Name, Email',
-    selectTenantPlantLocation: 'Select Tenant/Plant/Location',
+    search: 'Search by Tenant, Thing, Location, Full Name, Email',
+    selectTenantThingLocation: 'Select Tenant/Thing/Location',
     inputEmail: 'Please input email'
   },
 
@@ -39,8 +39,8 @@ const accountEntity = {
   },
   roleKeyToText: {
     [Role.ADMIN]: 'Admin',
-    [Role.USER]: 'User',
-  },
+    [Role.USER]: 'User'
+  }
 };
 
 export default accountEntity;

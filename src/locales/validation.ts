@@ -71,8 +71,7 @@ const validation = {
 
     phoneValidation:
       'Please enter a valid phone number (only numerical characters are allowed).',
-    ipValidation:
-      'Please enter a valid ip number.',
+    ipValidation: 'Please enter a valid ip number.',
 
     existingEmail: 'Email already exists in the system.',
 
@@ -98,15 +97,15 @@ const validation = {
       'This email already in list. Please provide another name.'
   },
 
-  plantAndLocation: {
+  thingAndLocation: {
     locationAutocompleteErr:
       'Please select a location from the autocomplete results. Free text input is not allowed in this field.',
 
     existingLocationName:
-      'That Location name already exists in this Plant. Please choose a unique name.',
+      'That Location name already exists in this Thing. Please choose a unique name.',
 
-    cantUpdateBecauseNotOwnerPlant:
-      'Update cannot be performed because your account is not the owner of this plant'
+    cantUpdateBecauseNotOwnerThing:
+      'Update cannot be performed because your account is not the owner of this thing'
   },
 
   ems: {
@@ -124,28 +123,28 @@ const validation = {
       'There is a duplicated set of company and device types section in the Associated Assets list. Please check and remove this duplicated value.'
   },
 
-  plant: {
-    existingName: 'Plant name has already existed',
+  thing: {
+    existingName: 'Thing name has already existed',
 
     requiredOwner: 'Please assign owner',
 
     requiredRoleOwner:
-      'Access Denied: Only Tenant Admin have the permission to be assigned as a Plant Owner.',
+      'Access Denied: Only Tenant Admin have the permission to be assigned as a Thing Owner.',
 
     requiredRoleViewer:
       'Access Denied: Only Tenant Admin/ Viewer and Customer Services have the permission to be assigned as a Tenant.',
 
     limitAssignOwner:
-      'Assignment Limit Exceeded: Only one user can be assigned to a plant at a time.',
+      'Assignment Limit Exceeded: Only one user can be assigned to a thing at a time.',
 
     existingEmailInList:
       'Duplicate Assignment: The selected user is already assigned as a Tenant.',
 
     existingEmailInOwner:
-      'Assignment Conflict: This user is already assigned as the Plant Owner and cannot be assigned to the Tenant Assignment as well.',
+      'Assignment Conflict: This user is already assigned as the Thing Owner and cannot be assigned to the Tenant Assignment as well.',
 
     existingEmailInViewer:
-      'Assignment Conflict: This user is already assigned as the Tenant Assignment and cannot be assigned to the Plant Owner as well.'
+      'Assignment Conflict: This user is already assigned as the Tenant Assignment and cannot be assigned to the Thing Owner as well.'
   },
 
   tenant: {

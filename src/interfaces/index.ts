@@ -12,10 +12,10 @@ export interface IPosition {
   address?: string;
 }
 
-export interface IPlantMap {
+export interface IThingMap {
   address?: string;
   lat: number;
   lng: number;
   tenantName?: string;
-  plantName?: string;
+  thingName?: string;
 }

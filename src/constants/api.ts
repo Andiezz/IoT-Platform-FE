@@ -28,7 +28,6 @@ export enum ENDPOINT {
   ROOT = '/api',
   LOGIN = '/auth/login',
   LOGOUT = '/auth/logout',
-  CREATE_PASSWORD = '/auth/create-new-password',
   FORGOT_PASSWORD = '/auth/forgot-password',
   CHANGE_PASSWORD = '/auth/create-new-password',
   CHANGE_ACCOUNT_PASSWORD = '/user/change-password',
@@ -45,4 +44,9 @@ export enum ENDPOINT {
   GET_LIST_USER_ASSIGN = 'user/view/list',
   GET_NEW_LINK_ACTIVE_ACCOUNT = '/system-mgt/account/resent-active-link',
   GET_USER_ASSIGN_BY_EMAIL = '/user/email',
+
+  // Thing
+  THING_BASE_URL = '/thing',
+  THING_PARAM_URL = '/:thingId',
+  DOWNLOAD_CERTIFICATE = 'thing/certificate/:thingId',
 }

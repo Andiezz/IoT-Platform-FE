@@ -1,15 +1,15 @@
 import { SearchOutlined } from '@ant-design/icons';
 import { Dropdown, DropdownProps, Input } from 'antd';
 import React, { useState } from 'react';
-export interface IDropDownPlant{
+export interface IDropDownThing {
   label: string;
   key: string;
 }
 
 interface IProps extends DropdownProps {
   isShowSearch?: boolean;
-  items?: IDropDownPlant[];
-  onClickItem?: (values: string) => void
+  items?: IDropDownThing[];
+  onClickItem?: (values: string) => void;
 }
 const DropDownWithSearch = ({
   children,
@@ -19,7 +19,8 @@ const DropDownWithSearch = ({
 }: IProps) => {
   const [itemData, setItemData] = useState(items);
   const addEventItem = () =>
-  itemData && itemData.map((item) => {
+    itemData &&
+    itemData.map((item) => {
       const label = (
         <div
           onClick={() => {
@@ -34,7 +35,7 @@ const DropDownWithSearch = ({
     <Dropdown
       menu={{ items: addEventItem() }}
       dropdownRender={(menu) => (
-        <div style={{maxHeight: '300px'}}>
+        <div style={{ maxHeight: '300px' }}>
           {isShowSearch && (
             <Input
               placeholder="Search"
@@ -42,8 +43,9 @@ const DropDownWithSearch = ({
               prefix={<SearchOutlined />}
               onChange={(e) =>
                 setItemData(() => {
-                  return items && items.filter((item) =>
-                    item.label.includes(e.target.value)
+                  return (
+                    items &&
+                    items.filter((item) => item.label.includes(e.target.value))
                   );
                 })
               }

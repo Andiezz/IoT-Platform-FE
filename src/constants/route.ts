@@ -12,5 +12,11 @@ export enum PAGE_ROUTE {
   PROFILE_CHANGE_PASSWORD = '/profile/change-password',
   LOGOUT = '/logout',
   ACCESS_DENIED = '/access-denied',
+
+  // Thing
+  DASHBOARD_THING = '/thing',
+  THING_DETAIL = '/thing/:id',
+  THING_UPDATE = '/thing/update-thing/:id',
+  THING_CREATE = '/thing/create-thing',
 }
 
