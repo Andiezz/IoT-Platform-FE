@@ -108,21 +108,6 @@ const validation = {
       'Update cannot be performed because your account is not the owner of this thing'
   },
 
-  ems: {
-    existingEms: 'This EMS name already exists. Please provide another name.',
-
-    mustDownloadKeyFiles: 'You must download the key files before you create.',
-
-    emsLocationAllocationError:
-      '1 EMS can not be allocated to more than 1 location.',
-    inactiveDeviceCommand:
-      'The command cannot be executed because this device is inactive.',
-    locationEmsAllocationError: '1 location cannot have more than 1 EMS.',
-
-    duplicatedCompanyDeviceTypeError:
-      'There is a duplicated set of company and device types section in the Associated Assets list. Please check and remove this duplicated value.'
-  },
-
   thing: {
     existingName: 'Thing name has already existed',
 
@@ -131,38 +116,11 @@ const validation = {
     requiredRoleOwner:
       'Access Denied: Only Tenant Admin have the permission to be assigned as a Thing Owner.',
 
-    requiredRoleViewer:
-      'Access Denied: Only Tenant Admin/ Viewer and Customer Services have the permission to be assigned as a Tenant.',
-
-    limitAssignOwner:
-      'Assignment Limit Exceeded: Only one user can be assigned to a thing at a time.',
-
     existingEmailInList:
       'Duplicate Assignment: The selected user is already assigned as a Tenant.',
 
     existingEmailInOwner:
-      'Assignment Conflict: This user is already assigned as the Thing Owner and cannot be assigned to the Tenant Assignment as well.',
-
-    existingEmailInViewer:
-      'Assignment Conflict: This user is already assigned as the Tenant Assignment and cannot be assigned to the Thing Owner as well.'
-  },
-
-  tenant: {
-    existingName: 'Tenant name has already existed',
-
-    requiredAtLeastOneTenantOwner: 'Please select at least one Tenant Owner.',
-
-    accountNotOwnerTenant: 'Current account is not owner of this tenant',
-
-    cantUpdateBecauseNotOwnerTenant:
-      'Update cannot be performed because your account is not the owner of this tenant'
-  },
-
-  overview: {
-    setSocValue: 'Please input number of value can not be more than 100.',
-
-    setSocLimitation:
-      'Please enter the number of Min value field not to be large than field Max.'
+      'Assignment Conflict: This user is already assigned as the Thing Owner and cannot be assigned to the Tenant Assignment as well.'
   }
 };
 

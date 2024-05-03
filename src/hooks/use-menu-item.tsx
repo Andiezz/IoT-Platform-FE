@@ -7,6 +7,8 @@ import { ReactComponent as DashboardIcon } from 'src/assets/icons/Dashboard-defa
 import { ReactComponent as DashboardIconActive } from 'src/assets/icons/Dashboard-active.svg';
 import { ReactComponent as AccountManagement } from 'src/assets/icons/People-icon.svg';
 import { ReactComponent as AccountManagementActive } from 'src/assets/icons/People-icon-active.svg';
+import { ReactComponent as ThingIcon } from 'src/assets/icons/thing-default.svg';
+import { ReactComponent as ThingIconActive } from 'src/assets/icons/thing-active.svg';
 import { useMatch, useLocation, useNavigate } from 'react-router-dom';
 
 export type MenuItem = Required<MenuProps>['items'][number];
@@ -28,6 +30,16 @@ const useMenuItem = () => {
           <DashboardIcon />
         ),
       onClick: () => navigator(PAGE_ROUTE.DASHBOARD)
+    } as MenuItem,
+    {
+      label: t(i18nKey.menu.thingCenter),
+      key: PAGE_ROUTE.DASHBOARD_THING,
+      icon: useMatch(PAGE_ROUTE.DASHBOARD_THING) ? (
+        <ThingIconActive />
+      ) : (
+        <ThingIcon />
+      ),
+      onClick: () => navigator(PAGE_ROUTE.DASHBOARD_THING),
     } as MenuItem,
     {
       label: t(i18nKey.menu.accountManagement),

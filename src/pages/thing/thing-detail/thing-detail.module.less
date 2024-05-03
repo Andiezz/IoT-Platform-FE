@@ -1,0 +1,42 @@
+.container {
+  [class~='ant-tabs-nav'] {
+    margin: 0;
+    padding-left: 32px;
+    background-color: #fff;
+  }
+
+  &_tab {
+      &_text {
+        color: #212426;
+        font-family: DM Sans, sans-serif ;
+        font-weight: 400;
+      }
+  }
+}
+
+[class~='ant-tabs-tab-active'] {
+  .container {
+    &_tab {
+      &_text {
+        color: #2B7AE8 !important;
+      }
+    }
+  }
+}
+
+.wrapLocationName{
+  border: 1px solid #DBDEE5;
+  border-radius: 4px;
+  padding: 15.5px 12px;
+  margin-bottom: 8px;
+}
+.locationList{
+  color: #848484;
+  margin-bottom: 18px
+}
+.wrapSpin{
+  min-height: 100vh !important;
+  [class~='ant-spin-spinning']{
+    max-height: none !important;
+  }
+}

@@ -1,0 +1,131 @@
+.container{
+    background-color: #fff;
+    padding: 16px;
+    max-width: 927px;
+
+    &_typography {
+        font-size: 18px !important;
+        font-weight: 600 !important;
+        color: #212426 !important;
+        margin: 0 !important;
+    }
+
+    .wrapAvatarPlant{
+        flex: auto;
+    }
+    .tagStatus{
+        font-size: 14px;
+    }
+    .labelAdminViewer{
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 150%
+    }
+    .labelLocationList{
+        margin: 24px 0 8px;
+
+        color: #848484;
+        
+    }
+    .wrapLocation{
+        padding: 16px;
+        border: 1px solid #DBDEE5;
+        border-radius: 4px;
+            .wrapLatLng{
+                display: flex;
+                gap: 10px;
+                .latLngLocation{
+                
+                span:first-child{
+                    margin-right: 8px;
+                }
+                span:last-child{
+                    display: inline-block;
+                    color: #2B7AE8;
+                    background: rgba(43, 122, 232, 0.1);
+                    padding: 4px;
+                    border-radius: 4px;
+
+                }
+            }
+        }
+        
+
+            
+        .address{
+            color: #848484;
+            margin-top: 8px;
+        }
+        .wrapAvatarLocation{
+            flex-basis: auto;
+        }
+    }
+    .ems{
+        margin-top: 16px;
+        .emsLabel{
+            color: #848484;
+            margin-right: 5px;
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+        .emsValue{
+            color: #212426;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        .wrapAssociated{
+            border: 1px solid #DBDEE5;
+            border-radius: 4px;
+            margin-bottom: 16px;
+            padding: 8px 12px;
+            .nameAssociated{
+                flex: auto;
+            }
+            .infoAssociated{
+                display: flex;
+                gap: 8px;
+                align-items: center;
+                .valueAssociated{
+                    color: #2B7AE8;
+                    background: rgba(43, 122, 232, 0.1);
+                    padding: 4px;
+                    border-radius: 4px;
+
+                }
+            }
+        }
+    }
+    .wrapBtnUpdate{
+        flex-basis: content !important;
+    }
+}
+.btnUpdate{
+    border-radius: 8px !important;
+    span{
+        font-size: 14px !important;
+        font-weight: 700 !important;
+        line-height: 130% !important;
+    }
+   
+}
+.buttonSubmit {
+    border-radius: 8px !important;
+    width: 90px;
+    height: 30px;
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 130%;
+}
+.labelID{
+        margin-top: 7px;
+        font-size: 12px !important;
+        font-weight: 400 !important;
+        color: #212426;
+}
+@media screen and (min-width: 577px)  {
+    .btnUpdate{
+      padding: 6px 20px !important;
+      height: auto !important;
+    }
+    
+}

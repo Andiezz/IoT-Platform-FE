@@ -1,12 +1,14 @@
 import validation from './validation';
 import loginPage from './loginPage';
 import accountEntity from './accountEntity';
+import thingEntity from './thingEntity';
 
 const en = {
   loginPage,
   validation,
   confirm,
   accountEntity,
+  thingEntity,
   httpResponseMessage: {
     _400_BadRequest:
       'The server cannot process the request due to a client error.',
@@ -59,6 +61,7 @@ const en = {
 
   menu: {
     dashboard: 'Dashboard',
+    thingCenter: 'Thing Center',
     systemManagement: 'System Management',
     accountManagement: 'Account Management',
     rolesAndPermissions: 'Roles & Permissions',
@@ -77,7 +80,10 @@ const en = {
     name: 'Name',
     owner: 'Owner',
     tel: 'TEL',
-    operations: 'Operations'
+    operations: 'Operations',
+    goToDashboard: 'Go to Dashboard',
+    thingLocation: 'Thing/Location',
+    devices: 'Devices',
   },
 
   button: {
@@ -110,7 +116,11 @@ const en = {
     adminPermissionDenied:
       'You do not have permission to view/update service admin (Admin).',
     updateAccountUnavailable:
-      'Updates to this user account cannot be made until it has been activated. Please activate the account first before making any changes.'
+      'Updates to this user account cannot be made until it has been activated. Please activate the account first before making any changes.',
+    deleteThingUnavailable:
+      "Deletion is only available for Things with an 'Pending Setup' status.",
+    removeThingUnavailable:
+      "Removal is only available for Things with an 'Pending Setup' status."
   }
 };
 
