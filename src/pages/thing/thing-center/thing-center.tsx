@@ -28,6 +28,7 @@ import Widget from 'src/components/widget/widget';
 import { PAGE_ROUTE } from 'src/constants/route';
 import { getStatus, tagColorStatus } from 'src/constants/utils';
 import {
+  IThingItem,
   IThingListRequest,
 } from 'src/dto/thing.dto';
 import { uniqueKey } from 'src/helpers/string.utils';
@@ -47,10 +48,7 @@ import useViewport from 'src/hooks/use-viewport';
 import { ReactComponent as MoreIcon } from 'src/assets/icons/more-icon.svg';
 import { ReactComponent as ElementIcon } from 'src/assets/icons/elemant.svg';
 import * as _ from 'lodash';
-import { IThingItem } from 'src/constants/thing';
 import moment from 'moment-timezone';
-import RenderAvatar from 'src/components/render-avatar/render-avatar';
-import { Role } from 'src/interfaces/user';
 import { STATUS } from 'src/constants/status';
 
 const optionStatus = [
@@ -71,7 +69,7 @@ const optionStatus = [
   }
 ];
 
-const PlantCenterPage: React.FC = () => {
+const ThingCenterPage: React.FC = () => {
   const { t } = useTranslation();
   const [form] = Form.useForm();
   const navigator = useNavigate();
@@ -83,9 +81,6 @@ const PlantCenterPage: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [map, setMap] = useState(false);
   const [isDrag, setIsDrag] = useState<boolean>(false);
-  const authService: IAuthenticationService = useService(
-    'authenticationService'
-  );
   const refTable = useRef<any>();
 
   const [searchFields, setSearchFields] = useState<IThingListRequest | null>(
@@ -236,12 +231,12 @@ const PlantCenterPage: React.FC = () => {
       render: (record: IThingItem) => (
         <>
           <Typography>{record.name}</Typography>
-          {record?.location_name && (
+          {record?.location.name && (
             <div className={styles.plantLocations}>
               <Space align="center" style={{ width: '100%' }}>
                 <img src={LocationPlantIcon} />
                 <Typography className={styles.tableLocationPlant}>
-                  <TooltipParagraph>{record.location_name}</TooltipParagraph>
+                  <TooltipParagraph>{record.location.name}</TooltipParagraph>
                 </Typography>
               </Space>
             </div>
@@ -256,8 +251,9 @@ const PlantCenterPage: React.FC = () => {
       width: '15%',
       render: (record: IThingItem) => (
         <>
-          {record.owner ? (
-            record.owner?.user?.email
+          {
+          record.managers ? (
+            record?.managers.find((item) => item.isOwner)?.email
           ) : (
             <Typography>-</Typography>
           )}
@@ -272,9 +268,8 @@ const PlantCenterPage: React.FC = () => {
         return record?.devices &&
           record?.devices.length > 0 ? (
           <Row gutter={[16, 16]}>
-            {record.devices.map((item) => {
-              const nameDeviceType = record.device_types.find(type => type._id === item.device_type_id)?.name as DeviceType
-              switch ( nameDeviceType as DeviceType) {
+            {/* {record.devices.map((item) => {
+              switch (item.model) {
                 case DeviceType.PV_Inverter:
                   return (
                     <Tooltip
@@ -338,7 +333,7 @@ const PlantCenterPage: React.FC = () => {
                     </Tooltip>
                   );
               }
-            })}
+            })} */}
           </Row>
         ) : (
           <Typography.Text>-</Typography.Text>
@@ -473,4 +468,4 @@ const PlantCenterPage: React.FC = () => {
   );
 };
 
-export default observer(PlantCenterPage);
+export default observer(ThingCenterPage);

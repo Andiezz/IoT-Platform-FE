@@ -3,6 +3,7 @@ import { DTO } from './base.dto';
 import { ResponseType } from 'axios';
 import { TABLE_SORT_DIRECTION } from 'src/constants';
 import { STATUS } from 'src/constants/status';
+import { IUserBasic } from 'src/constants/user';
 
 export interface ILocation {
   name: string;
@@ -19,6 +20,8 @@ export interface ICertificate {
 export interface IManager {
   userId: string;
   isOwner: boolean;
+  email: string;
+  user?: IUserBasic;
 }
 
 export interface IThreshold {
@@ -57,7 +60,7 @@ export interface IThingItem {
   updatedOn?: string;
   name: string;
   information: string;
-  location: Location;
+  location: ILocation;
   status: STATUS;
   managers: IManager[];
   certificate: ICertificate;

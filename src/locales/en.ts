@@ -84,6 +84,7 @@ const en = {
     goToDashboard: 'Go to Dashboard',
     thingLocation: 'Thing/Location',
     devices: 'Devices',
+    location: 'Location',
   },
 
   button: {

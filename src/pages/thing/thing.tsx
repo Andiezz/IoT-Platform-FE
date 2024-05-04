@@ -1,12 +1,12 @@
 import React,{ FC } from 'react';
-import PlantCenterPage from './thing-center/thing-center';
+import ThingCenterPage from './thing-center/thing-center';
 
-const PlantPage: FC = ()=>{
-  return <>
+const ThingPage: FC = ()=>{
+  return (
     <div>
-      <PlantCenterPage/>
+      <ThingCenterPage/>
     </div>
-  </>
+  );
 }
 
-export default PlantPage;
+export default ThingPage;
