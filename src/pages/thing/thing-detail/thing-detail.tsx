@@ -7,23 +7,23 @@ import { i18nKey } from 'src/locales/i18n';
 import ThingInfo from './thing-info/thing-info';
 import useStore from 'src/hooks/use-store';
 import { IThingListStore } from 'src/store/thing.store';
-import styles from './plant-detail.module.less';
+import styles from './thing-detail.module.less';
 import { HeaderTitle } from 'src/components/header-title/header-title';
 import { HTTP_STATUS_RESPONSE_KEY } from 'src/constants/api';
 import { IThingItem } from 'src/dto/thing.dto';
 
 const ThingDetail = () => {
   const [t] = useTranslation();
-  const { id: idPlantParam } = useParams();
+  const { id: idThingParam } = useParams();
   const [thingDetail, setThingDetail] = useState<undefined | IThingItem>();
-  const listPlantStore: IThingListStore = useStore('listThingStore');
+  const listThingStore: IThingListStore = useStore('listThingStore');
 
   const [loading, setLoading] = useState<boolean>(false);
 
-  const getDetailPlant = async (id: string) => {
+  const getDetailThing = async (id: string) => {
     try {
       setLoading(true);
-      await listPlantStore.getDetailThing({ id }).then((res) => {
+      await listThingStore.getDetailThing({ id }).then((res) => {
         if (res.responseCode === HTTP_STATUS_RESPONSE_KEY.SUCCESS) {
           setThingDetail(res.data);
         }
@@ -34,10 +34,10 @@ const ThingDetail = () => {
   };
 
   useEffect(() => {
-    if (idPlantParam) {
-      getDetailPlant(idPlantParam);
+    if (idThingParam) {
+      getDetailThing(idThingParam);
     }
-  }, [idPlantParam]);
+  }, [idThingParam]);
 
   return (
     <div className={styles.container}>

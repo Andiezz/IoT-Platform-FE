@@ -19,21 +19,19 @@ import {
 import { observer } from 'mobx-react-lite';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import GoogleMap from 'src/components/map/map';
 import WhiteBox from 'src/components/white-box/white-box';
 import useStore from 'src/hooks/use-store';
 import { i18nKey } from 'src/locales/i18n';
-import { IPlantStore } from 'src/store/plant/plant.store';
+import { IThingStore } from 'src/store/thing.store';
 import ModalLocation from '../modal-location/modal-location';
-import styles from './plant-info.module.less';
+import styles from './thing-info.module.less';
 import { useParams } from 'react-router-dom';
-
 import {
   normalizeTrimStart,
   normalizeInputBlockCharacter
 } from 'src/helpers/common.utils';
 import AddOwner from 'src/components/add-owner/add-owner';
-import { IPlantFormI, MarkerLocation } from '../request-form.page';
+import { IThingForm, MarkerLocation } from '../request-form.page';
 import FormItem from 'antd/es/form/FormItem';
 import { IOptions as OptionSelect } from 'src/interfaces';
 import { IUserStore } from 'src/store/user.store';
@@ -41,24 +39,18 @@ import RenderAvatar from 'src/components/render-avatar/render-avatar';
 import { Owner } from 'src/constants/user';
 import { Role } from 'src/interfaces/user';
 
-export interface IEmsProps {
-  label: string;
-  value: string;
-}
-
-interface IPlantInfoFormProps {
+interface IThingInfoFormProps {
   onChangeMarker: (marker: MarkerLocation) => void;
   onAddEmailAdminViewer(email: string): Promise<void>;
   marker?: MarkerLocation;
   formInstanseAddOwner: FormInstance<{ emailAssign: string }>;
   formInstanseAddViewer: FormInstance<{ emailAssign: string }>;
   onAddEmailOwner: (email: string) => Promise<void>;
-  listOptionEmsDevice: Array<OptionSelect>;
   handleChangeVisibleAddOnwer: (visible: boolean) => void;
   handleChangeVisibleAddViewer: (visible: boolean) => void;
-  visibleDropDownAddOwner: boolean;
-  visibleDropDownAdViewer: boolean;
-  dataPlantDetail: IPlantFormI | Partial<IPlantFormI>;
+  visibleDropdownAddOwner: boolean;
+  visibleDropdownViewer: boolean;
+  dataThingDetail: IThingForm | Partial<IThingForm>;
   handleDownload?: () => void;
   status?: string;
 }
@@ -68,47 +60,44 @@ export const defaultMarker = {
   lng: -106.346771
 };
 
-const PlantInfoForm: React.FC<IPlantInfoFormProps> = ({
+const ThingInfoForm: React.FC<IThingInfoFormProps> = ({
   marker,
-  // onChangeName,
-  listOptionEmsDevice,
   onChangeMarker,
   onAddEmailOwner,
   onAddEmailAdminViewer,
   formInstanseAddOwner,
   formInstanseAddViewer,
-  visibleDropDownAdViewer,
-  visibleDropDownAddOwner,
+  visibleDropdownViewer,
+  visibleDropdownAddOwner,
   handleChangeVisibleAddOnwer,
   handleChangeVisibleAddViewer,
   handleDownload,
-  dataPlantDetail,
+  dataThingDetail,
   status
-}: IPlantInfoFormProps) => {
+}: IThingInfoFormProps) => {
   const [t] = useTranslation();
   const params = useParams();
-  const onboardingPlantStore: IPlantStore = useStore('plantStore');
+  const onboardingThingStore: IThingStore = useStore('thingStore');
   const userStore: IUserStore = useStore('userStore');
   const [open, setOpen] = useState(false);
-  const [loadingBtnDownload,setLoadingBtnDownload] = useState<boolean>(false)
+  const [loadingBtnDownload, setLoadingBtnDownload] = useState<boolean>(false);
 
   const handleModal = () => {
     setOpen(true);
   };
 
-  const handleDownloadCerfiticate = async()=>{
-    try{
+  const handleDownloadCerfiticate = async () => {
+    try {
       setLoadingBtnDownload(true);
-      await handleDownload?.()
-    }
-    finally{
+      await handleDownload?.();
+    } finally {
       setLoadingBtnDownload(false);
     }
-  }
+  };
 
   useEffect(() => {
     if (!params.id) {
-      onboardingPlantStore.setPlantLocation(undefined as any, NaN);
+      onboardingThingStore.setThing(undefined as any, NaN);
     }
   }, []);
 
@@ -124,33 +113,31 @@ const PlantInfoForm: React.FC<IPlantInfoFormProps> = ({
     );
   };
 
-  const isShowButtonDownLoad = (): boolean =>{
-    if([
-      `${Role.SUPER_ADMIN}`,`${Role.CUSTOMER_SERVICE}`].includes(`${userStore.userInfo?.role.role}`)){
-        return true;
-    }
-    if(userStore.userInfo?.role.role === Role.TENANT_ADMIN){
-      if(userStore.userInfo.id === dataPlantDetail.owner?.at(0)?._id)
+  const isShowButtonDownLoad = (): boolean => {
+    // extract user id from dataThingDetail to a new array
+    const listManagers = dataThingDetail?.managers?.map((item) => item.userId);
+    if (
+      userStore?.userInfo?.id &&
+      (userStore.userInfo?.role === Role.ADMIN ||
+        listManagers?.includes(userStore.userInfo.id))
+    ) {
       return true;
     }
     return false;
-   
-  }
+  };
 
   const renderAddOwner = () => {
-    const isUpdatePlant = params?.id;
-    if (isUpdatePlant) {
+    const isUpdateThing = params?.id;
+    if (isUpdateThing) {
       return (
         <Form.Item name="owner" noStyle>
-          {[`${Role.CUSTOMER_SERVICE}`, `${Role.SUPER_ADMIN}`].includes(
-            `${userStore.userInfo?.role.role}`
-          ) ? (
+          {userStore.userInfo?.role === Role.ADMIN ? (
             <AddOwner
-              visibleDropdown={visibleDropDownAddOwner}
+              visibleDropdown={visibleDropdownAddOwner}
               onChangeVisibleDropdown={handleChangeVisibleAddOnwer}
               formInstane={formInstanseAddOwner}
-              textBtnAdd={t(i18nKey.tenantEntity.button.addOwner)}
-              titleDrawer="Add Plant Owner"
+              textBtnAdd={t(i18nKey.thingEntity.button.addOwner)}
+              titleDrawer="Add Thing Owner"
               onAddEmail={onAddEmailOwner}
               sizeAvatar={25}
             />
@@ -163,25 +150,17 @@ const PlantInfoForm: React.FC<IPlantInfoFormProps> = ({
     return (
       <Form.Item name="owner" noStyle>
         <AddOwner
-          visibleDropdown={visibleDropDownAddOwner}
+          visibleDropdown={visibleDropdownAddOwner}
           onChangeVisibleDropdown={handleChangeVisibleAddOnwer}
           formInstane={formInstanseAddOwner}
-          textBtnAdd={t(i18nKey.tenantEntity.button.addOwner)}
-          titleDrawer="Add Plant Owner"
+          textBtnAdd={t(i18nKey.thingEntity.button.addOwner)}
+          titleDrawer="Add Thing Owner"
           onAddEmail={onAddEmailOwner}
           sizeAvatar={25}
         />
       </Form.Item>
     );
   };
-  const renderGoogleMap = React.useMemo(
-    () => (
-      <GoogleMap
-        style={{ height: '75vh' }}
-        marker={marker ? [marker] : []}></GoogleMap>
-    ),
-    [marker]
-  );
 
   return (
     <div className={styles.formWrapper}>
@@ -193,7 +172,7 @@ const PlantInfoForm: React.FC<IPlantInfoFormProps> = ({
           lg={12}
           xl={12}
           xxl={12}
-          className={styles.formWrapper_plantInfo}>
+          className={styles.formWrapper_thingInfo}>
           <Row gutter={[0, 24]}>
             <Col span={24}>
               <Form.Item>
@@ -225,20 +204,16 @@ const PlantInfoForm: React.FC<IPlantInfoFormProps> = ({
                     </Col>
                     <Col span={24}>
                       <Typography.Text className={styles.labelAssignmentViewer}>
-                        {t(i18nKey.tenantEntity.detail.adminViewerAssignment)}
+                        {t(i18nKey.thingEntity.button.ownerAssignment)}
                       </Typography.Text>
                       <FormItem name={'viewers'}>
-                        {[
-                          `${Role.TENANT_ADMIN}`,
-                          `${Role.SUPER_ADMIN}`,
-                          `${Role.CUSTOMER_SERVICE}`
-                        ].includes(`${userStore.userInfo?.role.role}`) ? (
+                        {userStore.userInfo?.role === Role.ADMIN ? (
                           <AddOwner
                             titleDrawer={`${t(
-                              i18nKey.tenantEntity.detail.adminViewerAssignment
+                              i18nKey.thingEntity.button.ownerAssignment
                             )}`}
                             formInstane={formInstanseAddViewer}
-                            visibleDropdown={visibleDropDownAdViewer}
+                            visibleDropdown={visibleDropdownViewer}
                             onChangeVisibleDropdown={
                               handleChangeVisibleAddViewer
                             }
@@ -273,7 +248,7 @@ const PlantInfoForm: React.FC<IPlantInfoFormProps> = ({
                       <Row gutter={[0, 16]}>
                         <Col span={24}>
                           <Form.Item
-                            label={t(i18nKey.plantEntity.label.locationName)}
+                            label={t(i18nKey.thingEntity.label.locationName)}
                             className={styles.formWrapper_locations_field}
                             name={['location', 'name']}
                             normalize={normalizeTrimStart}
@@ -297,7 +272,7 @@ const PlantInfoForm: React.FC<IPlantInfoFormProps> = ({
                         </Col>
                         <Col span={24}>
                           <Form.Item
-                            label={t(i18nKey.plantEntity.label.address)}
+                            label={t(i18nKey.thingEntity.label.address)}
                             className={styles.formWrapper_locations_field}
                             name={['location', 'address']}
                             required
@@ -330,28 +305,18 @@ const PlantInfoForm: React.FC<IPlantInfoFormProps> = ({
               <div className={styles.formWrapper_box}>
                 <Row className={styles.formWrapper_box_header}>
                   <b className={styles.formWrapper_title}>
-                    {t(i18nKey.plantEntity.label.associatedAssets)}
+                    {t(i18nKey.thingEntity.label.devices)}
                   </b>
                 </Row>
                 <Divider
                   className={styles.formWrapper_box_divider}
                   type="horizontal"></Divider>
                 <Row className={styles.formWrapper_box_content}>
-                  {/* <Col span={24}>
-                    <Row>
-                      <Col flex={1}>
-
-                      </Col>
-                      <Col>
-                        <CloseCircleOutlined />
-                      </Col>
-                    </Row>
-                  </Col> */}
                   <Col span={24}>
                     <Form.List
-                      name={'associated_assets'}
+                      name={'devices'}
                       initialValue={[
-                        { company: '', device_type: '', capacity: '' }
+                        { name: '', model: '', parameterStandardDefault: '' }
                       ]}>
                       {(fields, { add, remove }) => (
                         <div>
@@ -372,29 +337,28 @@ const PlantInfoForm: React.FC<IPlantInfoFormProps> = ({
                                             <Form.Item
                                               className={styles.subForm_item}
                                               label={t(
-                                                i18nKey.emsEntity
-                                                  .associatedAssets.company
+                                                i18nKey.thingEntity.devices.name
                                               )}
-                                              name={[idx, 'company']}
+                                              name={[idx, 'name']}
                                               normalize={normalizeTrimStart}
                                               rules={[
                                                 ({ getFieldValue }) => ({
                                                   validator(_, value) {
-                                                    const valueDeviceType =
+                                                    const valueModel =
                                                       getFieldValue([
-                                                        'associated_assets',
+                                                        'devices',
                                                         idx,
-                                                        'device_type'
+                                                        'model'
                                                       ]);
-                                                    const valueCapacity =
+                                                    const valueParameterStandardDefault =
                                                       getFieldValue([
-                                                        'associated_assets',
+                                                        'devices',
                                                         idx,
-                                                        'capacity'
+                                                        'parameterStandardDefault'
                                                       ]);
                                                     if (
-                                                      (valueDeviceType ||
-                                                        valueCapacity) &&
+                                                      (valueModel ||
+                                                        valueParameterStandardDefault) &&
                                                       !value?.trim()
                                                     ) {
                                                       return Promise.reject(
@@ -421,29 +385,29 @@ const PlantInfoForm: React.FC<IPlantInfoFormProps> = ({
                                             xs={12}>
                                             <Form.Item
                                               className={styles.subForm_item}
-                                              name={[idx, 'device_type']}
+                                              name={[idx, 'model']}
                                               dependencies={[
-                                                'company',
-                                                'capacity'
+                                                'name',
+                                                'parameterStandardDefault'
                                               ]}
                                               rules={[
                                                 ({ getFieldValue }) => ({
                                                   validator(_, value) {
-                                                    const valueCompany =
+                                                    const valueName =
                                                       getFieldValue([
-                                                        'associated_assets',
+                                                        'devices',
                                                         idx,
-                                                        'company'
+                                                        'name'
                                                       ]);
-                                                    const valueCapacity =
+                                                    const valueParameterStandardDefault =
                                                       getFieldValue([
-                                                        'associated_assets',
+                                                        'devices',
                                                         idx,
-                                                        'capacity'
+                                                        'parameterStandardDefault'
                                                       ]);
                                                     if (
-                                                      (valueCompany ||
-                                                        valueCapacity) &&
+                                                      (valueName ||
+                                                        valueParameterStandardDefault) &&
                                                       !value?.trim()
                                                     ) {
                                                       return Promise.reject(
@@ -461,15 +425,9 @@ const PlantInfoForm: React.FC<IPlantInfoFormProps> = ({
                                                 })
                                               ]}
                                               label={t(
-                                                i18nKey.emsEntity
-                                                  .associatedAssets.deviceType
-                                              )}>
-                                              <Select
-                                                options={listOptionEmsDevice}
-                                                allowClear
-                                                showSearch
-                                              />
-                                            </Form.Item>
+                                                i18nKey.thingEntity.devices
+                                                  .model
+                                              )}></Form.Item>
                                           </Col>
                                           <Col
                                             className="gutter-row"
@@ -478,31 +436,32 @@ const PlantInfoForm: React.FC<IPlantInfoFormProps> = ({
                                             xs={12}>
                                             <Form.Item
                                               label={t(
-                                                i18nKey.emsEntity
-                                                  .associatedAssets.capacity
+                                                i18nKey.thingEntity.devices
+                                                  .defaultParameter
                                               )}
-                                              name={[idx, 'capacity']}
+                                              name={[
+                                                idx,
+                                                'parameterStandardDefault'
+                                              ]}
                                               className={styles.subForm_item}
                                               rules={[
                                                 ({ getFieldValue }) => ({
                                                   validator(_, value) {
-                                                    const valueCompany =
+                                                    const valueName =
                                                       getFieldValue([
-                                                        'associated_assets',
+                                                        'devices',
                                                         idx,
-                                                        'company'
+                                                        'name'
                                                       ]);
-
-                                                    const valueDeviceType =
+                                                    const valueModel =
                                                       getFieldValue([
-                                                        'associated_assets',
+                                                        'devices',
                                                         idx,
-                                                        'device_type'
+                                                        'model'
                                                       ]);
-
                                                     if (
-                                                      (valueCompany ||
-                                                        valueDeviceType) &&
+                                                      (valueName ||
+                                                        valueModel) &&
                                                       !value
                                                     ) {
                                                       return Promise.reject(
@@ -516,8 +475,8 @@ const PlantInfoForm: React.FC<IPlantInfoFormProps> = ({
                                                       );
                                                     }
                                                     if (
-                                                      (valueCompany ||
-                                                        valueDeviceType) &&
+                                                      (valueName ||
+                                                        valueModel) &&
                                                       Number.isNaN(
                                                         Number(value)
                                                       )
@@ -577,23 +536,18 @@ const PlantInfoForm: React.FC<IPlantInfoFormProps> = ({
             </Col>
             <Col span={24}>
               {params.id && isShowButtonDownLoad() && (
-                  <Row>
-                    <Button
-                      disabled={status === 'active' ? true : false}
-                      loading={loadingBtnDownload}
-                      className={styles.formWrapper_btn_download}
-                      onClick={handleDownloadCerfiticate}>
-                      {t(i18nKey.emsEntity.button.downloadNewCertAndKeys)}
-                    </Button>
-                  </Row>
-                )}
+                <Row>
+                  <Button
+                    disabled={status === 'active'}
+                    loading={loadingBtnDownload}
+                    className={styles.formWrapper_btn_download}
+                    onClick={handleDownloadCerfiticate}>
+                    {t(i18nKey.thingEntity.button.downloadNewCertAndKeys)}
+                  </Button>
+                </Row>
+              )}
             </Col>
           </Row>
-        </Col>
-        <Col xs={24} sm={24} md={24} lg={12} xl={12} xxl={12}>
-          <WhiteBox>
-            <Row>{renderGoogleMap}</Row>
-          </WhiteBox>
         </Col>
       </Row>
       <ModalLocation
@@ -606,4 +560,4 @@ const PlantInfoForm: React.FC<IPlantInfoFormProps> = ({
   );
 };
 
-export default observer(PlantInfoForm);
+export default observer(ThingInfoForm);

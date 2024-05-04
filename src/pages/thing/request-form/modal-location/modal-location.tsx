@@ -41,7 +41,7 @@ const ModalLocation: React.FC<IModalLocation> = ({
     setSelected({ ...dataSelect });
     setAddressLocation(
       marker
-        ? `${i18nKey.plantEntity.label.longitude} ${marker.lng}" ${i18nKey.plantEntity.label.latitude} ${marker.lat} ${marker.address}`
+        ? `${i18nKey.thingEntity.label.longitude} ${marker.lng}" ${i18nKey.thingEntity.label.latitude} ${marker.lat} ${marker.address}`
         : ''
     );
   }, [marker, open]);
@@ -73,7 +73,7 @@ const ModalLocation: React.FC<IModalLocation> = ({
         {
           name: ['location', 'address'],
           errors: [
-            `${t(i18nKey.validation.plantAndLocation.locationAutocompleteErr)}`
+            `${t(i18nKey.validation.thingAndLocation.locationAutocompleteErr)}`
           ]
         }
       ]);
@@ -99,7 +99,7 @@ const ModalLocation: React.FC<IModalLocation> = ({
     const { lat, lng }: ILocation = getLatLng(results[0]);
     setSelected({ lat, lng });
     setAddressLocation(
-      `${i18nKey.plantEntity.label.longitude} ${lng}" ${i18nKey.plantEntity.label.latitude} ${lat} ${address}`
+      `${i18nKey.thingEntity.label.longitude} ${lng}" ${i18nKey.thingEntity.label.latitude} ${lat} ${address}`
     );
   };
 
@@ -147,7 +147,7 @@ const ModalLocation: React.FC<IModalLocation> = ({
 
   return (
     <Modal
-      title={t(i18nKey.plantEntity.label.locationPicker)}
+      title={t(i18nKey.thingEntity.label.locationPicker)}
       open={open}
       onOk={handleAdd}
       onCancel={handleCancel}
@@ -178,7 +178,7 @@ const ModalLocation: React.FC<IModalLocation> = ({
               <Col span={24}>
                 <Form.Item
                   name={['location', 'address']}
-                  label={t(i18nKey.plantEntity.label.address)}
+                  label={t(i18nKey.thingEntity.label.address)}
                   required
                   rules={[
                     {

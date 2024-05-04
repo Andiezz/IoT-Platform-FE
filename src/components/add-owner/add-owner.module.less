@@ -1,0 +1,40 @@
+.dropdown {
+  box-shadow: 0 6px 16px 0 rgba(0, 0, 0, 0.08),
+    0 3px 6px -4px rgba(0, 0, 0, 0.12), 0 9px 28px 8px rgba(0, 0, 0, 0.05);
+  border-radius: 8px;
+  padding: 10px;
+  &_wrapper {
+    overflow: auto;
+    height: 100%;
+    max-height: 250px;
+    &_item {
+      width: fit-content;
+      display: flex;
+      align-items: center;
+      gap: 15;
+      padding: 15px 0;
+
+      cursor: pointer;
+      > div {
+        display: flex;
+        align-items: center;
+        > span {
+          margin: 0 5px;
+        }
+      }
+      > p {
+        margin-left: 5px;
+      }
+    }
+  }
+
+  [class~='ant-checkbox-wrapper-disabled'] {
+    cursor: pointer;
+  }
+  [class~='ant-checkbox-checked'] [class~='ant-checkbox-inner'] {
+    background-color: #2b7ae8 !important;
+  }
+  [class~='ant-checkbox-inner']:after {
+    border-color: #fff !important;
+  }
+}

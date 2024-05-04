@@ -10,15 +10,14 @@ import {
   Table,
   Tag,
   Tooltip,
-  Typography,
+  Typography
 } from 'antd';
 import { ColumnsType, TablePaginationConfig } from 'antd/es/table';
 import { observer } from 'mobx-react-lite';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import LocationPlantIcon from 'src/assets/icons/LocationPlants.svg';
-
+import LocationThingIcon from 'src/assets/icons/LocationThings.svg';
 import { ReactComponent as UpdateIcon } from 'src/assets/icons/Edit-icon.svg';
 import ListOperation from 'src/components/list-operations/ListOperation';
 import SearchComponent, {
@@ -27,15 +26,12 @@ import SearchComponent, {
 import Widget from 'src/components/widget/widget';
 import { PAGE_ROUTE } from 'src/constants/route';
 import { getStatus, tagColorStatus } from 'src/constants/utils';
-import {
-  IThingItem,
-  IThingListRequest,
-} from 'src/dto/thing.dto';
+import { IThingItem, IThingListRequest } from 'src/dto/thing.dto';
 import { uniqueKey } from 'src/helpers/string.utils';
 import useStore from 'src/hooks/use-store';
 import { i18nKey } from 'src/locales/i18n';
 import { IThingListStore, IThingStore } from 'src/store/thing.store';
-import styles from './plant-center.module.less';
+import styles from './thing-center.module.less';
 import { IAuthenticationService } from 'src/services/authentication.service';
 import useService from 'src/hooks/use-service';
 import { ReactComponent as DieselGenerator } from 'src/assets/icons/Diesel-generator.svg';
@@ -87,24 +83,22 @@ const ThingCenterPage: React.FC = () => {
     null
   );
 
-  const dataPlant: IThingListStore = useStore('listThingStore');
+  const dataThing: IThingListStore = useStore('listThingStore');
 
-  const onboardingPlantStore: IThingStore = useStore('thingStore');
+  const onboardingThingStore: IThingStore = useStore('thingStore');
 
   const fetchDataThingList = async (request?: IThingListRequest) => {
     setLoading(true);
     try {
-      await dataPlant.fetchList(request);
+      await dataThing.fetchList(request);
       setLoading(false);
     } catch (error) {
       throw Error;
     }
   };
   useEffect(() => {
-    onboardingPlantStore.setThing(undefined as any, NaN);
+    onboardingThingStore.setThing(undefined as any, NaN);
   }, []);
-
-  
 
   useEffect(() => {
     fetchDataThingList({
@@ -112,7 +106,7 @@ const ThingCenterPage: React.FC = () => {
       page: pageNumber,
       limit: pageSize
     });
-  }, [pageNumber,searchFields?.status,searchFields?.q,pageSize]);
+  }, [pageNumber, searchFields?.status, searchFields?.q, pageSize]);
 
   useEffect(() => {
     refTable.current?.addEventListener('mousedown', () => setIsDrag(false));
@@ -138,9 +132,9 @@ const ThingCenterPage: React.FC = () => {
     []
   );
   const onTableChange = async (pagination: TablePaginationConfig) => {
-    console.log('pagination', pagination)
+    console.log('pagination', pagination);
     setPageNumber(pagination.current as number);
-    setPageSize(pagination.pageSize as number); 
+    setPageSize(pagination.pageSize as number);
   };
 
   const data = React.useMemo(() => {
@@ -149,32 +143,19 @@ const ThingCenterPage: React.FC = () => {
         title: `${t(i18nKey.label.goToDashboard)}`,
         icon: <ElementIcon />,
         onClick: (record: IThingItem) => {
-          navigate(
-            `${PAGE_ROUTE.DASHBOARD.replace(
-              ':id',
-              `${record._id}`
-            )}`
-          );
+          navigate(`${PAGE_ROUTE.DASHBOARD.replace(':id', `${record._id}`)}`);
         }
       }
     ];
-      tempData.push(
-        {
-          title: `${t(i18nKey.thingEntity.button.updateThing)}`,
-          icon: <UpdateIcon />,
-          onClick: (record: IThingItem) =>
-            navigator(
-              `${PAGE_ROUTE.THING_UPDATE.replace(
-                ':id',
-                `${record._id}`
-              )}`
-            )
-        },
-      );
+    tempData.push({
+      title: `${t(i18nKey.thingEntity.button.updateThing)}`,
+      icon: <UpdateIcon />,
+      onClick: (record: IThingItem) =>
+        navigator(`${PAGE_ROUTE.THING_UPDATE.replace(':id', `${record._id}`)}`)
+    });
 
     return tempData;
   }, []);
-
 
   const OperationsComponent = ({ record }: { record: IThingItem }) => {
     return (
@@ -226,16 +207,16 @@ const ThingCenterPage: React.FC = () => {
     },
     {
       title: `${t(i18nKey.label.thingLocation)}`,
-      key: 'plantLocation',
+      key: 'thingLocation',
       ellipsis: true,
       render: (record: IThingItem) => (
         <>
           <Typography>{record.name}</Typography>
           {record?.location.name && (
-            <div className={styles.plantLocations}>
+            <div className={styles.thingLocations}>
               <Space align="center" style={{ width: '100%' }}>
-                <img src={LocationPlantIcon} />
-                <Typography className={styles.tableLocationPlant}>
+                <img src={LocationThingIcon} />
+                <Typography className={styles.tableLocationThing}>
                   <TooltipParagraph>{record.location.name}</TooltipParagraph>
                 </Typography>
               </Space>
@@ -251,8 +232,7 @@ const ThingCenterPage: React.FC = () => {
       width: '15%',
       render: (record: IThingItem) => (
         <>
-          {
-          record.managers ? (
+          {record.managers ? (
             record?.managers.find((item) => item.isOwner)?.email
           ) : (
             <Typography>-</Typography>
@@ -265,8 +245,7 @@ const ThingCenterPage: React.FC = () => {
       width: '20%',
       key: 'devices',
       render: (record: IThingItem) => {
-        return record?.devices &&
-          record?.devices.length > 0 ? (
+        return record?.devices && record?.devices.length > 0 ? (
           <Row gutter={[16, 16]}>
             {/* {record.devices.map((item) => {
               switch (item.model) {
@@ -347,7 +326,8 @@ const ThingCenterPage: React.FC = () => {
       width: '12%',
       key: 'createdOn',
       render: (value: string) => normalizeFormatDate(value),
-      sorter: (a, b) => moment(a.createdOn).valueOf() -  moment(b.createdOn).valueOf(),
+      sorter: (a, b) =>
+        moment(a.createdOn).valueOf() - moment(b.createdOn).valueOf(),
       shouldCellUpdate: (record, prevRecord) => !_.isEqual(record, prevRecord)
     },
     {
@@ -385,14 +365,14 @@ const ThingCenterPage: React.FC = () => {
                   {t(i18nKey.menu.thingCenter)}
                 </Typography.Title>
               </Col>
-                <Col>
-                  <Button
-                    className={styles.container_header_btn}
-                    onClick={() => navigator(PAGE_ROUTE.THING_CREATE)}
-                    type="primary">
-                    {t(i18nKey.thingEntity.button.createThing)}
-                  </Button>
-                </Col>
+              <Col>
+                <Button
+                  className={styles.container_header_btn}
+                  onClick={() => navigator(PAGE_ROUTE.THING_CREATE)}
+                  type="primary">
+                  {t(i18nKey.thingEntity.button.createThing)}
+                </Button>
+              </Col>
             </Row>
           </Col>
           <Col xs={24} sm={24} md={0} lg={0} xl={0} xxl={0}>
@@ -428,8 +408,8 @@ const ThingCenterPage: React.FC = () => {
         <div className={styles.wrapperTable}>
           <Table
             ref={refTable}
-            className={styles.container_tablePlant}
-            dataSource={dataPlant.listThing}
+            className={styles.container_tableThing}
+            dataSource={dataThing.listThing}
             columns={columns}
             onChange={onTableChange}
             pagination={{
@@ -439,7 +419,7 @@ const ThingCenterPage: React.FC = () => {
                 })}`,
               current: pageNumber,
               pageSize: pageSize,
-              total: dataPlant.totalPages
+              total: dataThing.totalPages
             }}
             scroll={{ x: 1000 }}
             size="middle"

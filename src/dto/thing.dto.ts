@@ -40,7 +40,7 @@ export interface IParameterStandardModel {
 
 export interface IDevice {
   name: string;
-  status: STATUS;
+  status?: STATUS;
   model: string;
   parameterStandards: IParameterStandardModel[];
   parameterStandardDefault: boolean;

@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from './plant-info.module.less';
+import styles from './thing-info.module.less';
 import { Button, Col, Divider, Grid, Row, Tag, Typography } from 'antd';
 import { i18nKey } from 'src/locales/i18n';
 import { useTranslation } from 'react-i18next';
