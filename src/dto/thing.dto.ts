@@ -130,7 +130,6 @@ export class GetThingDetailDTO extends DTO {
   }
 }
 
-
 //----------------DTO Create Thing----------------------//
 
 export interface BodyCreateThingDTO {
@@ -155,7 +154,6 @@ export class CreateThingDTO extends DTO {
 }
 
 //-------Update Thing--------------//
-export interface BodyUpdateThingDTO extends BodyCreateThingDTO {}
 
 export class UpdateThingtDTO extends DTO {
   public param: object | undefined;
@@ -164,7 +162,7 @@ export class UpdateThingtDTO extends DTO {
   public url: string = ENDPOINT.THING_BASE_URL;
   public method: HTTP_METHOD = HTTP_METHOD.POST;
   public readonly responseType: ResponseType = 'json';
-  constructor(body: BodyUpdateThingDTO, param: { id: string }) {
+  constructor(body: BodyCreateThingDTO, param: { id: string }) {
     super();
     this.body = body;
     this.param = param;
@@ -172,16 +170,37 @@ export class UpdateThingtDTO extends DTO {
 }
 
 export class DownloadCertificateDTO extends DTO {
-  public param: {id: string};
+  public param: { id: string };
   public query: object | undefined;
   public body: undefined;
   public url: string = ENDPOINT.DOWNLOAD_CERTIFICATE;
   public method: HTTP_METHOD = HTTP_METHOD.GET;
   public readonly responseType?: ResponseType = 'json';
-  constructor(param: {id: string}) {
+  constructor(param: { id: string }) {
     super();
     this.param = param;
   }
 }
 
+export class GetUserAssignManagerByEmailDTO extends DTO {
+  public param: object | undefined;
+  public query: object | undefined;
+  public body: unknown | undefined;
+  public url: string = ENDPOINT.GET_USER_ASSIGN_MANAGER_BY_EMAIL;
+  public method: HTTP_METHOD = HTTP_METHOD.POST
+  ;
+  public readonly responseType: ResponseType = 'json';
+  constructor(body: IBodyGetUserAssignByEmail) {
+    super();
+    this.body = body;
+  }
+}
 
+export interface IBodyGetUserAssignByEmail {
+  email: string;
+}
+
+export interface IUserOwnerResponseGetByEmail {
+  msg: string;
+  user: IUserBasic;
+}

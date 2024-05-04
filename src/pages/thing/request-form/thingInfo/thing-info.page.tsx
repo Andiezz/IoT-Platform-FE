@@ -44,7 +44,7 @@ interface IThingInfoFormProps {
   onAddEmailAdminViewer(email: string): Promise<void>;
   marker?: MarkerLocation;
   formInstanseAddOwner: FormInstance<{ emailAssign: string }>;
-  formInstanseAddViewer: FormInstance<{ emailAssign: string }>;
+  formInstanseAddManager: FormInstance<{ emailAssign: string }>;
   onAddEmailOwner: (email: string) => Promise<void>;
   handleChangeVisibleAddOnwer: (visible: boolean) => void;
   handleChangeVisibleAddViewer: (visible: boolean) => void;
@@ -66,7 +66,7 @@ const ThingInfoForm: React.FC<IThingInfoFormProps> = ({
   onAddEmailOwner,
   onAddEmailAdminViewer,
   formInstanseAddOwner,
-  formInstanseAddViewer,
+  formInstanseAddManager,
   visibleDropdownViewer,
   visibleDropdownAddOwner,
   handleChangeVisibleAddOnwer,
@@ -212,7 +212,7 @@ const ThingInfoForm: React.FC<IThingInfoFormProps> = ({
                             titleDrawer={`${t(
                               i18nKey.thingEntity.button.ownerAssignment
                             )}`}
-                            formInstane={formInstanseAddViewer}
+                            formInstane={formInstanseAddManager}
                             visibleDropdown={visibleDropdownViewer}
                             onChangeVisibleDropdown={
                               handleChangeVisibleAddViewer

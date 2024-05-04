@@ -6,7 +6,6 @@ import {
   IThing,
   IThingItem,
   BodyCreateThingDTO,
-  BodyUpdateThingDTO,
   CreateThingDTO,
   DeleteThingDTO,
   DownloadCertificateDTO,
@@ -15,7 +14,10 @@ import {
   ListThingDTO,
   ResponseThingDTO,
   UpdateThingtDTO,
-  IGetThingFile
+  IGetThingFile,
+  IBodyGetUserAssignByEmail,
+  IUserOwnerResponseGetByEmail,
+  GetUserAssignManagerByEmailDTO
 } from 'src/dto/thing.dto';
 import { IHttpService } from 'src/services/http.service';
 
@@ -33,7 +35,7 @@ export interface IThingListStore {
   getDetailThing(param: { id: string }): Promise<ResponseDTO<IThingItem>>;
   configSortOption(sortBy: string, sortDirection: TABLE_SORT_DIRECTION): void;
   updateThing(
-    body: BodyUpdateThingDTO,
+    body: BodyCreateThingDTO,
     param: { id: string }
   ): Promise<ResponseDTO<ResponseThingDTO>>;
   deleteThing(param: {
@@ -45,6 +47,9 @@ export interface IThingListStore {
   downloadCertificate(param: {
     id: string;
   }): Promise<ResponseDTO<{ files: IGetThingFile[] }>>;
+  getUserAssignOwnerByEmail(
+    body: IBodyGetUserAssignByEmail
+  ): Promise<ResponseDTO<IUserOwnerResponseGetByEmail>>;
 }
 
 export class ThingListStore implements IThingListStore {
@@ -108,7 +113,7 @@ export class ThingListStore implements IThingListStore {
     return res;
   }
 
-  public async updateThing(body: BodyUpdateThingDTO, param: { id: string }) {
+  public async updateThing(body: BodyCreateThingDTO, param: { id: string }) {
     const updateThingDTO = new UpdateThingtDTO(body, param);
     const res: ResponseDTO<ResponseThingDTO> = await this.http.request(
       updateThingDTO
@@ -130,6 +135,18 @@ export class ThingListStore implements IThingListStore {
     const res: ResponseDTO<{ files: IGetThingFile[] }> =
       await this.http.request(downloadCertificateDto);
     return res;
+  }
+
+  public async getUserAssignOwnerByEmail(
+    body: IBodyGetUserAssignByEmail
+  ): Promise<ResponseDTO<IUserOwnerResponseGetByEmail>> {
+    const getUserAssignOwnerByEmailDTO = new GetUserAssignManagerByEmailDTO(
+      body
+    );
+    return await this.http.request<
+      GetUserAssignManagerByEmailDTO,
+      IUserOwnerResponseGetByEmail
+    >(getUserAssignOwnerByEmailDTO);
   }
 }
 

@@ -117,10 +117,13 @@ const validation = {
       'Access Denied: Only Tenant Admin have the permission to be assigned as a Thing Owner.',
 
     existingEmailInList:
-      'Duplicate Assignment: The selected user is already assigned as a Tenant.',
+      'Duplicate Assignment: The selected user is already assigned as a Owner.',
 
     existingEmailInOwner:
-      'Assignment Conflict: This user is already assigned as the Thing Owner and cannot be assigned to the Tenant Assignment as well.'
+      'Assignment Conflict: This user is already assigned as the Thing Owner.',
+      
+    limitAssignOwner:
+      'Assignment Limit Exceeded: Only one user can be assigned to a Thing at a time.',
   }
 };
 

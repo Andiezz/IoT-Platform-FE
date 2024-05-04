@@ -20,7 +20,6 @@ import { PAGE_ROUTE } from 'src/constants/route';
 import { IBodyGetUserAssignByEmail } from 'src/dto/account-management-list.dto';
 import {
   BodyCreateThingDTO,
-  BodyUpdateThingDTO,
   IDevice,
   ILocation,
   IManager
@@ -293,7 +292,7 @@ const RequestForm: React.FC = () => {
         longitude: Number(markerLocation?.lng ?? 0)
       };
 
-      const bodyUpdateThing: BodyUpdateThingDTO = {
+      const bodyUpdateThing: BodyCreateThingDTO = {
         location,
         devices,
         managers,
@@ -321,17 +320,17 @@ const RequestForm: React.FC = () => {
   };
 
   const onAddEmailAdminViewer = async (emailAssign: string): Promise<void> => {
-    const ownerThing: Owner = (form.getFieldValue('owner') || []).at(0);
+    const ownerPlant: Owner = (form.getFieldValue('owner') || []).at(0);
 
     //-----------Check email existing in Owner-------------//
-    if (emailAssign.trim() === ownerThing?.email.trim()) {
+    if (emailAssign.trim() === ownerPlant?.email.trim()) {
       message.error(t(i18nKey.validation.thing.existingEmailInOwner));
       return;
     }
     //-----------Check email existing in Owner-------------//
-    const listManagerThing: IManager[] = form.getFieldValue('managers') || [];
-    const isDuplicateEmailInList = listManagerThing.find(
-      (manager) => manager.email.trim() === emailAssign.trim()
+    const listViewerPlant: Owner[] = form.getFieldValue('viewers') || [];
+    const isDuplicateEmailInList = listViewerPlant.find(
+      (viewer) => viewer.email.trim() === emailAssign.trim()
     );
 
     if (isDuplicateEmailInList) {
@@ -339,34 +338,31 @@ const RequestForm: React.FC = () => {
       return;
     }
 
-    if(params?.id) {
-      const res = await dataThing.getDetailThing({ id: params.id });
-      if (res.responseCode === HTTP_STATUS_RESPONSE_KEY.SUCCESS) {
-        const currentData: Array<IManager> = form.getFieldValue('managers') || [];
-        const currentManagers = res.data?.managers || [];
-        form.setFieldValue('managers', [...currentData, ...currentManagers]);
-        formInstanseAddManager.resetFields();
-        setIsDisable(false);
-        return;
-      }
-      if (res.message === 'owner-not-found') {
-        setEmailNotFound(emailAssign);
-        setVisibleDropdownViewer(false);
-        setOpenModalCreateAccount(true);
-        return;
-      }
-      if (res.message === 'owner-is-not-active') {
-        message.error(t(i18nKey.validation.account.inactiveAssign));
-        return;
-      }
-      if (res.message === 'owner-ineligible') {
-        message.error(t(i18nKey.validation.thing.requiredRoleViewer));
-        return;
-      } else {
-        message.error(res.message);
-      }
+    const body: IBodyGetUserAssignByEmail = {
+      email: emailAssign.trim()
     };
+
+    const res = await dataThing.getUserAssignOwnerByEmail(body);
+    if (res.responseCode === HTTP_STATUS_RESPONSE_KEY.SUCCESS) {
+      const currentData: Array<Owner> = form.getFieldValue('viewers') || [];
+      const { _id: id, ...user } = res.data?.user || {};
+      form.setFieldValue('managers', [...currentData, { ...user, id }]);
+      formInstanseAddManager.resetFields();
+      setIsDisable(false);
+      return;
     }
+    if (res.message === 'manager-not-found') {
+      setEmailNotFound(emailAssign);
+      setVisibleDropdownViewer(false);
+      setOpenModalCreateAccount(true);
+      return;
+    }
+    if (res.message === 'manager-not-active') {
+      message.error(t(i18nKey.validation.account.inactiveAssign));
+    } else {
+      message.error(res.message);
+    }
+  };
 
   const onAddEmailOwner = async (emailAssign: string) => {
     const listViewerThing: Owner[] = form.getFieldValue('viewers') || [];
@@ -381,7 +377,7 @@ const RequestForm: React.FC = () => {
     }
 
     if (isExistingInOwner) {
-      message.error(t(i18nKey.validation.thing.existingEmailInViewer));
+      message.error(t(i18nKey.validation.thing.existingEmailInOwner));
       return;
     }
 
@@ -391,8 +387,8 @@ const RequestForm: React.FC = () => {
 
     const res = await dataThing.getUserAssignOwnerByEmail(body);
     if (res.responseCode === HTTP_STATUS_RESPONSE_KEY.SUCCESS) {
-      const { id: _id, ...user } = res.data?.user || {};
-      form.setFieldValue('owner', [{ ...user, _id }]);
+      const { _id: id, ...user } = res.data?.user || {};
+      form.setFieldValue('owner', [{ ...user, id }]);
       setIsDisable(false);
       formInstanseAddOwner.resetFields();
       form.validateFields(['name']);
@@ -406,11 +402,6 @@ const RequestForm: React.FC = () => {
     }
     if (res.message === 'owner-is-not-active') {
       message.error(t(i18nKey.validation.account.inactiveAssign));
-      return;
-    }
-    if (res.message === 'owner-ineligible') {
-      message.error(t(i18nKey.validation.thing.requiredRoleOwner));
-      return;
     } else {
       message.error(res.message);
     }
