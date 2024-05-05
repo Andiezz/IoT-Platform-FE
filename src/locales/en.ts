@@ -85,6 +85,7 @@ const en = {
     thingLocation: 'Thing/Location',
     devices: 'Devices',
     location: 'Location',
+    manager: 'Manager',
   },
 
   button: {

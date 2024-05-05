@@ -52,6 +52,22 @@ const privateRoutes: RouteType[] = [
     element: lazy(() => import('src/pages/dashboard/dashboard'))
   },
   {
+    path: PAGE_ROUTE.DASHBOARD_THING,
+    element: lazy(() => import('src/pages/thing/thing'))
+  },
+  {
+    path: PAGE_ROUTE.THING_CREATE,
+    element: lazy(
+      () => import('src/pages/thing/request-form/request-form.page')
+    )
+  },
+  {
+    path: PAGE_ROUTE.THING_UPDATE,
+    element: lazy(
+      () => import('src/pages/thing/request-form/request-form.page')
+    )
+  },
+  {
     path: PAGE_ROUTE.ACCOUNT_MANAGEMENT,
     element: lazy(
       () => import('src/pages/account-management/account-management')

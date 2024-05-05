@@ -1,5 +1,4 @@
 import {
-  Avatar,
   Button,
   Col,
   Form,
@@ -9,7 +8,6 @@ import {
   Space,
   Table,
   Tag,
-  Tooltip,
   Typography
 } from 'antd';
 import { ColumnsType, TablePaginationConfig } from 'antd/es/table';
@@ -32,11 +30,6 @@ import useStore from 'src/hooks/use-store';
 import { i18nKey } from 'src/locales/i18n';
 import { IThingListStore, IThingStore } from 'src/store/thing.store';
 import styles from './thing-center.module.less';
-import { IAuthenticationService } from 'src/services/authentication.service';
-import useService from 'src/hooks/use-service';
-import { ReactComponent as DieselGenerator } from 'src/assets/icons/Diesel-generator.svg';
-import { ReactComponent as WindTurbine } from 'src/assets/icons/Wind-turbine.svg';
-import { ReactComponent as PVInverter } from 'src/assets/icons/PV-invertor.svg';
 import TooltipParagraph from 'src/components/tooltip-paragraph/tooltip-paragraph';
 import { normalizeFormatDate } from 'src/helpers/common.utils';
 import WidgetHeader from 'src/components/widget-header/widget-header';
@@ -125,7 +118,7 @@ const ThingCenterPage: React.FC = () => {
       if (valueChange.q) {
         setSearchFields((prev) => ({
           ...prev,
-          q: valueChange?.q && valueChange?.q.trim()
+          q: valueChange.q?.trim()
         }));
       }
     },
@@ -212,7 +205,7 @@ const ThingCenterPage: React.FC = () => {
       render: (record: IThingItem) => (
         <>
           <Typography>{record.name}</Typography>
-          {record?.location.name && (
+          {record?.location?.name && (
             <div className={styles.thingLocations}>
               <Space align="center" style={{ width: '100%' }}>
                 <img src={LocationThingIcon} />
@@ -232,8 +225,32 @@ const ThingCenterPage: React.FC = () => {
       width: '15%',
       render: (record: IThingItem) => (
         <>
-          {record.managers ? (
-            record?.managers.find((item) => item.isOwner)?.email
+          {record?.managers ? (
+            record.managers.find((item) => {
+              console.log('record?.managers', record?.managers);
+              return item.isOwner === true;
+            })?.email
+          ) : (
+            <Typography>-</Typography>
+          )}
+        </>
+      )
+    },
+    {
+      title: `${t(i18nKey.label.manager)}`,
+      key: 'thingOwner',
+      width: '15%',
+      render: (record: IThingItem) => (
+        <>
+          {record?.managers ? (
+            record.managers
+              .filter((item) => {
+                return item.isOwner === false;
+              })
+              .map((item) => {
+                return item.email;
+              })
+              .join('\n')
           ) : (
             <Typography>-</Typography>
           )}

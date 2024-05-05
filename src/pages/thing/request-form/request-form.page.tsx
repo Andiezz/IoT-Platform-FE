@@ -489,26 +489,6 @@ const RequestForm: React.FC = () => {
     );
   };
 
-  const renderBtnDownload = (key: keyof IDownloadObj) => {
-    return (
-      <Button
-        className={styles.btn_download_file}
-        disabled={downloadObj[key] ? true : false}
-        onClick={() => setDownloadObj({ ...downloadObj, [key]: true })}>
-        {downloadObj[key] ? (
-          <>
-            <CheckCircleTwoTone twoToneColor="#52c41a" />
-            <span style={{ marginLeft: 7 }}>
-              {t(i18nKey.thingEntity.button.downloaded)}
-            </span>
-          </>
-        ) : (
-          <span>{t(i18nKey.thingEntity.button.download)}</span>
-        )}
-      </Button>
-    );
-  };
-
   const renderTextDownload = (name: string, key: keyof IDownloadObj) => {
     return (
       <>

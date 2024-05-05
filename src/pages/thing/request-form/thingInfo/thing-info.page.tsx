@@ -13,7 +13,6 @@ import {
   FormInstance,
   Input,
   Row,
-  Select,
   Typography
 } from 'antd';
 import { observer } from 'mobx-react-lite';
@@ -33,7 +32,6 @@ import {
 import AddOwner from 'src/components/add-owner/add-owner';
 import { IThingForm, MarkerLocation } from '../request-form.page';
 import FormItem from 'antd/es/form/FormItem';
-import { IOptions as OptionSelect } from 'src/interfaces';
 import { IUserStore } from 'src/store/user.store';
 import RenderAvatar from 'src/components/render-avatar/render-avatar';
 import { Owner } from 'src/constants/user';
