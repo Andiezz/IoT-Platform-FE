@@ -1,8 +1,8 @@
 import React from 'react';
 import { Avatar, Tooltip } from 'antd';
-import { Owner } from 'src/constants/user';
+import { IManager } from 'src/dto/thing.dto';
 interface IProps {
-  owner: Owner;
+  owner: IManager;
   sizeAvatar: number;
 }
 const RenderAvatar = ({ owner, sizeAvatar }: IProps) => {

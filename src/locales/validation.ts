@@ -120,7 +120,7 @@ const validation = {
       'Duplicate Assignment: The selected user is already assigned as a Owner.',
 
     existingEmailInOwner:
-      'Assignment Conflict: This user is already assigned as the Thing Owner.',
+      'Assignment Conflict: This user is already assigned as the Thing Manager.',
       
     limitAssignOwner:
       'Assignment Limit Exceeded: Only one user can be assigned to a Thing at a time.',

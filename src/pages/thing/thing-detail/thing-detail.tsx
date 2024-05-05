@@ -25,6 +25,7 @@ const ThingDetail = () => {
       setLoading(true);
       await listThingStore.getDetailThing({ id }).then((res) => {
         if (res.responseCode === HTTP_STATUS_RESPONSE_KEY.SUCCESS) {
+          console.log(res.data);
           setThingDetail(res.data);
         }
       });
@@ -50,7 +51,7 @@ const ThingDetail = () => {
             items={[
               {
                 title: (
-                  <Link to={PAGE_ROUTE.DASHBOARD_THING}>
+                  <Link to={PAGE_ROUTE.THING_CENTER}>
                     {`${t(i18nKey.menu.thingCenter)}`}
                   </Link>
                 )

@@ -7,9 +7,8 @@ import Widget from 'src/components/widget/widget';
 import { uniqueKey } from 'src/helpers/string.utils';
 import { useNavigate } from 'react-router-dom';
 import { PAGE_ROUTE } from 'src/constants/route';
-import { Owner } from 'src/constants/user';
 import { tagColorStatus } from 'src/constants/utils';
-import { IThingItem } from 'src/dto/thing.dto';
+import { IManager, IThingItem } from 'src/dto/thing.dto';
 import RenderAvatar from 'src/components/render-avatar/render-avatar';
 import { observer } from 'mobx-react-lite';
 interface IProps {
@@ -24,7 +23,7 @@ const ThingInfo = ({ info }: IProps) => {
     return info?.managers?.length ? (
       <RenderAvatar
         sizeAvatar={29}
-        owner={info?.managers?.at(0)?.user as Owner}
+        owner={info?.managers?.at(0) as IManager}
       />
     ) : (
       '-'

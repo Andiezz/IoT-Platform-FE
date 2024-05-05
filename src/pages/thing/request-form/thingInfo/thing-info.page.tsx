@@ -34,8 +34,8 @@ import { IThingForm, MarkerLocation } from '../request-form.page';
 import FormItem from 'antd/es/form/FormItem';
 import { IUserStore } from 'src/store/user.store';
 import RenderAvatar from 'src/components/render-avatar/render-avatar';
-import { Owner } from 'src/constants/user';
 import { Role } from 'src/interfaces/user';
+import { IManager } from 'src/dto/thing.dto';
 
 interface IThingInfoFormProps {
   onChangeMarker: (marker: MarkerLocation) => void;
@@ -99,7 +99,7 @@ const ThingInfoForm: React.FC<IThingInfoFormProps> = ({
     }
   }, []);
 
-  const RenderOnlyAvatar = ({ value }: { value?: Owner[] }) => {
+  const RenderOnlyAvatar = ({ value }: { value?: IManager[] }) => {
     return value?.length ? (
       <Avatar.Group>
         {value?.map((owner) => (

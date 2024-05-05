@@ -17,11 +17,9 @@ export interface ICertificate {
   certArn: string;
 }
 
-export interface IManager {
+export interface IManager extends IUserBasic {
   userId: string;
   isOwner: boolean;
-  email: string;
-  user?: IUserBasic;
 }
 
 export interface IThreshold {
@@ -202,5 +200,5 @@ export interface IBodyGetUserAssignByEmail {
 
 export interface IUserOwnerResponseGetByEmail {
   msg: string;
-  user: IUserBasic;
+  user: IManager;
 }

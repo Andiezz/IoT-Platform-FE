@@ -47,7 +47,7 @@ export enum ENDPOINT {
 
   // Thing
   THING_BASE_URL = '/thing',
-  THING_PARAM_URL = '/:thingId',
-  DOWNLOAD_CERTIFICATE = 'thing/certificate/:thingId',
-  GET_USER_ASSIGN_MANAGER_BY_EMAIL = 'thing/manager',
+  THING_PARAM_URL = '/thing/:id',
+  DOWNLOAD_CERTIFICATE = '/thing/certificate/:id',
+  GET_USER_ASSIGN_MANAGER_BY_EMAIL = '/thing/manager',
 }

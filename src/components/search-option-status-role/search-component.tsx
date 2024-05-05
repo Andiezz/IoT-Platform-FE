@@ -53,10 +53,11 @@ const SearchComponent = ({
 }: IProps<ISearchValues>) => {
   const [t] = useTranslation();
   const [tempForm] = Form.useForm();
-  const [search,setSearch] = useState<string| undefined>(initialValues.q);
-  const [isOnChange,setIsOnChange] = useState<boolean>(false)
-  const [valuesSearch,setValuesSearch] = useState<ISearchValues>(initialValues)
-  const querySearch = useDebounce(search,1000);
+  const [search, setSearch] = useState<string | undefined>(initialValues.q);
+  const [isOnChange, setIsOnChange] = useState<boolean>(false);
+  const [valuesSearch, setValuesSearch] =
+    useState<ISearchValues>(initialValues);
+  const querySearch = useDebounce(search, 1000);
   const form = useMemo(() => {
     if (formInstanceSearch) {
       return formInstanceSearch;
@@ -71,22 +72,27 @@ const SearchComponent = ({
     form.resetFields();
     handleResetSearch();
   };
-  const handleChange = (valueChange: Partial<ISearchValues>,values: ISearchValues)=>{
-    setIsOnChange(true)
-    if(Object.keys(valueChange).includes('q')){
-      setSearch(valueChange.q)
+  const handleChange = (
+    valueChange: Partial<ISearchValues>,
+    values: ISearchValues
+  ) => {
+    setIsOnChange(true);
+    if (Object.keys(valueChange).includes('q')) {
+      setSearch(valueChange.q);
+    } else {
+      handleChangeFormSearch(valueChange, values);
+      setValuesSearch(values);
     }
-    else{
-      handleChangeFormSearch(valueChange,values);
-      setValuesSearch(values)
-    }
-  }
+  };
 
-  useEffect(()=>{
-    if(isOnChange){
-      handleChangeFormSearch({q: querySearch},{...valuesSearch,q: querySearch})
+  useEffect(() => {
+    if (isOnChange) {
+      handleChangeFormSearch(
+        { q: querySearch },
+        { ...valuesSearch, q: querySearch }
+      );
     }
-  },[querySearch])
+  }, [querySearch]);
 
   return (
     <div>
@@ -177,7 +183,7 @@ const SearchComponent = ({
             xl={7}
             xxl={8}
             style={{ textAlign: 'end' }}>
-            {location.pathname === PAGE_ROUTE.DASHBOARD_THING && (
+            {location.pathname === PAGE_ROUTE.THING_DETAIL && (
               <Button onClick={handleMap} className={styles.btnMap}>
                 {t(i18nKey.thingEntity.button.map)}
                 {map ? (

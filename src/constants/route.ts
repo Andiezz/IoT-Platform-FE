@@ -14,7 +14,7 @@ export enum PAGE_ROUTE {
   ACCESS_DENIED = '/access-denied',
 
   // Thing
-  DASHBOARD_THING = '/thing',
+  THING_CENTER = '/thing',
   THING_DETAIL = '/thing/:id',
   THING_UPDATE = '/thing/update-thing/:id',
   THING_CREATE = '/thing/create-thing',

@@ -1,12 +1,12 @@
-import React,{ FC } from 'react';
+import React, { FC } from 'react';
 import ThingCenterPage from './thing-center/thing-center';
 
-const ThingPage: FC = ()=>{
+const ThingPage: FC = () => {
   return (
     <div>
-      <ThingCenterPage/>
+      <ThingCenterPage />
     </div>
   );
-}
+};
 
 export default ThingPage;

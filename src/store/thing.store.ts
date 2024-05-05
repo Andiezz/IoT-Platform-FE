@@ -105,8 +105,8 @@ export class ThingListStore implements IThingListStore {
     return res;
   }
 
-  public async getDetailThing(query: { id: string }) {
-    const getThingDetailDTO = new GetThingDetailDTO(query);
+  public async getDetailThing(param: { id: string }) {
+    const getThingDetailDTO = new GetThingDetailDTO(param);
     const res: ResponseDTO<IThingItem> = await this.http.request(
       getThingDetailDTO
     );

@@ -33,13 +33,13 @@ const useMenuItem = () => {
     } as MenuItem,
     {
       label: t(i18nKey.menu.thingCenter),
-      key: PAGE_ROUTE.DASHBOARD_THING,
-      icon: useMatch(PAGE_ROUTE.DASHBOARD_THING) ? (
+      key: PAGE_ROUTE.THING_CENTER,
+      icon: useMatch(PAGE_ROUTE.THING_CENTER) ? (
         <ThingIconActive />
       ) : (
         <ThingIcon />
       ),
-      onClick: () => navigator(PAGE_ROUTE.DASHBOARD_THING),
+      onClick: () => navigator(PAGE_ROUTE.THING_CENTER)
     } as MenuItem,
     {
       label: t(i18nKey.menu.accountManagement),
