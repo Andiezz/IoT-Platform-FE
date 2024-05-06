@@ -13,6 +13,8 @@ import {
   FormInstance,
   Input,
   Row,
+  Select,
+  Switch,
   Typography
 } from 'antd';
 import { observer } from 'mobx-react-lite';
@@ -314,7 +316,12 @@ const ThingInfoForm: React.FC<IThingInfoFormProps> = ({
                     <Form.List
                       name={'devices'}
                       initialValue={[
-                        { name: '', model: '', parameterStandardDefault: '' }
+                        {
+                          name: '',
+                          model: '',
+                          parameterStandardDefault: '',
+                          parameterStandards: []
+                        }
                       ]}>
                       {(fields, { add, remove }) => (
                         <div>
@@ -425,7 +432,18 @@ const ThingInfoForm: React.FC<IThingInfoFormProps> = ({
                                               label={t(
                                                 i18nKey.thingEntity.devices
                                                   .model
-                                              )}></Form.Item>
+                                              )}>
+                                              <Select
+                                                // list device model
+                                                options={[
+                                                  { key: 'Model 1', label: 'Model 1', value: 1 },
+                                                  { key: 'Model 2', label: 'Model 2', value: 2 },
+                                                  { key: 'Model 3', label: 'Model 3', value: 3 }
+                                                ]}
+                                                allowClear
+                                                showSearch
+                                              />
+                                            </Form.Item>
                                           </Col>
                                           <Col
                                             className="gutter-row"
@@ -496,7 +514,7 @@ const ThingInfoForm: React.FC<IThingInfoFormProps> = ({
                                               normalize={
                                                 normalizeInputBlockCharacter
                                               }>
-                                              <Input />
+                                              <Switch defaultChecked={true} />
                                             </Form.Item>
                                           </Col>
                                         </Row>

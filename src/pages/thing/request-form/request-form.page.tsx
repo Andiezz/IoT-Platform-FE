@@ -242,13 +242,13 @@ const RequestForm: React.FC = () => {
       setLoading(true);
       setOpenToastifyConfirm(false);
       const managers =
-        values?.managers?.map((manager) => {
+        (values?.managers?.map((manager) => {
           return {
             email: manager.email,
             isOwner: manager.isOwner,
             userId: manager._id
           };
-        }) as IManager[] || [];
+        }) as IManager[]) || [];
       const devices = values.devices || [];
 
       const location = {
@@ -343,7 +343,6 @@ const RequestForm: React.FC = () => {
 
     const res = await dataThing.getUserAssignOwnerByEmail(body);
     if (res.responseCode === HTTP_STATUS_RESPONSE_KEY.SUCCESS) {
-      console.log(res.data);
       const { _id: id, ...user } = res.data?.user || {};
       form.setFieldValue('managers', [{ ...user, id, isOwner: false }]);
       setIsDisable(false);
