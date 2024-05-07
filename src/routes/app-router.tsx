@@ -72,6 +72,60 @@ const privateRoutes: RouteType[] = [
     )
   },
   {
+    path: PAGE_ROUTE.PARAMETER,
+    element: lazy(
+      () =>
+        import(
+          'src/pages/parameter/parameter'
+        )
+    )
+  },
+  {
+    path: PAGE_ROUTE.NEW_PARAMETER,
+    element: lazy(
+      () =>
+        import(
+          'src/pages/parameter/request-form/request-form.page'
+        )
+    )
+  },
+  {
+    path: PAGE_ROUTE.UPDATE_PARAMETER,
+    element: lazy(
+      () =>
+        import(
+          'src/pages/parameter/request-form/request-form.page'
+        )
+    )
+  },
+  {
+    path: PAGE_ROUTE.DEVICE_MODEL,
+    element: lazy(
+      () =>
+        import(
+          'src/pages/device-model/device-model'
+        )
+    )
+  },
+  {
+    path: PAGE_ROUTE.NEW_DEVICE_MODEL,
+    element: lazy(
+      () =>
+        import(
+          'src/pages/device-model/request-form/request-form.page'
+        )
+    )
+  },
+  {
+    path: PAGE_ROUTE.UPDATE_DEVICE_MODEL,
+    element: lazy(
+      () =>
+        import(
+          'src/pages/device-model/request-form/request-form.page'
+        )
+    )
+  },
+  {
     path: PAGE_ROUTE.ACCOUNT_MANAGEMENT,
     element: lazy(
       () => import('src/pages/account-management/account-management')

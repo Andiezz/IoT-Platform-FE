@@ -2,6 +2,8 @@ import validation from './validation';
 import loginPage from './loginPage';
 import accountEntity from './accountEntity';
 import thingEntity from './thingEntity';
+import parameterEntity from './prameterEntity';
+import deviceModelEntity from './deviceModelEntity';
 
 const en = {
   loginPage,
@@ -9,6 +11,8 @@ const en = {
   confirm,
   accountEntity,
   thingEntity,
+  parameterEntity,
+  deviceModelEntity,
   httpResponseMessage: {
     _400_BadRequest:
       'The server cannot process the request due to a client error.',
@@ -62,12 +66,13 @@ const en = {
   menu: {
     dashboard: 'Dashboard',
     thingCenter: 'Thing Center',
-    systemManagement: 'System Management',
     accountManagement: 'Account Management',
-    rolesAndPermissions: 'Roles & Permissions',
     myProfile: 'My Profile',
     changePassword: 'Change Password',
-    logout: 'Logout'
+    logout: 'Logout',
+    masterData: 'Master Data',
+    parameter: 'Parameter',
+    deviceModel: 'Device Model',
   },
 
   label: {
@@ -86,6 +91,7 @@ const en = {
     devices: 'Devices',
     location: 'Location',
     manager: 'Manager',
+    information: 'Information',
   },
 
   button: {
@@ -109,7 +115,8 @@ const en = {
 
   defaultPlaceholder: {
     search: 'Search by Full Name, Email',
-    searchAccount: 'Search by Full Name, Email'
+    searchAccount: 'Search by Full Name, Email',
+    searchParameter: 'Search by Name'
   },
 
   messageIndicator: {

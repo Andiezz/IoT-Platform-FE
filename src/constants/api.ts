@@ -50,4 +50,18 @@ export enum ENDPOINT {
   THING_PARAM_URL = '/thing/:id',
   DOWNLOAD_CERTIFICATE = '/thing/certificate/:id',
   GET_USER_ASSIGN_MANAGER_BY_EMAIL = '/thing/manager',
+
+  //Parameter
+  GET_PARAMETER_LIST = '/parameter-standard',
+  CREATE_PARAMETER = '/parameter-standard',
+  UPDATE_PARAMETER = '/parameter-standard/:id',
+  DELETE_PARAMETER = '/parameter-standard/:id',
+  GET_PARAMETER_DETAIL = '/parameter-standard/:id',
+
+  //Device Model
+  GET_DEvICE_MODEL_LIST = '/device-model',
+  CREATE_DEVICE_MODEL = '/device-model',
+  UPDATE_DEVICE_MODEL = '/device-model/:id',
+  DELETE_DEVICE_MODEL = '/device-model/:id',
+  GET_DEVICE_MODEL_DETAIL = '/device-model/:id'
 }

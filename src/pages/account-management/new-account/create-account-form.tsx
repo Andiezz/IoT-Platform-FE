@@ -431,8 +431,11 @@ const CreateAccountForm: React.FC = () => {
                         <Select
                           options={accountManagementListStore.listRole.map(
                             (item) => ({
-                              value: item,
+                              value: item.name,
                               label: `${t(
+                                i18nKey.accountEntity.roleKeyToText[item.role]
+                              )}`,
+                              key: `${t(
                                 i18nKey.accountEntity.roleKeyToText[item.role]
                               )}`
                             })

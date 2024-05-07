@@ -18,5 +18,14 @@ export enum PAGE_ROUTE {
   THING_DETAIL = '/thing/:id',
   THING_UPDATE = '/thing/update-thing/:id',
   THING_CREATE = '/thing/create-thing',
+
+  // Master data: parameter, device model
+  MASTER_DATA = '/master-data',
+  PARAMETER = '/parameter',
+  NEW_PARAMETER = '/parameter/new',
+  UPDATE_PARAMETER = '/parameter/update/:id',
+  DEVICE_MODEL = '/device-model',
+  NEW_DEVICE_MODEL = '/device-model/new',
+  UPDATE_DEVICE_MODEL = '/device-model/update/:id',
 }
 

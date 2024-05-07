@@ -6,6 +6,11 @@ import {
 import { IUserStore, UserStore } from './user.store';
 import ConfigurationStore, { IConfiguration } from './configuration.store';
 import { IThingListStore, IThingStore, ThingListStore, ThingStore } from './thing.store';
+import { IParameterStore, ParameterStore } from './parameter/parameter.store';
+import {
+  DeviceModelStore,
+  IDeviceModelStore
+} from './device-model/device-model.store';
 
 export interface IRootStore {
   configuration: IConfiguration;
@@ -14,6 +19,8 @@ export interface IRootStore {
   listAccountManagementListStore: IAccountListStore;
   thingStore: IThingStore;
   listThingStore: IThingListStore;
+  parameterStore: IParameterStore;
+  deviceModelStore: IDeviceModelStore;
 }
 export type StoreChildKeyType = keyof IRootStore;
 
@@ -24,6 +31,8 @@ export class RootStore implements IRootStore {
   listAccountManagementListStore: IAccountListStore;
   thingStore: IThingStore;
   listThingStore: IThingListStore;
+  parameterStore: IParameterStore;
+  deviceModelStore: IDeviceModelStore;
   constructor() {
     this.httpClient = httpClient;
     this.configuration = new ConfigurationStore();
@@ -33,6 +42,8 @@ export class RootStore implements IRootStore {
     );
     this.thingStore = new ThingStore(this.httpClient);
     this.listThingStore = new ThingListStore(this.httpClient);
+    this.parameterStore = new ParameterStore(this.httpClient);
+    this.deviceModelStore = new DeviceModelStore(this.httpClient);
   }
 }
 
