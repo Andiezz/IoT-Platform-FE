@@ -110,7 +110,8 @@ const en = {
     enable: 'Enable',
     done: 'Done',
     confirm: 'Confirm',
-    seeMore: 'See More'
+    seeMore: 'See More',
+    addDevice: 'Add Device',
   },
 
   defaultPlaceholder: {

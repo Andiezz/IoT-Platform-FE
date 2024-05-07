@@ -41,7 +41,8 @@ const thingEntity = {
   devices: {
     name: 'Name',
     model: 'Model',
-    defaultParameter: 'Default Parameter'
+    defaultParameter: 'Default Parameter',
+    parameterStandard: 'Parameter Standard',
   },
   downloadCertAndKeysModal: {
     description:
