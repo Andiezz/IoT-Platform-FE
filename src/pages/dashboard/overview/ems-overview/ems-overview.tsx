@@ -1,14 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styles from './ems-overview.module.less';
-import {
-  Breadcrumb,
-  Col,
-  Empty,
-  Row,
-  Tabs,
-  TabsProps,
-  Typography,
-} from 'antd';
+import { Breadcrumb, Col, Empty, Row, Tabs, TabsProps, Typography } from 'antd';
 import { useTranslation } from 'react-i18next';
 import { i18nKey } from 'src/locales/i18n';
 import OverviewItemWidget from 'src/components/overview/overview-item-widget/overview-item';
@@ -24,13 +16,10 @@ import {
   SearchField,
   TypeFilterDate
 } from 'src/components/chart/line-bar-chart/line-bar-chart';
-import { IHttpService } from 'src/services/http.service';
 import Loader from 'src/components/loader';
 import CurrentData from '../current-data/current-data';
-import { IThingMap } from 'src/interfaces';
-import { ITenantOverviewStore } from 'src/store/overview/tenant/tenant-overview';
-import useViewport from 'src/hooks/use-viewport';
 import LineChart from 'src/components/chart/line-chart/line-chart';
+import { IOverviewThing } from 'src/interfaces/overview';
 
 export interface DataType {
   key: React.Key;
@@ -46,13 +35,9 @@ interface IWrapperComponent {
 
 const TenantOverview: React.FC = () => {
   const overviewStore: OverviewStore = useStore('overviewStore');
-  const httpService: IHttpService = useStore('httpClient');
-  const tenantStore: ITenantOverviewStore = useStore('tenantOverviewStore');
-  const [thingLocation, setThingLocation] = useState<IThingMap[]>([]);
   const params = useParams();
   const navigate = useNavigate();
   const { t } = useTranslation();
-  const viewPort = useViewport();
   const arrayTimes: any = [];
   const [loadingChart, setLoadingChart] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
@@ -61,10 +46,10 @@ const TenantOverview: React.FC = () => {
     from: moment().startOf('day').toISOString(),
     to: moment().endOf('day').toISOString()
   });
-  const [dataTenant, setDataTenant] = useState<IOwnersItem>();
+  const [dataThing, setDataThing] = useState<IOverviewThing>();
 
-  if (overviewStore?.overviewThing?.timeseries_data) {
-    Object.entries(overviewStore?.overviewThing.timeseries_data).forEach(
+  if (overviewStore?.overviewThing?.timeseriesData) {
+    Object.entries(overviewStore?.overviewThing.timeseriesData).forEach(
       (item) => {
         return item[1] ? arrayTimes.push(item) : null;
       }
@@ -75,18 +60,13 @@ const TenantOverview: React.FC = () => {
     setSearchField({ ...searchField });
   };
 
-  const getOverviewThing = async (request: IOverviewFetch) => {
+  const getOverviewThing = async (id: string, request: IOverviewFetch) => {
     setLoadingChart(true);
     await overviewStore
-      .fetchThing(request)
+      .fetchThing({ id }, request)
       .then(() => {
         setLoading(false);
-        function isCherries(fruit: any) {
-          return fruit.user_id === tenantStore.tenantOverview?._id;
-        }
-        const dataTenant =
-          overviewStore.overviewThing?.thing.owners?.find(isCherries);
-        setDataTenant(dataTenant);
+        setDataThing(overviewStore?.overviewThing);
       })
       .catch(() => {
         throw Error;
@@ -95,37 +75,29 @@ const TenantOverview: React.FC = () => {
   };
 
   useEffect(() => {
-    getOverviewThing({
-      thing_id: params.id,
-      timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
-      ...searchField
-    });
-  }, [searchField]);
-
-  useEffect(() => {
-    const dataMap: IThingMap[] = [
-      {
-        address: overviewStore.overviewThing?.thing?.address,
-        thingName: overviewStore.overviewThing?.thing?.name,
-        lng: overviewStore.overviewThing?.thing?.longitude || 0,
-        lat: overviewStore.overviewThing?.thing?.latitude || 0
-      }
-    ];
-    setThingLocation(dataMap);
-  }, [overviewStore.overviewThing]);
+    if (params?.id) {
+      getOverviewThing(params.id, {
+        timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+        ...searchField
+      });
+    }
+  }, [searchField, params]);
 
   const renderDashboard = () => {
+    const timeseriesData = overviewStore.overviewThing?.timeseriesData;
     return (
       <div className={styles.wrapper_content}>
         <Row gutter={24}>
           <Col span={24} className={styles.wrapper_content_info}>
             <OverviewItemWidget
-              title={overviewStore.overviewThing?.thing?.name}
-              info={overviewStore.overviewThing?.thing?._id}>
-              <CurrentData
-                data={overviewStore.overviewThing?.timeseries_data}
-                arrayTimes={arrayTimes}
-              />
+              title={overviewStore.overviewThing?.thingDetail?.name}
+              info={overviewStore.overviewThing?.thingDetail?._id}>
+              {timeseriesData && timeseriesData.length > 0 && (
+                <CurrentData
+                  data={timeseriesData[timeseriesData.length - 1]}
+                  arrayTimes={arrayTimes}
+                />
+              )}
             </OverviewItemWidget>
           </Col>
         </Row>
@@ -141,7 +113,12 @@ const TenantOverview: React.FC = () => {
                           <div
                             className={styles.wrapper_content_weather_address}>
                             <IconLocation style={{ marginRight: 8 }} />
-                            <p>{overviewStore.overviewThing?.thing?.address}</p>
+                            <p>
+                              {
+                                overviewStore.overviewThing?.thingDetail
+                                  ?.location?.address
+                              }
+                            </p>
                           </div>
                         </Col>
                       </Row>
@@ -158,7 +135,6 @@ const TenantOverview: React.FC = () => {
                       dataChartKwKwh={overviewStore.listChartThingKwKwh || []}
                       searchField={searchField}
                       onSetSearchField={handleSetSearchField}
-                      dataChartAlarm={overviewStore.listChartAlarm || []}
                     />
                   </Col>
                 </Row>
@@ -189,50 +165,10 @@ const TenantOverview: React.FC = () => {
     );
   };
 
-  const items: TabsProps['items'] = (() => {
-    const listItem: TabsProps['items'] = [
-      {
-        key: '1',
-        label: 'Dashboard',
-        children: renderDashboard()
-      }
-    ];
-    return listItem;
-  })();
-
-  const onChangeTab = (item: any) => {
-    setTabIndex(item);
-  };
-
   const onClickTenant = () => {
-    if (dataTenant) {
-      return navigate(
-        `${PAGE_ROUTE.DASHBOARD}overview/tenant/${dataTenant.user_id}`
-      );
-    } else if (
-      !dataTenant &&
-      overviewStore.overviewThing?.thing.owners?.length
-    ) {
-      return navigate(
-        `${PAGE_ROUTE.DASHBOARD}overview/tenant/${overviewStore.overviewThing?.thing.owners[0].user_id}`
-      );
-    } else {
-      return navigate(`${PAGE_ROUTE.DASHBOARD}overview/tenant/${undefined}`);
-    }
+    return navigate(`${PAGE_ROUTE.DASHBOARD}`);
   };
 
-  const renderTenantText = () => {
-    if (dataTenant) {
-      return `${dataTenant.user?.first_name} ${dataTenant.user?.last_name}`;
-    } else if (
-      !dataTenant &&
-      overviewStore.overviewThing?.thing.owners?.length
-    ) {
-      return `${overviewStore.overviewThing.thing.owners[0].user?.first_name} ${overviewStore.overviewThing.thing.owners[0].user?.last_name}`;
-    } else {
-      return 'Dashboard';
-    }
-  };
   return (
     <>
       {loading ? (
@@ -265,12 +201,12 @@ const TenantOverview: React.FC = () => {
                               {
                                 title: (
                                   <button onClick={onClickTenant}>
-                                    {renderTenantText()}
+                                    {t(i18nKey.dashboard.title.dashboard)}
                                   </button>
                                 )
                               },
                               {
-                                title: `${overviewStore.overviewThing?.thing?.name}`
+                                title: `${overviewStore.overviewThing?.thingDetail?.name}`
                               }
                             ]}
                           />
@@ -287,12 +223,7 @@ const TenantOverview: React.FC = () => {
               <Col span={24}>
                 <Row justify={'space-between'}>
                   <Col span={24}>
-                    <Tabs
-                      className={styles.wrapper_tab}
-                      defaultActiveKey="1"
-                      items={items}
-                      onChange={(value) => onChangeTab(value)}
-                    />
+                    {renderDashboard()}
                   </Col>
                 </Row>
               </Col>

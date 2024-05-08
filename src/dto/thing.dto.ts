@@ -105,13 +105,13 @@ export class ListThingDTO extends DTO {
 }
 
 export class DeleteThingDTO extends DTO {
-  public param: { thingId: string };
+  public param: { id: string };
   public query: undefined;
   public body: undefined;
   public url: string = ENDPOINT.THING_PARAM_URL;
   public method: HTTP_METHOD = HTTP_METHOD.DELETE;
   public readonly responseType: ResponseType = 'json';
-  constructor(param: { thingId: string }) {
+  constructor(param: { id: string }) {
     super();
     this.param = param;
   }

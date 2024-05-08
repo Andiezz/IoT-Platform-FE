@@ -1,6 +1,7 @@
 const dashboard = {
   title: {
     thingOverview: 'Thing Overview',
+    dashboard: 'Dashboard',
   },
   label: {
     temperature:'Temperature',

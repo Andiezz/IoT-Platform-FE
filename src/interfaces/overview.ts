@@ -17,6 +17,38 @@ export interface ITimeseriesData {
   tvoc?: number;
 }
 
+export interface IParameterThreshold {
+  name: string;
+  min: number;
+  max: number;
+}
+
+export interface IEvaluatedParameter {
+  name: string;
+  value: number;
+  unit: string;
+  weight: number;
+  threshold: {
+    name: string;
+    color: string;
+    min: number;
+    max: number;
+  };
+  type: string;
+  iaqiValue?: number;
+}
+
+export interface IAQResult {
+  generalIaqiReport: IParameterThreshold;
+  acceptableSubstances: IEvaluatedParameter[];
+  unAcceptableSubstances: IEvaluatedParameter[];
+}
+
+export interface IQualityReport {
+  iaqResult: IAQResult;
+  timeseriesData: ITimeseriesData[];
+}
+
 export interface IChart {
   'pm2.5'?: number;
   pm10?: number;
@@ -52,17 +84,9 @@ export interface IStatistic {
   currentData: ITimeseriesData;
 }
 
-export interface IOverviewEms {
-  location?: IThingItem;
-  ems_statistic?: IStatistic;
-  charts?: IChart[];
-}
-
 export interface IOverviewThing {
-  thing: IThingItem;
-  thingEnergyStatistics: ITimeseriesData;
-  thingChart?: IChart[];
-  lastUpdatedOn?: string;
-  timeseries_data: ITimeseriesData;
-  charts?: IChart[];
+  thingDetail: IThingItem;
+  timeseriesData?: IChart[];
+  thingWarning?: any;
+  qualityReport?: IQualityReport;
 }

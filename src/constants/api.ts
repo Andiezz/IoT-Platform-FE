@@ -45,6 +45,9 @@ export enum ENDPOINT {
   GET_NEW_LINK_ACTIVE_ACCOUNT = '/system-mgt/account/resent-active-link',
   GET_USER_ASSIGN_BY_EMAIL = '/user/email',
 
+  // Dashboard
+  GET_OVERVIEW_THING = '/dashboard/thing/:id',
+
   // Thing
   THING_BASE_URL = '/thing',
   THING_PARAM_URL = '/thing/:id',

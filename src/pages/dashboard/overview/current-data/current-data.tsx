@@ -3,12 +3,12 @@ import styles from './current-data.module.less';
 import { Col, Empty, Row } from 'antd';
 import OverviewPointWidget from 'src/components/overview/overview-point-widget/overview-point';
 import { BackgroupColor, Color, TextTimeseries } from 'src/constants/thing';
-import { ITimeseriesData } from 'src/interfaces/overview';
+import { IChart, ITimeseriesData } from 'src/interfaces/overview';
 import { useTranslation } from 'react-i18next';
 import { i18nKey } from 'src/locales/i18n';
 
 export interface IProps {
-  data?: ITimeseriesData;
+  data?: IChart;
   arrayTimes: any[];
 }
 
@@ -21,7 +21,7 @@ const CurrentData: React.FC<IProps> = ({ data, arrayTimes }) => {
     }
   }, [arrayTimes]);
 
-  const renderTimeseriesThing = (data: ITimeseriesData) => {
+  const renderTimeseriesThing = (data: IChart) => {
     return (
       <>
         {data['pm2.5'] !== 0 && (

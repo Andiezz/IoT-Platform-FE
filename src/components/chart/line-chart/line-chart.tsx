@@ -8,7 +8,6 @@ import {
   Col,
   DatePicker,
   Form,
-  Modal,
   Radio,
   Row,
   Select,
@@ -26,20 +25,6 @@ import {
   IChartPercent,
   IChartThingKw
 } from 'src/interfaces/overview';
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  Colors,
-  PointElement,
-  LineElement,
-  Title,
-  Tooltip,
-  Legend,
-  BarElement,
-  TimeScale,
-  Chart
-} from 'chart.js';
 import 'chartjs-adapter-moment';
 import { Bar } from 'react-chartjs-2';
 import zoomPlugin from 'chartjs-plugin-zoom';
@@ -1151,7 +1136,6 @@ const LineChart = ({
   };
 
   return (
-    <>
       <div className={styles.container}>
         <Form
           onValuesChange={handleFormChange}
@@ -1232,7 +1216,6 @@ const LineChart = ({
             </>
           ))}
       </div>
-    </>
   );
 };
 
