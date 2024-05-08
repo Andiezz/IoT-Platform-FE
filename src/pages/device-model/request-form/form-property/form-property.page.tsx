@@ -25,7 +25,7 @@ const FormProperty: React.FC<IDeviceModelFormProps> = ({
           lg={18}
           xl={18}
           xxl={12}
-          className={styles.formWrapper_plantInfo}>
+          className={styles.formWrapper_thingInfo}>
           <Row gutter={[0, 24]}>
             <Col span={24}>
               <div className={styles.formWrapper_box}>
@@ -98,7 +98,9 @@ const FormProperty: React.FC<IDeviceModelFormProps> = ({
                         </Col>
                         <Col span={24}>
                           <Form.Item
-                            label={t(i18nKey.deviceModelEntity.label.parameterStandards)}
+                            label={t(
+                              i18nKey.deviceModelEntity.label.parameterStandards
+                            )}
                             className={styles.formWrapper_locations_field}
                             name={'parameterStandards'}
                             required
