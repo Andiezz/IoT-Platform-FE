@@ -34,6 +34,10 @@ import CustomModal from 'src/components/custom-modal/CustomModal';
 import { CheckCircleTwoTone } from '@ant-design/icons';
 import { messageResponse } from 'src/constants/message-response';
 import { TypeFile } from 'src/constants/thing';
+import {
+  IDeviceModelItem,
+  IDeviceModelStore
+} from 'src/store/device-model/device-model.store';
 
 export interface IRequest {
   limit?: number;
@@ -87,12 +91,19 @@ export interface IFileDownload {
   type?: string;
 }
 
+export interface IOption {
+  key?: string;
+  label?: string;
+  value?: string;
+}
+
 const RequestForm: React.FC = () => {
   const [t] = useTranslation();
   const params = useParams();
   const navigator = useNavigate();
   const { Footer } = Layout;
   const [form] = Form.useForm<IThingForm>();
+  console.log('🚀 ~ form:', form.getFieldsValue());
   const [isDisable, setIsDisable] = useState(true);
   const [markerLocation, setMarkerLocation] = useState<
     MarkerLocation | undefined
@@ -129,7 +140,12 @@ const RequestForm: React.FC = () => {
   const [visibleDropdownAddOwner, setVisibleDropdownAddOwner] = useState(false);
   const [visibleDropdownViewer, setVisibleDropdownViewer] = useState(false);
   const [status, setStatus] = useState<string>();
+  const [options, setOptions] = useState<IOption[]>();
+  const [models, setModels] = useState<IDeviceModelItem[]>();
+  const [listManagerThing, setListManagerThing] = useState<IManager[]>([]);
+  console.log('🚀 ~ listManagerThing:', listManagerThing);
 
+  const dataDeviceModel: IDeviceModelStore = useStore('deviceModelStore');
   const handleChangeVisibleAddOnwer = (visible: boolean) => {
     setVisibleDropdownAddOwner(visible);
   };
@@ -143,6 +159,23 @@ const RequestForm: React.FC = () => {
   const onChangeMarker = (marker: MarkerLocation) => {
     setMarkerLocation({ ...marker });
     setIsDisable(false);
+  };
+
+  const fetchDataParameter = async () => {
+    try {
+      const callback = (e: IDeviceModelItem) => ({
+        label: e.name,
+        value: e._id,
+        key: e._id
+      });
+      await dataDeviceModel.fetchList();
+      const res = dataDeviceModel.listDeviceModel;
+      const deviceModel = (res ?? []).map(callback);
+      setModels(res ?? []);
+      setOptions([...deviceModel]);
+    } catch (error) {
+      throw Error;
+    }
   };
 
   useEffect(() => {
@@ -160,14 +193,19 @@ const RequestForm: React.FC = () => {
         if (rs.responseCode === HTTP_STATUS_RESPONSE_KEY.SUCCESS) {
           const resThingDetail = rs.data;
 
-          const managers = resThingDetail?.managers.length
+          const managers = resThingDetail?.managers?.length
             ? resThingDetail.managers
             : [];
-          const devices = resThingDetail?.devices.length
+          const devices = resThingDetail?.devices?.length
             ? resThingDetail?.devices.map((item) => {
+                const model: IOption = {
+                  key: item.model._id,
+                  label: item.model.name,
+                  value: item.model._id
+                };
                 return {
                   name: item.name,
-                  model: item.model,
+                  model: model,
                   parameterStandards: item.parameterStandards,
                   parameterStandardDefault: item.parameterStandardDefault
                 };
@@ -194,6 +232,7 @@ const RequestForm: React.FC = () => {
             lng: resThingDetail?.location?.longitude as number,
             address: resThingDetail?.location?.address as string
           });
+          setListManagerThing(rs.data?.managers ?? []);
           setDataThingDetail({
             name,
             information,
@@ -204,6 +243,7 @@ const RequestForm: React.FC = () => {
         }
       });
     }
+    fetchDataParameter();
   }, []);
 
   useEffect(() => {
@@ -242,11 +282,10 @@ const RequestForm: React.FC = () => {
       setLoading(true);
       setOpenToastifyConfirm(false);
       const managers =
-        (values?.managers?.map((manager) => {
+        (listManagerThing?.map((manager) => {
           return {
-            email: manager.email,
-            isOwner: manager.isOwner,
-            userId: manager._id
+            userId: manager.id || manager.userId,
+            isOwner: manager.isOwner
           };
         }) as IManager[]) || [];
       const devices = values.devices || [];
@@ -289,7 +328,13 @@ const RequestForm: React.FC = () => {
     try {
       setLoading(true);
       setOpenToastifyConfirm(false);
-      const managers = values.managers || [];
+      const managers =
+        (listManagerThing?.map((manager) => {
+          return {
+            userId: manager.id || manager.userId,
+            isOwner: manager.isOwner
+          };
+        }) as IManager[]) || [];
       const devices = values.devices || [];
 
       const location = {
@@ -326,8 +371,6 @@ const RequestForm: React.FC = () => {
   };
 
   const onAddEmailManager = async (emailAssign: string) => {
-    const listManagerThing: IManager[] = form.getFieldValue('managers') || [];
-
     const isExistingInOwner = listManagerThing.find(
       (manager) => manager.email.trim() === emailAssign.trim()
     );
@@ -343,10 +386,12 @@ const RequestForm: React.FC = () => {
 
     const res = await dataThing.getUserAssignOwnerByEmail(body);
     if (res.responseCode === HTTP_STATUS_RESPONSE_KEY.SUCCESS) {
-      const { _id: id, ...user } = res.data?.user || {};
-      form.setFieldValue('managers', [{ ...user, id, isOwner: false }]);
+      if (res.data) {
+        const owner = { ...res.data.user, isOwner: false };
+        setListManagerThing([...listManagerThing, owner]);
+      }
       setIsDisable(false);
-      formInstanseAddOwner.resetFields();
+      formInstanseAddManager.resetFields();
       form.validateFields(['name']);
       return;
     }
@@ -364,9 +409,7 @@ const RequestForm: React.FC = () => {
   };
 
   const onAddEmailOwner = async (emailAssign: string) => {
-    const listManagerThing: IManager[] = form.getFieldValue('managers') || [];
-
-    const isExistingInOwner = listManagerThing.find(
+    const isExistingInOwner = listManagerThing?.find(
       (manager) => manager.email.trim() === emailAssign.trim()
     );
 
@@ -381,9 +424,10 @@ const RequestForm: React.FC = () => {
 
     const res = await dataThing.getUserAssignOwnerByEmail(body);
     if (res.responseCode === HTTP_STATUS_RESPONSE_KEY.SUCCESS) {
-      console.log(res.data);
-      const { _id: id, ...user } = res.data?.user || {};
-      form.setFieldValue('managers', [{ ...user, id, isOwner: true }]);
+      if (res.data) {
+        const owner = { ...res.data.user, isOwner: true };
+        setListManagerThing([...listManagerThing, owner]);
+      }
       setIsDisable(false);
       formInstanseAddOwner.resetFields();
       form.validateFields(['name']);
@@ -443,6 +487,9 @@ const RequestForm: React.FC = () => {
           handleChangeVisibleAddViewer={handleChangeVisibleAddViewer}
           handleDownload={handleDownload}
           status={status}
+          options={options}
+          models={models}
+          form={form}
         />
       </div>
     );

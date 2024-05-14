@@ -25,7 +25,6 @@ const ThingDetail = () => {
       setLoading(true);
       await listThingStore.getDetailThing({ id }).then((res) => {
         if (res.responseCode === HTTP_STATUS_RESPONSE_KEY.SUCCESS) {
-          console.log(res.data);
           setThingDetail(res.data);
         }
       });

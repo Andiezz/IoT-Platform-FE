@@ -119,10 +119,6 @@ const RequestForm: React.FC = () => {
   useEffect(() => {
     form.setFieldsValue({ ...dataDeviceModelDetail });
   }, [dataDeviceModelDetail]);
-  console.log(
-    '🚀 ~ useEffect ~ form:',
-    form.getFieldValue('parameterStandards')
-  );
 
   const onFormFailed = () => {
     return 2;

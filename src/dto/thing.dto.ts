@@ -4,6 +4,7 @@ import { ResponseType } from 'axios';
 import { TABLE_SORT_DIRECTION } from 'src/constants';
 import { STATUS } from 'src/constants/status';
 import { IUserBasic } from 'src/constants/user';
+import { ResponseDeviceModelDTO } from './device-model.dto';
 
 export interface ILocation {
   name: string;
@@ -20,6 +21,7 @@ export interface ICertificate {
 export interface IManager extends IUserBasic {
   userId: string;
   isOwner: boolean;
+  id?: string;
 }
 
 export interface IThreshold {
@@ -39,7 +41,7 @@ export interface IParameterStandardModel {
 export interface IDevice {
   name: string;
   status?: STATUS;
-  model: string;
+  model: ResponseDeviceModelDTO;
   parameterStandards: IParameterStandardModel[];
   parameterStandardDefault: boolean;
 }
@@ -157,8 +159,8 @@ export class UpdateThingtDTO extends DTO {
   public param: object | undefined;
   public query: object | undefined;
   public body: unknown | undefined;
-  public url: string = ENDPOINT.THING_BASE_URL;
-  public method: HTTP_METHOD = HTTP_METHOD.POST;
+  public url: string = ENDPOINT.THING_PARAM_URL;
+  public method: HTTP_METHOD = HTTP_METHOD.PUT;
   public readonly responseType: ResponseType = 'json';
   constructor(body: BodyCreateThingDTO, param: { id: string }) {
     super();

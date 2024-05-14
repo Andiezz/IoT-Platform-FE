@@ -125,7 +125,6 @@ const ThingCenterPage: React.FC = () => {
     []
   );
   const onTableChange = async (pagination: TablePaginationConfig) => {
-    console.log('pagination', pagination);
     setPageNumber(pagination.current as number);
     setPageSize(pagination.pageSize as number);
   };
@@ -226,10 +225,10 @@ const ThingCenterPage: React.FC = () => {
       render: (record: IThingItem) => (
         <>
           {record?.managers ? (
-            record.managers.find((item) => {
-              console.log('record?.managers', record?.managers);
-              return item.isOwner === true;
-            })?.email
+            record.managers.map((item) => {
+              if( item.isOwner === true)
+                return item.email
+            })?.join('\n')
           ) : (
             <Typography>-</Typography>
           )}
