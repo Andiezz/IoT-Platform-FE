@@ -1,12 +1,18 @@
 import validation from './validation';
 import loginPage from './loginPage';
 import accountEntity from './accountEntity';
+import thingEntity from './thingEntity';
+import parameterEntity from './prameterEntity';
+import deviceModelEntity from './deviceModelEntity';
 
 const en = {
   loginPage,
   validation,
   confirm,
   accountEntity,
+  thingEntity,
+  parameterEntity,
+  deviceModelEntity,
   httpResponseMessage: {
     _400_BadRequest:
       'The server cannot process the request due to a client error.',
@@ -27,7 +33,7 @@ const en = {
       'The server acting as a gateway did not receive a timely response from the upstream server.',
     _500_Dashboard_No_Tenant_Data:
       "You're currently not part of any Tenants...",
-    _500_Dashboard_No_Plant_Data: "You're currently not part of any Plants"
+    _500_Dashboard_No_Thing_Data: "You're currently not part of any Things"
   },
 
   status: {
@@ -39,10 +45,10 @@ const en = {
     succeeded: 'Succeeded',
     failed: 'Failed',
     queued: 'Queued',
-    'open': 'Open',
-    'closed': 'Closed',
-    'connected': 'Connected',
-    'disconnected': 'Disconnected',
+    open: 'Open',
+    closed: 'Closed',
+    connected: 'Connected',
+    disconnected: 'Disconnected'
   },
 
   confirmationPopup: {
@@ -58,12 +64,15 @@ const en = {
   },
 
   menu: {
-    systemManagement: 'System Management',
+    dashboard: 'Dashboard',
+    thingCenter: 'Thing Center',
     accountManagement: 'Account Management',
-    rolesAndPermissions: 'Roles & Permissions',
     myProfile: 'My Profile',
     changePassword: 'Change Password',
-    logout: 'Logout'
+    logout: 'Logout',
+    masterData: 'Master Data',
+    parameter: 'Parameter',
+    deviceModel: 'Device Model',
   },
 
   label: {
@@ -76,6 +85,13 @@ const en = {
     name: 'Name',
     owner: 'Owner',
     tel: 'TEL',
+    operations: 'Operations',
+    goToDashboard: 'Go to Dashboard',
+    thingLocation: 'Thing/Location',
+    devices: 'Devices',
+    location: 'Location',
+    manager: 'Manager',
+    information: 'Information',
   },
 
   button: {
@@ -94,19 +110,27 @@ const en = {
     enable: 'Enable',
     done: 'Done',
     confirm: 'Confirm',
-    seeMore: 'See More'
+    seeMore: 'See More',
+    addDevice: 'Add Device',
   },
 
   defaultPlaceholder: {
     search: 'Search by Full Name, Email',
-    searchAccount: 'Search by Full Name, Email'
+    searchAccount: 'Search by Full Name, Email',
+    searchParameter: 'Search by Name'
   },
 
   messageIndicator: {
     resetPasswordUnavailable:
       'Password reset request cannot be made to this email until it has been activated.',
     adminPermissionDenied:
-      'You do not have permission to view/update service admin (Admin).'
+      'You do not have permission to view/update service admin (Admin).',
+    updateAccountUnavailable:
+      'Updates to this user account cannot be made until it has been activated. Please activate the account first before making any changes.',
+    deleteThingUnavailable:
+      "Deletion is only available for Things with an 'Pending Setup' status.",
+    removeThingUnavailable:
+      "Removal is only available for Things with an 'Pending Setup' status."
   }
 };
 

@@ -2,16 +2,14 @@ import { ResponseType } from 'axios';
 import { ENDPOINT, HTTP_METHOD } from 'src/constants/api';
 import { DTO } from './base.dto';
 import { ILoginForm, ILogoutForm } from 'src/interfaces/form/user';
-import { PermissionRole } from './account-management-list.dto';
 import { USER_REFRESH_TOKEN } from 'src/constants/app';
+import { Role } from 'src/interfaces/user';
 
 export interface ILoginResponse {
   id: string;
-  name: string;
-  role: PermissionRole;
+  role: Role;
   token: string;
   email: string;
-  tenant: string;
   refreshToken: string;
 }
 
@@ -40,7 +38,7 @@ export class LogoutDTO extends DTO {
     super();
     this.refresh_token = localStorage.getItem(USER_REFRESH_TOKEN);
     this.body = {
-      token: this.refresh_token || ''
+      token: this.refresh_token ?? ''
     };
   }
 }

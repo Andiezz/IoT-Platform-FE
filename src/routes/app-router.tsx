@@ -52,89 +52,97 @@ const privateRoutes: RouteType[] = [
     element: lazy(() => import('src/pages/dashboard/dashboard'))
   },
   {
-    path: PAGE_ROUTE.DASHBOARD_ALARM,
-    element: lazy(() => import('src/pages/alarm/alarm'))
+    path: PAGE_ROUTE.THING_CENTER,
+    element: lazy(() => import('src/pages/thing/thing'))
   },
   {
-    path: PAGE_ROUTE.DASHBOARD_TENANT,
-    element: lazy(() => import('src/pages/tenant/tenant'))
+    path: PAGE_ROUTE.THING_DETAIL,
+    element: lazy(() => import('src/pages/thing/thing-detail/thing-detail'))
   },
   {
-    path: PAGE_ROUTE.DASHBOARD_TENANT_DETAIL,
-    element: lazy(() => import('src/pages/tenant/tenant-detail/tenant-detail'))
-  },
-  {
-    path: PAGE_ROUTE.DASHBOARD_PLANT,
-    element: lazy(() => import('src/pages/plant/plant'))
-  },
-  {
-    path: PAGE_ROUTE.DASHBOARD_PLANT_CREATE,
+    path: PAGE_ROUTE.THING_CREATE,
     element: lazy(
-      () => import('src/pages/plant/request-form/request-form.page')
+      () => import('src/pages/thing/request-form/request-form.page')
     )
   },
   {
-    path: PAGE_ROUTE.DASHBOARD_PLANT_UPDATE,
+    path: PAGE_ROUTE.THING_UPDATE,
     element: lazy(
-      () => import('src/pages/plant/request-form/request-form.page')
+      () => import('src/pages/thing/request-form/request-form.page')
     )
   },
   {
-    path: PAGE_ROUTE.DASHBOARD_OVERVIEW_EMS,
-    element: lazy(
-      () => import('src/pages/dashboard/overview/ems-overview/ems-overview')
-    )
-  },
-  {
-    path: PAGE_ROUTE.DASHBOARD_OVERVIEW_TENANT,
-    element: lazy(() => import('src/pages/dashboard/dashboard'))
-  },
-  {
-    path: PAGE_ROUTE.DASHBOARD_OVERVIEW_CELL_DRIVER,
+    path: PAGE_ROUTE.PARAMETER,
     element: lazy(
       () =>
         import(
-          'src/pages/dashboard/overview/cell-driver-overview/cell-driver-overview'
+          'src/pages/parameter/parameter'
         )
     )
   },
   {
-    path: PAGE_ROUTE.DASHBOARD_OVERVIEW_CELL,
+    path: PAGE_ROUTE.NEW_PARAMETER,
     element: lazy(
-      () => import('src/pages/dashboard/overview/cell-overview/cell-overview')
+      () =>
+        import(
+          'src/pages/parameter/request-form/request-form.page'
+        )
     )
   },
   {
-    path: PAGE_ROUTE.DASHBOARD_OVERVIEW_PLANT,
+    path: PAGE_ROUTE.UPDATE_PARAMETER,
     element: lazy(
-      () => import('src/pages/dashboard/overview/ems-overview/ems-overview')
+      () =>
+        import(
+          'src/pages/parameter/request-form/request-form.page'
+        )
+    )
+  },
+  {
+    path: PAGE_ROUTE.DEVICE_MODEL,
+    element: lazy(
+      () =>
+        import(
+          'src/pages/device-model/device-model'
+        )
+    )
+  },
+  {
+    path: PAGE_ROUTE.NEW_DEVICE_MODEL,
+    element: lazy(
+      () =>
+        import(
+          'src/pages/device-model/request-form/request-form.page'
+        )
+    )
+  },
+  {
+    path: PAGE_ROUTE.UPDATE_DEVICE_MODEL,
+    element: lazy(
+      () =>
+        import(
+          'src/pages/device-model/request-form/request-form.page'
+        )
     )
   },
   {
     path: PAGE_ROUTE.ACCOUNT_MANAGEMENT,
     element: lazy(
-      () =>
-        import(
-          'src/pages/system-management/account-management/account-management'
-        )
+      () => import('src/pages/account-management/account-management')
     )
   },
   {
     path: PAGE_ROUTE.NEW_ACCOUNT,
     element: lazy(
       () =>
-        import(
-          'src/pages/system-management/account-management/new-account/create-account-form'
-        )
+        import('src/pages/account-management/new-account/create-account-form')
     )
   },
   {
     path: PAGE_ROUTE.UPDATE_ACCOUNT,
     element: lazy(
       () =>
-        import(
-          'src/pages/system-management/account-management/new-account/create-account-form'
-        )
+        import('src/pages/account-management/new-account/create-account-form')
     )
   },
   {
@@ -147,40 +155,6 @@ const privateRoutes: RouteType[] = [
       () =>
         import('src/pages/profile/component/change-password/change-password')
     )
-  },
-  {
-    path: PAGE_ROUTE.USER_PERMISSION,
-    element: lazy(
-      () =>
-        import('src/pages/system-management/users-permissions/users-permission')
-    )
-  },
-  {
-    path: PAGE_ROUTE.TENANT_DETAIL,
-    element: lazy(() => import('src/pages/tenant/tenant-detail/tenant-detail'))
-  },
-  {
-    path: PAGE_ROUTE.DASHBOARD_PLANT_DETAIL,
-    element: lazy(() => import('src/pages/plant/plant-detail/plant-detail'))
-  },
-  {
-    path: PAGE_ROUTE.COMMAND_LOGS,
-    element: lazy(
-      () => import('src/pages/system-management/command-logs/command-logs')
-    )
-  },
-  {
-    path: PAGE_ROUTE.USER_ACTIVITY_LOGS,
-    element: lazy(
-      () =>
-        import(
-          'src/pages/system-management/user-activity-logs/user-activity-logs'
-        )
-    )
-  },
-  {
-    path: PAGE_ROUTE.ACCESS_DENIED,
-    element: lazy(() => import('src/components/access-denied/access-denied'))
   }
 ];
 

@@ -1,4 +1,4 @@
-export enum UserRole {
+export enum Role {
   ADMIN = 'Admin',
   USER = 'User'
 }
@@ -6,15 +6,15 @@ export enum UserRole {
 export interface IOptionUserAssign {
   label: string;
   avatar?: string;
-  first_name?: string;
-  last_name?: string;
+  firstName?: string;
+  lastName?: string;
   key: string;
 }
 
 export interface IUserBasic {
   _id: string;
-  first_name: string;
-  last_name: string;
+  firstName: string;
+  lastName: string;
   email: string;
   avatar?: string;
   isDisable?: string;

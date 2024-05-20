@@ -16,7 +16,7 @@ export enum HTTP_STATUS_CODE {
 }
 
 export enum HTTP_STATUS_RESPONSE_KEY {
-  SUCCESS = '000000',
+  SUCCESS = '000200',
   BAD_REQUEST = '000400',
   NOT_FOUND = '000404',
   AUTHORIZATION = '000401',
@@ -28,7 +28,6 @@ export enum ENDPOINT {
   ROOT = '/api',
   LOGIN = '/auth/login',
   LOGOUT = '/auth/logout',
-  CREATE_PASSWORD = '/auth/create-new-password',
   FORGOT_PASSWORD = '/auth/forgot-password',
   CHANGE_PASSWORD = '/auth/create-new-password',
   CHANGE_ACCOUNT_PASSWORD = '/user/change-password',
@@ -42,10 +41,27 @@ export enum ENDPOINT {
   GET_ACCOUNT_DETAIL = '/system-mgt/view/:id',
   CREATE_ACCOUNT = '/system-mgt/account/create',
   UPDATE_ACCOUNT = '/system-mgt/account/update/:id',
-  GET_LIST_ROLE = '/user-permission/roles',
-  GET_LIST_PERMISSION = '/user-permission/list',
-  UPDATE_LIST_PERMISSION = 'user-permission/update',
   GET_LIST_USER_ASSIGN = 'user/view/list',
   GET_NEW_LINK_ACTIVE_ACCOUNT = '/system-mgt/account/resent-active-link',
   GET_USER_ASSIGN_BY_EMAIL = '/user/email',
+
+  // Thing
+  THING_BASE_URL = '/thing',
+  THING_PARAM_URL = '/thing/:id',
+  DOWNLOAD_CERTIFICATE = '/thing/certificate/:id',
+  GET_USER_ASSIGN_MANAGER_BY_EMAIL = '/thing/manager',
+
+  //Parameter
+  GET_PARAMETER_LIST = '/parameter-standard',
+  CREATE_PARAMETER = '/parameter-standard',
+  UPDATE_PARAMETER = '/parameter-standard/:id',
+  DELETE_PARAMETER = '/parameter-standard/:id',
+  GET_PARAMETER_DETAIL = '/parameter-standard/:id',
+
+  //Device Model
+  GET_DEvICE_MODEL_LIST = '/device-model',
+  CREATE_DEVICE_MODEL = '/device-model',
+  UPDATE_DEVICE_MODEL = '/device-model/:id',
+  DELETE_DEVICE_MODEL = '/device-model/:id',
+  GET_DEVICE_MODEL_DETAIL = '/device-model/:id'
 }

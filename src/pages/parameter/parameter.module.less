@@ -1,0 +1,80 @@
+.tableaccountManagement {
+  thead th {
+    background-color: rgba(43, 122, 232, 0.1) !important;
+  }
+}
+
+.wrapOptionSearch {
+  [class~='ant-select-selection-placeholder'] {
+    color: #000;
+  }
+}
+
+.wrapperTable {
+  position: relative;
+  padding: 12px 12px 0px;
+  background: #ffffff;
+  border-radius: 8px;
+  .tableaccountManagement {
+    table {
+      font-size: 12px;
+    }
+
+    thead th {
+      background-color: rgba(43, 122, 232, 0.1) !important;
+      border-radius: 0 !important;
+    }
+    .tag {
+      font-style: normal;
+      font-weight: 500;
+    }
+  }
+}
+
+.list {
+  .listItem {
+    justify-content: unset;
+    padding: 10px;
+    color: #212426;
+    cursor: pointer;
+  }
+
+  .listItemDisable {
+    justify-content: unset;
+    padding: 10px;
+    color: #212426;
+    opacity: 0.5;
+    cursor: no-drop;
+  }
+
+  .listItem:hover,
+  .listItemDisable:hover {
+    border-radius: 8px;
+    background-color: #e5f4ff;
+  }
+}
+
+.modal {
+  overflow: auto;
+}
+
+[class~='ant-pagination'] {
+  font-size: 12px;
+}
+
+[class~='ant-select-selector'] {
+  font-size: 12px;
+}
+
+[class~='ant-table-thead'] {
+  tr {
+    th:first-child {
+      border-end-start-radius: 8px !important;
+      border-start-start-radius: 8px !important;
+    }
+    th:last-child {
+      border-start-end-radius: 8px !important;
+      border-end-end-radius: 8px !important;
+    }
+  }
+}

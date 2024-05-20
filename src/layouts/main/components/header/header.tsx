@@ -1,19 +1,15 @@
 import {
   Avatar,
-  Badge,
   Button,
   Col,
-  Grid,
   Modal,
   Popover,
   Row,
   Typography
 } from 'antd';
-
 import { observer } from 'mobx-react-lite';
 import React, { FC, useState } from 'react';
 import styles from './header.module.less';
-import { BellFilled } from '@ant-design/icons';
 import { PAGE_ROUTE } from 'src/constants/route';
 import { Link, useNavigate } from 'react-router-dom';
 import { IAuthenticationService } from 'src/services/authentication.service';
@@ -22,23 +18,18 @@ import { i18nKey } from 'src/locales/i18n';
 import { useTranslation } from 'react-i18next';
 import { IUserStore } from 'src/store/user.store';
 import useStore from 'src/hooks/use-store';
-import { IClientService } from 'src/services/websocket/client.service';
-import CustomNotification from 'src/components/notification/notification';
-import { INotificationStore } from 'src/store/notification/notification.store';
+import { SocketService } from 'src/services/socket.service';
 
 export interface IProp {
   toggleCollapsed?: () => void;
 }
 
 const AppHeader: FC = () => {
-  const notificationStore: INotificationStore = useStore('notificationStore');
   const authService: IAuthenticationService = useService(
     'authenticationService'
   );
-  const socketService: IClientService = useService('socketService');
-  const [isSeeAll, setSeeAll] = useState<boolean>(false);
+  const socketService: SocketService = useService('socketService');
   const navigator = useNavigate();
-  const [openNotifi, setOpenNotifi] = useState(false);
   const [open, setOpen] = useState(false);
   const [openPopupProfile, setOpenPopupProfile] = useState<boolean>(false);
   const onLogoutClick = () => {
@@ -51,7 +42,6 @@ const AppHeader: FC = () => {
   const onCancel = () => {
     setOpen(false);
   };
-  const screen = Grid.useBreakpoint();
   const onSubmit = () => {
     authService
       .logout()
@@ -62,23 +52,6 @@ const AppHeader: FC = () => {
       .catch();
   };
 
-  const handleSetNotify = (value: boolean) => {
-    setOpenNotifi(value);
-  };
-
-  const handleSetSeeAll = (value: boolean) => {
-    setSeeAll(value);
-  };
-
-  const notificationAvatar = () => (
-    <Badge count={notificationStore.totalUnread}>
-      <Avatar
-        onClick={() => setOpenNotifi((prev) => !prev)}
-        className={styles.headerRight_btn_noti}>
-        <BellFilled className={styles.headerRight_btn_noti_number} />
-      </Avatar>
-    </Badge>
-  );
   const HeaderMenu = () => {
     return (
       <div className={styles.menu_container}>
@@ -88,15 +61,15 @@ const AppHeader: FC = () => {
           ) : (
             <Avatar
               style={{ backgroundColor: '#BCBCC0' }}
-              size={40}>{`${userStore.userInfo?.first_name
+              size={40}>{`${userStore.userInfo?.firstName
               ?.toUpperCase()
               ?.trim()
-              ?.charAt(0)}${userStore.userInfo?.last_name
+              ?.charAt(0)}${userStore.userInfo?.lastName
               ?.toUpperCase()
               ?.trim()
               ?.charAt(0)}`}</Avatar>
           )}
-          <p>{`${userStore.userInfo?.first_name} ${userStore.userInfo?.last_name}`}</p>
+          <p>{`${userStore.userInfo?.firstName} ${userStore.userInfo?.lastName}`}</p>
         </div>
         <Link to={PAGE_ROUTE.PROFILE}>
           <div className={styles.item}>{t(i18nKey.menu.myProfile)}</div>
@@ -118,26 +91,6 @@ const AppHeader: FC = () => {
       justify={'end'}
       align={'middle'}>
       <div className={styles.headerRight_btn}>
-        {screen.xs || isSeeAll ? (
-          <>
-            {notificationAvatar()}
-            <CustomNotification
-              open={openNotifi}
-              handleSetNotify={handleSetNotify}
-              isSeeAll={isSeeAll}
-              handleSetSeeAll={handleSetSeeAll}
-            />
-          </>
-        ) : (
-          <CustomNotification
-            open={openNotifi}
-            handleSetNotify={handleSetNotify}
-            isSeeAll={isSeeAll}
-            handleSetSeeAll={handleSetSeeAll}>
-            {notificationAvatar()}
-          </CustomNotification>
-        )}
-
         <Popover
           placement="bottomRight"
           content={HeaderMenu}
@@ -156,10 +109,10 @@ const AppHeader: FC = () => {
               className={styles.headerRight_btn_user}
               style={{ cursor: 'pointer', color: 'BCBCC0' }}
               size={40}>
-              {`${userStore.userInfo?.first_name
+              {`${userStore.userInfo?.firstName
                 ?.toUpperCase()
                 ?.trim()
-                ?.charAt(0)}${userStore.userInfo?.last_name
+                ?.charAt(0)}${userStore.userInfo?.lastName
                 ?.toUpperCase()
                 ?.trim()
                 ?.charAt(0)}`}

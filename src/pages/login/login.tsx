@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { i18nKey } from 'src/locales/i18n';
 import { useTranslation } from 'react-i18next';
 import {
@@ -23,9 +23,6 @@ import IconEmail from 'src/assets/icons/Login-mail.svg';
 import IconProfile from 'src/assets/icons/Login-profile.svg';
 import { ILoginResponse, LogInDTO } from 'src/dto/authentication.dto';
 import { messageResponse } from 'src/constants/message-response';
-import useStore from 'src/hooks/use-store';
-import { ITenantListStore } from 'src/store/tenant/tenant-list.store';
-import { ITenantListRequest } from 'src/dto/tenant-list.dto';
 import { ResponseDTO } from 'src/dto/base.dto';
 import { HTTP_STATUS_RESPONSE_KEY } from 'src/constants/api';
 
@@ -33,20 +30,12 @@ const LoginPage: React.FC = () => {
   const authService: IAuthenticationService = useService(
     'authenticationService'
   );
-  const tenantListStore: ITenantListStore = useStore('listTenantStore');
   const [loginForm] = Form.useForm();
 
   const [iconEmail, setIconEmail] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [t] = useTranslation();
   const navigator = useNavigate();
-  const fetchData = async (request?: ITenantListRequest) => {
-    try {
-      await tenantListStore.fetchListNoPermission(request);
-    } catch (error) {
-      throw Error;
-    }
-  };
 
   const onFormFinish = async (values: ILoginForm) => {
     setSubmitting(true);
@@ -58,8 +47,8 @@ const LoginPage: React.FC = () => {
       .then(async (rs: ResponseDTO<ILoginResponse>) => {
         setSubmitting(false);
         if (rs.responseCode === HTTP_STATUS_RESPONSE_KEY.SUCCESS) {
-          await fetchData({ limit: 15 });
           message.success(`${t(i18nKey.validation.common.loginSuccess)}`);
+          navigator(PAGE_ROUTE.DASHBOARD);
         }
         if (rs.message === messageResponse.inactiveAccountNotification) {
           message.error(
@@ -79,8 +68,10 @@ const LoginPage: React.FC = () => {
             `${t(i18nKey.validation.emailOrPassword.invalidEmailOrPassword)}`
           );
         }
-        if(rs.message === 'account-is-not-active'){
-          message.error(`${i18nKey.validation.account.inactiveAccountNotification}`)
+        if (rs.message === 'account-is-not-active') {
+          message.error(
+            `${i18nKey.validation.account.inactiveAccountNotification}`
+          );
         }
       });
   };
@@ -88,14 +79,6 @@ const LoginPage: React.FC = () => {
   const forcus = () => {
     setIconEmail(true);
   };
-
-  useEffect(() => {
-    if (authService.isAuthenticated) {
-      navigator(
-        `${PAGE_ROUTE.DASHBOARD}overview/tenant/${tenantListStore?.listTenantAccount[0]?._id}`
-      );
-    }
-  }, [tenantListStore.listTenantAccount]);
 
   return (
     <Form

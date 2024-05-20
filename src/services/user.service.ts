@@ -36,7 +36,7 @@ export class UserService implements IUserService {
       getProfileDTO
     )
 
-    res.data?.role && this.authService.setPermissionRole(res.data.role,this.httpService.getRememberMe())
+    res.data?.role && this.authService.setRole(res.data.role,this.httpService.getRememberMe())
     return res;
   }
   public async updateUserProfile(

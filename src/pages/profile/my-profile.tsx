@@ -60,10 +60,10 @@ const ProfilePage: FC = () => {
   const handleUpdateProfile = async (values: IUserInfo) => {
     const formData = new FormData();
     avatar && formData.append('file', avatar);
-    formData.append('first_name', values.first_name.trim());
-    formData.append('last_name', values.last_name.trim());
-    formData.append('phone_number', values.phone_number);
-    formData.append('phone_code', values.phone_code);
+    formData.append('firstName', values.firstName.trim());
+    formData.append('lastName', values.lastName.trim());
+    formData.append('phoneNumber', values.phoneNumber);
+    formData.append('phoneCode', values.phoneCode);
 
     setLoading(true);
     await userService
@@ -111,13 +111,13 @@ const ProfilePage: FC = () => {
   useEffect(() => {
     if (userStore.userInfo) {
       form.setFieldsValue({
-        role: t(i18nKey.permissionEntity.roleKeyToText[userStore.userInfo?.role.role]),
-        first_name: userStore.userInfo?.first_name,
-        last_name: userStore.userInfo?.last_name,
-        phone_number: userStore.userInfo?.phone_number,
-        phone_code: userStore.userInfo?.phone_code,
-        email: userStore.userInfo?.email,
-      })
+        role: t(i18nKey.accountEntity.roleKeyToText[userStore.userInfo?.role]),
+        firstName: userStore.userInfo?.firstName,
+        lastName: userStore.userInfo?.lastName,
+        phoneNumber: userStore.userInfo?.phoneNumber,
+        phoneCode: userStore.userInfo?.phoneCode,
+        email: userStore.userInfo?.email
+      });
     }
   }, [userStore.userInfo]);
 
@@ -174,7 +174,7 @@ const ProfilePage: FC = () => {
             layout="vertical"
             initialValues={{
               ...userStore.userInfo,
-              role: userStore.userInfo?.role?.name
+              role: userStore.userInfo?.role
             }}>
             <Row>
               <Col xxl={14}>
@@ -200,13 +200,13 @@ const ProfilePage: FC = () => {
                               <Avatar
                                 style={{ backgroundColor: '#BCBCC0' }}
                                 size={100}>{`${
-                                userStore?.userInfo?.first_name &&
-                                userStore?.userInfo?.first_name
+                                userStore?.userInfo?.firstName &&
+                                userStore?.userInfo?.firstName
                                   .toUpperCase()
                                   .trim()[0]
                               }${
-                                userStore.userInfo?.last_name &&
-                                userStore.userInfo?.last_name
+                                userStore.userInfo?.lastName &&
+                                userStore.userInfo?.lastName
                                   .toUpperCase()
                                   .trim()[0]
                               }`}</Avatar>
@@ -226,7 +226,7 @@ const ProfilePage: FC = () => {
                     <Col xxl={12} xs={24}>
                       <Form.Item
                         required={true}
-                        name="first_name"
+                        name="firstName"
                         rules={[
                           {
                             required: true,
@@ -238,7 +238,9 @@ const ProfilePage: FC = () => {
                             validator: (_, value) => {
                               if (
                                 value &&
-                                !new RegExp(ALPHABETICAL_REGEX).test(value.trim())
+                                !new RegExp(ALPHABETICAL_REGEX).test(
+                                  value.trim()
+                                )
                               ) {
                                 return Promise.reject(
                                   `${t(
@@ -258,7 +260,7 @@ const ProfilePage: FC = () => {
                     <Col xxl={12} xs={24}>
                       <Form.Item
                         required={true}
-                        name="last_name"
+                        name="lastName"
                         rules={[
                           {
                             required: true,
@@ -270,7 +272,9 @@ const ProfilePage: FC = () => {
                             validator: (_, value) => {
                               if (
                                 value &&
-                                !new RegExp(ALPHABETICAL_REGEX).test(value.trim())
+                                !new RegExp(ALPHABETICAL_REGEX).test(
+                                  value.trim()
+                                )
                               ) {
                                 return Promise.reject(
                                   `${t(
@@ -312,7 +316,7 @@ const ProfilePage: FC = () => {
                         <Col style={{ flexBasis: '130px' }}>
                           <Form.Item
                             required={true}
-                            name="phone_code"
+                            name="phoneCode"
                             rules={[
                               {
                                 required: true,
@@ -328,7 +332,7 @@ const ProfilePage: FC = () => {
                         <Col flex={1} className={styles.phonNumber}>
                           <Form.Item
                             required={true}
-                            name="phone_number"
+                            name="phoneNumber"
                             normalize={normalizeInputBlockCharacter}
                             rules={[
                               {

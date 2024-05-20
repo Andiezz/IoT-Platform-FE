@@ -1,0 +1,54 @@
+.bodyModal {
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 17px 24px;
+    &_title {
+      font-style: normal;
+      font-weight: 600;
+      font-size: 18px;
+      line-height: 120%;
+      color: #212426;
+    }
+    &_icon {
+      cursor: pointer;
+      background-color: transparent;
+      border-radius: 50%;
+      &:hover {
+        background-color: #d8cfcf28;
+      }
+    }
+  }
+
+  .footer {
+    margin-top: 0;
+    &_divider {
+      margin: 0;
+    }
+    &_container {
+      display: flex;
+      justify-content: flex-end;
+    }
+    &_wrapper {
+      display: flex;
+      padding: 16px 24px;
+      gap: 10;
+      &_button {
+        width: 120;
+        height: 34px;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 8px 16px;
+        gap: 10;
+      }
+    }
+  }
+  [class~='ant-modal'] {
+    width: 500px !important;
+    [class~='ant-modal-content'] {
+      padding: 0 !important;
+    }
+  }
+}
