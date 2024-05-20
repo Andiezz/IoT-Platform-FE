@@ -5,6 +5,7 @@ import thingEntity from './thingEntity';
 import parameterEntity from './prameterEntity';
 import deviceModelEntity from './deviceModelEntity';
 import dashboard from './dashboard';
+import notifications from './notifications';
 
 const en = {
   loginPage,
@@ -15,6 +16,7 @@ const en = {
   parameterEntity,
   deviceModelEntity,
   dashboard,
+  notifications,
   httpResponseMessage: {
     _400_BadRequest:
       'The server cannot process the request due to a client error.',
@@ -75,6 +77,7 @@ const en = {
     masterData: 'Master Data',
     parameter: 'Parameter',
     deviceModel: 'Device Model',
+    notifications: 'Notifications',
   },
 
   label: {
