@@ -66,5 +66,9 @@ export enum ENDPOINT {
   CREATE_DEVICE_MODEL = '/device-model',
   UPDATE_DEVICE_MODEL = '/device-model/:id',
   DELETE_DEVICE_MODEL = '/device-model/:id',
-  GET_DEVICE_MODEL_DETAIL = '/device-model/:id'
+  GET_DEVICE_MODEL_DETAIL = '/device-model/:id',
+
+  // Notification
+  GET_LIST_NOTIFICATION = 'notification/view',
+  UPDATE_NOTIFICATION = '/notification/update'
 }

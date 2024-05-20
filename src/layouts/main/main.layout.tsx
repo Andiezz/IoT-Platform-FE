@@ -1,4 +1,4 @@
-import { Col, Drawer, Layout, Row, theme } from 'antd';
+import { Col, Drawer, Layout, Row, theme, notification } from 'antd';
 import { observer } from 'mobx-react-lite';
 import React, { useEffect, useState } from 'react';
 import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
@@ -18,6 +18,10 @@ import AppHeader from './components/header/header';
 import AppMenu from './components/menu/menu';
 import ProfileMenu from './components/profile/menu';
 import styles from './main.layout.module.less';
+import { INotification } from 'src/dto/notification.dto';
+import { INotificationStore } from 'src/store/notification/notification.store';
+import { useTranslation } from 'react-i18next';
+import { i18nKey } from 'src/locales/i18n';
 
 const { Header, Sider, Content } = Layout;
 
@@ -25,6 +29,7 @@ const MainLayout: React.FC = () => {
   const {
     token: { colorBgContainer }
   } = theme.useToken();
+  const { t } = useTranslation();
   const [collapsed, setCollapsed] = useState(false);
   const [menuBar, setMenuBar] = useState(false);
   const userStore: IUserStore = useStore('userStore');
@@ -36,6 +41,72 @@ const MainLayout: React.FC = () => {
     'authenticationService'
   );
   const navigator = useNavigate();
+  const notificationService: INotificationStore = useStore('notificationStore');
+
+  const getNotification = async () => {
+    try {
+      notificationService.updateLoadingNotification(true);
+      await notificationService.getListNotification({
+        page: 1,
+        limit: 50
+      });
+    } finally {
+      notificationService.updateLoadingNotification(false);
+    }
+  };
+  const renderDescription = (item: INotification) => {
+    if (item.description.type === 'automatedProcess') {
+      const fielData = item.description.fielData as {
+        insertAlarmID: string;
+        insertSeverity: string;
+        insertDescription: Array<any>;
+      };
+      return t(
+        i18nKey.notifications.notificationAppFunction.automatedProcess(
+          fielData.insertAlarmID,
+          fielData.insertSeverity,
+          fielData.insertDescription
+        )
+      );
+    }
+    return `${t(i18nKey.notifications.notificationApp[item.description.type], {
+      ...item.description.fielData
+    })}`;
+  };
+
+  useEffect(() => {
+    if (authService.isAuthenticated) {
+      getProfile();
+      getNotification();
+    }
+    return () => {
+      notificationService.updateLoadingNotification(false);
+    };
+  }, [authService.isAuthenticated]);
+
+  useEffect(() => {
+    eventEmitter.on('forbidden', () => {
+      getProfile();
+      navigator(PAGE_ROUTE.ACCESS_DENIED, { replace: true });
+    });
+    eventEmitter.on('notification', (data) => {
+      const tempData: INotification = data as INotification;
+      notification.info({
+        message: t(`${i18nKey.notifications.title}`),
+        description: (
+          <div
+            dangerouslySetInnerHTML={{
+              __html: renderDescription(tempData)
+            }}
+          />
+        )
+      });
+    });
+    return () => {
+      eventEmitter.listenersMap.delete('notification');
+      eventEmitter.listenersMap.delete('forbidden');
+    };
+  }, []);
 
   const getProfile = async () => {
     const res = await userService.getUserProfile();
