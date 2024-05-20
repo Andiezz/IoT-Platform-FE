@@ -1,6 +1,5 @@
 import React from 'react';
 import {
-  Button,
   Col,
   Form,
   FormInstance,
@@ -16,7 +15,7 @@ import { useTranslation } from 'react-i18next';
 import { i18nKey } from 'src/locales/i18n';
 import { IParameterFormI } from 'src/pages/parameter/request-form/request-form.page';
 import { IOption, IThingForm } from '../request-form.page';
-import { CloseCircleOutlined } from '@ant-design/icons';
+import { UploadOutlined } from '@ant-design/icons';
 import styles from './model-filed.module.less';
 import { IDeviceModelItem } from 'src/store/device-model/device-model.store';
 import ModalParameter from '../modal-parameter/modal-parameter';
@@ -39,11 +38,11 @@ const ModelField: React.FC<ModelFieldProps> = ({
 }) => {
   const { t } = useTranslation();
   const [paramList, setParamList] = useState<IParameterFormI[] | undefined>([]);
-  console.log('🚀 ~ paramList:', paramList);
   const [isHasValue, setIsHasValue] = useState<boolean>(false);
   const [model, setModel] = useState<string>();
   const [isChangeDefault, setIsChangeDefault] = useState<boolean>(false);
   const [openParam, setOpenParam] = useState<boolean>(false);
+  const [updateParam, setUpdateParam] = useState<IParameterFormI | undefined>();
   const { Text } = Typography;
   const defaultParam = form.getFieldValue([
     'devices',
@@ -74,7 +73,7 @@ const ModelField: React.FC<ModelFieldProps> = ({
       );
       form.setFieldValue(['devices', idx, 'parameterStandards'], paramList);
     }
-  }, [isChangeDefault]);
+  }, [isChangeDefault, paramList]);
 
   useEffect(() => {
     const selectedModel: IParameterItem[] | undefined = models?.find(
@@ -91,6 +90,14 @@ const ModelField: React.FC<ModelFieldProps> = ({
     });
     setParamList(params);
   }, [model]);
+
+  const handleUpdateParam = (paramName: string) => {
+    const param: IParameterFormI | undefined = paramList?.find(
+      (item) => item.name === paramName
+    );
+    setUpdateParam(param);
+    setOpenParam(true);
+  };
 
   return (
     <div>
@@ -168,36 +175,36 @@ const ModelField: React.FC<ModelFieldProps> = ({
                     {paramList?.map((param, index) => (
                       <List.Item key={index}>
                         <Text>{param.name}</Text>
-                        <CloseCircleOutlined
-                          style={{ color: 'red' }}
-                          onClick={() => {
-                            const newParamLists = paramList.filter(
-                              (item) => item.name !== param.name
-                            );
-                            setParamList(newParamLists);
+                        <UploadOutlined
+                          style={{
+                            color: 'blue',
+                            fontSize: '15px',
+                            marginLeft: '20px'
                           }}
+                          onClick={() => handleUpdateParam(param.name)}
                         />
                       </List.Item>
                     ))}
                   </List>
-                  <Button
+                  {/* <Button
                     type="dashed"
                     onClick={() => setOpenParam(true)}
                     block>
                     + Add Sub Item
-                  </Button>
+                  </Button> */}
                 </Col>
               </Row>
             )}
           </Row>
         </Col>
       </Row>
-      {openParam && (
+      {openParam && updateParam && (
         <ModalParameter
           open={openParam}
           setOpen={setOpenParam}
           setParamList={setParamList}
           paramList={paramList}
+          updateParam={updateParam}
         />
       )}
     </div>

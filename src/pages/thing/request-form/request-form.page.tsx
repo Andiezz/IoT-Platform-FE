@@ -103,7 +103,6 @@ const RequestForm: React.FC = () => {
   const navigator = useNavigate();
   const { Footer } = Layout;
   const [form] = Form.useForm<IThingForm>();
-  console.log('🚀 ~ form:', form.getFieldsValue());
   const [isDisable, setIsDisable] = useState(true);
   const [markerLocation, setMarkerLocation] = useState<
     MarkerLocation | undefined
@@ -143,7 +142,6 @@ const RequestForm: React.FC = () => {
   const [options, setOptions] = useState<IOption[]>();
   const [models, setModels] = useState<IDeviceModelItem[]>();
   const [listManagerThing, setListManagerThing] = useState<IManager[]>([]);
-  console.log('🚀 ~ listManagerThing:', listManagerThing);
 
   const dataDeviceModel: IDeviceModelStore = useStore('deviceModelStore');
   const handleChangeVisibleAddOnwer = (visible: boolean) => {

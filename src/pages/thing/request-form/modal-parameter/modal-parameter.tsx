@@ -12,6 +12,7 @@ export interface IModalParameter {
   setOpen: (values: boolean) => void;
   setParamList: (param: IParameterFormI[] | undefined) => void;
   paramList: IParameterFormI[] | undefined;
+  updateParam: IParameterFormI;
 }
 
 export interface ILocation {
@@ -23,24 +24,30 @@ const ModalParameter: React.FC<IModalParameter> = ({
   open,
   setOpen,
   setParamList,
-  paramList
+  paramList,
+  updateParam
 }) => {
   const { t } = useTranslation();
   const [formParam] = Form.useForm<IParameterFormI>();
 
   useEffect(() => {
-    formParam.resetFields();
+    formParam.setFieldsValue({ ...updateParam });
   }, []);
 
   const onFormFailed = () => {
     return 2;
   };
 
-  const handleAdd = async () => {
-    const newParamList = paramList;
-    newParamList?.push(formParam.getFieldsValue());
-    setParamList(newParamList);
-    setOpen(false);
+  const handleUpdate = async () => {
+    if (paramList) {
+      const newParam: IParameterFormI = formParam.getFieldsValue();
+      const newParamList: IParameterFormI[] = paramList.filter((item) => {
+        item.name !== updateParam.name;
+      });
+      newParamList.push(newParam);
+      setParamList(newParamList);
+      setOpen(false);
+    }
   };
 
   const handleCancel = () => {
@@ -58,17 +65,17 @@ const ModalParameter: React.FC<IModalParameter> = ({
     <Modal
       title={t(i18nKey.thingEntity.label.locationPicker)}
       open={open}
-      onOk={handleAdd}
+      onOk={handleUpdate}
       onCancel={handleCancel}
       className={styles.modal}
-      okText={t(i18nKey.button.add)}
+      okText={t(i18nKey.button.update)}
       width={'50%'}>
       <div className={styles.modal_wrapper}>
         <Row>
           <Form
             form={formParam}
             layout="vertical"
-            onFinish={handleAdd}
+            onFinish={handleUpdate}
             onFinishFailed={onFormFailed}>
             <FormPropertyPage onChangeColor={onChangeColor} />
           </Form>
