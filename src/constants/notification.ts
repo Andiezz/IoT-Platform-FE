@@ -3,5 +3,5 @@ export enum NotificationType {
 }
 
 export enum NotificationChannel {
-  WARNING = '/thing-warning'
+  WARNING = '/notification'
 } 

@@ -18,7 +18,7 @@ import AppHeader from './components/header/header';
 import AppMenu from './components/menu/menu';
 import ProfileMenu from './components/profile/menu';
 import styles from './main.layout.module.less';
-import { INotification } from 'src/dto/notification.dto';
+import { INotification, ISocketMessage } from 'src/dto/notification.dto';
 import { INotificationStore } from 'src/store/notification/notification.store';
 import { useTranslation } from 'react-i18next';
 import { i18nKey } from 'src/locales/i18n';
@@ -72,8 +72,10 @@ const MainLayout: React.FC = () => {
     if (data) {
       socketService.authToken = httpService.getToken();
       socketService.connect();
-      socketService.subscribeEvent(`/notification/${data.id}`, (messageData) => {
-        const message = messageData as INotification;
+      console.log(`/notification/${data.id}`)
+      socketService.subscribeEvent(`notification/${data.id}`, (messageData) => {
+        console.log('messageData', messageData);
+        const message = messageData as ISocketMessage;
         notificationService.onMessageNotification(message);
       });
     }

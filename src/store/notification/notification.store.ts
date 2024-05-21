@@ -9,6 +9,7 @@ import {
   IBodyUpdateNotify,
   INotification,
   IResponseUpdateNotification,
+  ISocketMessage,
   ResponseNotification,
   UpdateNotificationDTO
 } from 'src/dto/notification.dto';
@@ -36,7 +37,7 @@ export interface INotificationStore {
   }): Promise<boolean>;
   updateNotification(body: IBodyUpdateNotify): Promise<boolean>;
   destroyStoreWhenLogout(): void;
-  onMessageNotification(message: INotification): void;
+  onMessageNotification(message: ISocketMessage): void;
 }
 
 export class NotificationStore implements INotificationStore {
@@ -188,11 +189,11 @@ export class NotificationStore implements INotificationStore {
     return false;
   }
 
-  public onMessageNotification(message: INotification): void {
+  public onMessageNotification(message: ISocketMessage): void {
     runInAction(() => {
       this.page = this.page + 1;
       this.totalUnread = this.totalUnread + 1;
-      this.listNotification = [message, ...this.listNotification];
+      this.listNotification = [message.data, ...this.listNotification];
     });
     eventEmitter.emit('notification', message);
   }

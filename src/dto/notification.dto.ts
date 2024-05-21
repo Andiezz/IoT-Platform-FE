@@ -15,6 +15,11 @@ export class GetListNotificationDTO extends DTO {
   }
 }
 
+export interface ISocketMessage {
+  channel: string;
+  data: INotification,
+}
+
 export interface IReceiver {
   userId: string;
   readAt: Date | null;
@@ -29,6 +34,7 @@ export interface INotification {
   receivers: IReceiver[];
   readAt: Date | null;
 }
+
 export interface ResponseNotification {
   paginatedResults: Array<INotification>;
   page: number;
