@@ -24,7 +24,6 @@ import { observer } from 'mobx-react-lite';
 import { useTranslation } from 'react-i18next';
 import { i18nKey } from 'src/locales/i18n';
 import { LIMIT_RECORD } from 'src/constants';
-import LogoIcon from 'src/assets/icons/logo.svg';
 import { INotification } from 'src/dto/notification.dto';
 interface IProps {
   open: boolean;
@@ -42,7 +41,7 @@ const CustomNotification = ({
   children
 }: IProps) => {
   const [loading, setLoading] = useState<boolean>(false);
-  const [loadingNoti,setLoadingNoti] = useState<boolean>(false)
+  const [loadingNoti, setLoadingNoti] = useState<boolean>(false);
   const { t } = useTranslation();
   const [openMarkAsRead, setOpenMarkAsRead] = useState<Map<string, boolean>>(
     new Map()
@@ -68,7 +67,7 @@ const CustomNotification = ({
       setLoadingNoti(true);
 
       const res = await notificationStore.updateNotification({
-        all: true
+        isUpdateAll: true
       });
       if (res) {
         // message.success(t(i18nKey.validation.common.toastUpdateSuccess));
@@ -84,8 +83,8 @@ const CustomNotification = ({
     try {
       setLoadingNoti(true);
       const res = await notificationStore.updateNotification({
-        all: false,
-        notification_ids: [id]
+        isUpdateAll: false,
+        notificationIds: [id]
       });
       if (res) {
         // message.success(t(i18nKey.validation.common.toastUpdateSuccess));
@@ -100,53 +99,20 @@ const CustomNotification = ({
     notificationStore.getListNotification({ page: 1, limit: LIMIT_RECORD });
   };
 
-  const renderDescription = (item: INotification) => {
-    if (item.description.type === 'automatedProcess') {
-      const fielData = item.description.fielData as {
-        insertAlarmID: string;
-        insertSeverity: string;
-        insertDescription: Array<any>;
-      };
-      return t(
-        i18nKey.notifications.notificationAppFunction.automatedProcess(
-          fielData.insertAlarmID,
-          fielData.insertSeverity,
-          fielData.insertDescription
-        )
-      );
-    }
-    return `${t(i18nKey.notifications.notificationApp[item.description.type], {
-      ...item.description.fielData
-    })}`;
-  };
-
   const renderAvatar = (item: INotification) => {
-  
-    const hasAvatarUser = !!item?.actionBy?.at(0)?.avatar;
-    const isAvatarSystem = !item?.actionBy?.length;
-    if (isAvatarSystem) {
-      return <Avatar size={32} src={LogoIcon} />;
-    }
-    if (hasAvatarUser) {
-      return <Avatar size={32} src={item?.actionBy?.at(0)?.avatar} />;
-    }
     return (
-      <Avatar size={32} style={{ backgroundColor: '#BCBCC0' }}>{`${
-        item?.actionBy?.at(0)?.first_name?.toUpperCase().trim()[0]
-      }${item?.actionBy?.at(0)?.last_name?.toUpperCase().trim()[0]}`}</Avatar>
+      <Avatar size={32} style={{ backgroundColor: '#FCF4A3' }}>{`${
+        item?.type?.toUpperCase().trim()[0]
+      }`}</Avatar>
     );
   };
 
-  const renderName = (item: INotification)=>{
-    const isSystem = !item?.actionBy?.length;
-    return isSystem
-      ? t(i18nKey.notifications.label.system)
-      : `${ item?.actionBy?.at(0)?.first_name} ${item?.actionBy?.at(0)?.last_name}`;
+  const renderName = (item: INotification) => {
+    return `${item?.type}`;
   };
 
   useEffect(() => {
     open && getNotification();
-
   }, [open]);
 
   const renderContent = (maxHeight: string) => (
@@ -167,20 +133,20 @@ const CustomNotification = ({
         <List
           style={{ width: '100%', minWidth: '375px' }}
           itemLayout="horizontal"
-          loading={{ spinning: notificationStore.isLoadingNotify || loadingNoti  }}
+          loading={{
+            spinning: notificationStore.isLoadingNotify || loadingNoti
+          }}
           dataSource={notificationStore.listNotification}
           renderItem={(item) => (
             <List.Item
               key={item._id}
-              style={item.read_at ? undefined : { background: '#F0F3FA' }}
-              // actions={[]}
-            >
+              style={item.readAt ? undefined : { background: '#F0F3FA' }}>
               <List.Item.Meta
                 avatar={renderAvatar(item)}
                 title={
                   <Row wrap={false} justify={'space-between'}>
                     <Col>{renderName(item)}</Col>
-                    {!item.read_at && (
+                    {!item.readAt && (
                       <Col style={{ cursor: 'pointer' }}>
                         <Popover
                           placement="bottomRight"
@@ -215,19 +181,14 @@ const CustomNotification = ({
                 }
                 description={
                   <div>
-                    <div
-                      className={styles.columnsText}
-                      dangerouslySetInnerHTML={{
-                        __html: renderDescription(item)
-                      }}
-                    />
+                    <div className={styles.columnsText}>{item.content}</div>
                     <Row justify={'space-between'} align={'middle'}>
                       <Col className={styles.time}>
                         {moment(item.createdOn).format(
                           ' hh:mm:ss MMMM DD, YYYY'
                         )}
                       </Col>
-                      {!item.read_at && (
+                      {!item.readAt && (
                         <Col>
                           <span className={styles.dot}></span>
                         </Col>

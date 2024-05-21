@@ -13,10 +13,9 @@ import {
   UpdateNotificationDTO
 } from 'src/dto/notification.dto';
 import { IHttpService } from 'src/services/http.service';
-import { MessageHandler } from 'src/websocket/interfaces';
 import _ from 'lodash';
 
-export interface INotificationStore extends MessageHandler {
+export interface INotificationStore {
   messages?: any[];
   pushMessage: (message: MessageBody) => void;
   listNotification: Array<INotification>;
@@ -37,6 +36,7 @@ export interface INotificationStore extends MessageHandler {
   }): Promise<boolean>;
   updateNotification(body: IBodyUpdateNotify): Promise<boolean>;
   destroyStoreWhenLogout(): void;
+  onMessageNotification(message: INotification): void;
 }
 
 export class NotificationStore implements INotificationStore {
@@ -75,8 +75,7 @@ export class NotificationStore implements INotificationStore {
 
   public onMessage(message: MessageBody, identify: string): void {
     console.log(message, identify);
-    //TODO maybe handle notification from here.
-    if (message.channel === 'in-app-notify-cation') {
+    if (message.channel === 'in-app-notification') {
       if (message.data) {
         runInAction(() => {
           this.listNotification = [
@@ -171,16 +170,15 @@ export class NotificationStore implements INotificationStore {
       await this.http.request(updateNotificationDto);
     if (res.responseCode === HTTP_STATUS_RESPONSE_KEY.SUCCESS) {
       runInAction(() => {
-        this.totalUnread = res.data?.totalUnread || 0;
-        if (body.all) {
+        this.totalUnread = res.data?.totalUnread ?? 0;
+        if (body.isUpdateAll) {
           this.listNotification = this.listNotification.map((item) => ({
             ...item,
-            read_at: true
           }));
         } else {
           this.listNotification = this.listNotification.map((item) => {
-            return (body.notification_ids || []).includes(item._id)
-              ? { ...item, read_at: true }
+            return (body.notificationIds || []).includes(item._id)
+              ? { ...item }
               : item;
           });
         }
@@ -189,6 +187,16 @@ export class NotificationStore implements INotificationStore {
     }
     return false;
   }
+
+  public onMessageNotification(message: INotification): void {
+    runInAction(() => {
+      this.page = this.page + 1;
+      this.totalUnread = this.totalUnread + 1;
+      this.listNotification = [message, ...this.listNotification];
+    });
+    eventEmitter.emit('notification', message);
+  }
+
   public destroyStoreWhenLogout(): void {
     runInAction(()=>{
       this.messages = [];

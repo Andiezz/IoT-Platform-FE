@@ -3,6 +3,7 @@ import {
   Badge,
   Button,
   Col,
+  Grid,
   Modal,
   Popover,
   Row,
@@ -49,6 +50,7 @@ const AppHeader: FC = () => {
   const onCancel = () => {
     setOpen(false);
   };
+  const screen = Grid.useBreakpoint();
   const onSubmit = () => {
     authService
       .logout()

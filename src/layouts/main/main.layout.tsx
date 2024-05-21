@@ -22,6 +22,8 @@ import { INotification } from 'src/dto/notification.dto';
 import { INotificationStore } from 'src/store/notification/notification.store';
 import { useTranslation } from 'react-i18next';
 import { i18nKey } from 'src/locales/i18n';
+import { ISocketService } from 'src/services/socket.service';
+import { IHttpService } from 'src/services/http.service';
 
 const { Header, Sider, Content } = Layout;
 
@@ -32,6 +34,7 @@ const MainLayout: React.FC = () => {
   const { t } = useTranslation();
   const [collapsed, setCollapsed] = useState(false);
   const [menuBar, setMenuBar] = useState(false);
+  const [data, setData] = useState<IUserInfo>();
   const userStore: IUserStore = useStore('userStore');
   const location = useLocation();
   const menu = useMenuProfile();
@@ -40,6 +43,8 @@ const MainLayout: React.FC = () => {
   const authService: IAuthenticationService = useService(
     'authenticationService'
   );
+  const socketService: ISocketService = useService('socketService');
+  const httpService: IHttpService = useService('httpService');
   const navigator = useNavigate();
   const notificationService: INotificationStore = useStore('notificationStore');
 
@@ -54,25 +59,28 @@ const MainLayout: React.FC = () => {
       notificationService.updateLoadingNotification(false);
     }
   };
-  const renderDescription = (item: INotification) => {
-    if (item.description.type === 'automatedProcess') {
-      const fielData = item.description.fielData as {
-        insertAlarmID: string;
-        insertSeverity: string;
-        insertDescription: Array<any>;
-      };
-      return t(
-        i18nKey.notifications.notificationAppFunction.automatedProcess(
-          fielData.insertAlarmID,
-          fielData.insertSeverity,
-          fielData.insertDescription
-        )
-      );
+
+  const getProfile = async () => {
+    const res = await userService.getUserProfile();
+    if (res.responseCode === HTTP_STATUS_RESPONSE_KEY.SUCCESS) {
+      userStore.updateUserInfo(res.data as IUserInfo);
+      setData(res.data);
     }
-    return `${t(i18nKey.notifications.notificationApp[item.description.type], {
-      ...item.description.fielData
-    })}`;
   };
+
+  useEffect(() => {
+    if (data) {
+      socketService.authToken = httpService.getToken();
+      socketService.connect();
+      socketService.subscribeEvent(`/notification/${data.id}`, (messageData) => {
+        const message = messageData as INotification;
+        notificationService.onMessageNotification(message);
+      });
+    }
+    return () => {
+      socketService.dispose();
+    };
+  }, [data]);
 
   useEffect(() => {
     if (authService.isAuthenticated) {
@@ -93,13 +101,7 @@ const MainLayout: React.FC = () => {
       const tempData: INotification = data as INotification;
       notification.info({
         message: t(`${i18nKey.notifications.title}`),
-        description: (
-          <div
-            dangerouslySetInnerHTML={{
-              __html: renderDescription(tempData)
-            }}
-          />
-        )
+        description: <div>{tempData.content}</div>
       });
     });
     return () => {
@@ -107,13 +109,6 @@ const MainLayout: React.FC = () => {
       eventEmitter.listenersMap.delete('forbidden');
     };
   }, []);
-
-  const getProfile = async () => {
-    const res = await userService.getUserProfile();
-    if (res.responseCode === HTTP_STATUS_RESPONSE_KEY.SUCCESS) {
-      userStore.updateUserInfo(res.data as IUserInfo);
-    }
-  };
 
   useEffect(() => {
     if (authService.isAuthenticated) {
