@@ -1,25 +1,19 @@
 import { Col, Divider, Row, Typography } from 'antd';
-import React, { useEffect, useState } from 'react';
-import styles from './tenant-collapse.module.less';
+import React, { useState } from 'react';
+import styles from './thing-collapse.module.less';
 import WidgetCollapse from './widget-collapse/widget-collapse';
 import ArrowDown from 'src/assets/icons/arrow-down.svg';
-import { IThing } from 'src/interfaces/thing';
+// import { IThing } from 'src/interfaces/thing';
 import { STATUS } from 'src/constants/status';
+import { IThingItem } from 'src/dto/thing.dto';
 
 export interface IThingCollapse {
-  data?: IThing;
+  data?: IThingItem;
   onClickItem?: (value: string) => void;
 }
 
 const ThingCollapse: React.FC<IThingCollapse> = ({ data, onClickItem }) => {
   const [isOpenCollapse, setIsOpenCollapse] = useState<boolean>(true);
-
-  const arrayTimes: any = [];
-  if (data?.timeseriesData) {
-    Object.entries(data.timeseriesData).forEach((item) => {
-      return item[1] ? arrayTimes.push(item) : null;
-    });
-  }
 
   const handleCollapse = () => {
     setIsOpenCollapse(!isOpenCollapse);
@@ -35,12 +29,6 @@ const ThingCollapse: React.FC<IThingCollapse> = ({ data, onClickItem }) => {
         return { background: '#E1F45F' };
     }
   };
-
-  useEffect(() => {
-    if (arrayTimes.length < 3) {
-      setIsOpenCollapse(false);
-    }
-  }, []);
 
   return (
     <Row gutter={[0, 12]} className={styles.wrapper}>
@@ -99,10 +87,13 @@ const ThingCollapse: React.FC<IThingCollapse> = ({ data, onClickItem }) => {
               type="horizontal"></Divider>
           </Col>
           <Col span={24}>
-            <WidgetCollapse
-              data={data?.timeseriesData}
-              arrayTimes={arrayTimes}
-            />
+            <Row gutter={[0, 12]}>
+              {data?.devices.map((item) =>
+                item.parameterStandards.map((item) => (
+                  <WidgetCollapse key={item.name} data={item} />
+                ))
+              )}
+            </Row>
           </Col>
         </Row>
       </Col>

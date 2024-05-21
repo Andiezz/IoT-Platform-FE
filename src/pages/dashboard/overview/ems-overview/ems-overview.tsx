@@ -12,13 +12,8 @@ import moment from 'moment-timezone';
 import { useNavigate, useParams } from 'react-router';
 import { observer } from 'mobx-react-lite';
 import { PAGE_ROUTE } from 'src/constants/route';
-import {
-  SearchField,
-  TypeFilterDate
-} from 'src/components/chart/line-bar-chart/line-bar-chart';
 import Loader from 'src/components/loader';
 import CurrentData from '../current-data/current-data';
-import LineChart from 'src/components/chart/line-chart/line-chart';
 import { IOverviewThing } from 'src/interfaces/overview';
 
 export interface DataType {
@@ -41,11 +36,6 @@ const TenantOverview: React.FC = () => {
   const arrayTimes: any = [];
   const [loadingChart, setLoadingChart] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
-  const [searchField, setSearchField] = useState<SearchField>({
-    type: TypeFilterDate.day,
-    from: moment().startOf('day').toISOString(),
-    to: moment().endOf('day').toISOString()
-  });
   const [dataThing, setDataThing] = useState<IOverviewThing>();
 
   if (overviewStore?.overviewThing?.timeseriesData) {
@@ -55,10 +45,6 @@ const TenantOverview: React.FC = () => {
       }
     );
   }
-
-  const handleSetSearchField = (searchField: SearchField) => {
-    setSearchField({ ...searchField });
-  };
 
   const getOverviewThing = async (id: string, request: IOverviewFetch) => {
     setLoadingChart(true);
@@ -73,15 +59,6 @@ const TenantOverview: React.FC = () => {
       });
     setLoadingChart(false);
   };
-
-  useEffect(() => {
-    if (params?.id) {
-      getOverviewThing(params.id, {
-        timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
-        ...searchField
-      });
-    }
-  }, [searchField, params]);
 
   const renderDashboard = () => {
     const timeseriesData = overviewStore.overviewThing?.timeseriesData;
@@ -129,13 +106,6 @@ const TenantOverview: React.FC = () => {
               <Col span={24}>
                 <Row>
                   <Col span={24}>
-                    <LineChart
-                      loadingChart={loadingChart}
-                      dataChartPercent={overviewStore.listChartPercent}
-                      dataChartKwKwh={overviewStore.listChartThingKwKwh || []}
-                      searchField={searchField}
-                      onSetSearchField={handleSetSearchField}
-                    />
                   </Col>
                 </Row>
               </Col>

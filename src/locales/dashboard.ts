@@ -5,7 +5,7 @@ const dashboard = {
   },
   label: {
     temperature:'Temperature',
-    deviceList: 'Device List',
+    deviceList: 'Thing List',
   },
   chart: {
     duration: {

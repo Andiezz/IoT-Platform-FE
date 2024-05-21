@@ -1,5 +1,13 @@
 import { STATUS } from './status';
 
+export enum Status {
+  Active = 'Active',
+  Inactive = 'Inactive',
+  Idle = 'Idle',
+  Pending = 'Pending Setup',
+  PendingSetup = 'pending-setup'
+}
+
 interface IStatus {
   [key: string]: string | undefined;
 }

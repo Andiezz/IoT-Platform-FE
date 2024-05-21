@@ -2,143 +2,143 @@ import React from 'react';
 import { BackgroupColor, Color, TextTimeseries } from 'src/constants/thing';
 import { Empty, Row } from 'antd';
 import styles from './widget-collapse.module.less';
-import { ITimeseriesData } from 'src/interfaces/overview';
 import OverviewPointCell from 'src/components/overview/overview-point-cell/overview-point-cell';
+import { IParameterStandardModel } from 'src/dto/thing.dto';
 
 export interface IProps {
-  data?: ITimeseriesData;
-  arrayTimes: any[];
+  data?: IParameterStandardModel;
+  arrayTimes?: any[];
 }
 
-const WidgetCollapse: React.FC<IProps> = ({ data, arrayTimes }) => {
-  const renderData = (data: ITimeseriesData) => {
+const WidgetCollapse: React.FC<IProps> = ({ data }) => {
+  const renderData = (data: IParameterStandardModel) => {
     return (
       <Row className={styles.wrapper_content_info__fullHeight} gutter={16}>
-        {data['pm2.5'] ? (
+        {data.name.toLocaleLowerCase() === 'pm2.5' ? (
           <div className={styles.wrapper_content_info_item}>
             <OverviewPointCell
               text={TextTimeseries.PM25}
-              param={`${data['pm2.5']}`}
+              param={`${data.weight} ${data.unit}`}
               backgroud={BackgroupColor.PM25}
               color={Color.PM25}
             />
           </div>
         ) : null}
-        {data['pm10'] ? (
+        {data.name.toLocaleLowerCase() === 'pm10' ? (
           <div className={styles.wrapper_content_info_item}>
             <OverviewPointCell
               text={TextTimeseries.PM10}
-              param={`${data['pm10']}`}
+              param={`${data.weight} ${data.unit}`}
               backgroud={BackgroupColor.PM10}
               color={Color.PM10}
             />
           </div>
         ) : null}
-        {data['co2'] ? (
+        {data.name.toLocaleLowerCase() === 'co2' ? (
           <div className={styles.wrapper_content_info_item}>
             <OverviewPointCell
               text={TextTimeseries.CO2}
-              param={`${data['co2']}`}
+              param={`${data.weight} ${data.unit}`}
               backgroud={BackgroupColor.CO2}
               color={Color.CO2}
             />
           </div>
         ) : null}
-        {data['temperature'] ? (
+        {data.name.toLocaleLowerCase() === 'temperature' ? (
           <div className={styles.wrapper_content_info_item}>
             <OverviewPointCell
               text={TextTimeseries.Temp}
-              param={`${data['temperature']}`}
+              param={`${data.weight} ${data.unit}`}
               backgroud={BackgroupColor.Temp}
               color={Color.Temp}
             />
           </div>
         ) : null}
-        {data['humidity'] ? (
+        {data.name.toLocaleLowerCase() === 'humidity' ? (
           <div className={styles.wrapper_content_info_item}>
             <OverviewPointCell
               text={TextTimeseries.Humi}
-              param={`${data['humidity']}`}
+              param={`${data.weight} ${data.unit}`}
               backgroud={BackgroupColor.Humi}
               color={Color.Humi}
             />
           </div>
         ) : null}
-        {data['lpg'] ? (
+        {data.name.toLocaleLowerCase() === 'lpg' ? (
           <div className={styles.wrapper_content_info_item}>
             <OverviewPointCell
               text={TextTimeseries.LPG}
-              param={`${data['lpg']}`}
+              param={`${data.weight} ${data.unit}`}
               backgroud={BackgroupColor.LPG}
               color={Color.LPG}
             />
           </div>
         ) : null}
-        {data['ch4'] ? (
+        {data.name.toLocaleLowerCase() === 'ch4' ? (
           <div className={styles.wrapper_content_info_item}>
             <OverviewPointCell
               text={TextTimeseries.CH4}
-              param={`${data['ch4']}`}
+              param={`${data.weight} ${data.unit}`}
               backgroud={BackgroupColor.CH4}
               color={Color.CH4}
             />
           </div>
         ) : null}
-        {data['co'] ? (
+        {data.name.toLocaleLowerCase() === 'co' ? (
           <div className={styles.wrapper_content_info_item}>
             <OverviewPointCell
               text={TextTimeseries.CO}
-              param={`${data['co']}`}
+              param={`${data.weight} ${data.unit}`}
               backgroud={BackgroupColor.CO}
               color={Color.CO}
             />
           </div>
         ) : null}
-        {data['alcohol'] ? (
+        {data.name.toLocaleLowerCase() === 'alcohol' ? (
           <div className={styles.wrapper_content_info_item}>
             <OverviewPointCell
               text={TextTimeseries.Alcohol}
-              param={`${data['alcohol']}`}
+              param={`${data.weight} ${data.unit}`}
               backgroud={BackgroupColor.Alcohol}
               color={Color.Alcohol}
             />
           </div>
         ) : null}
-        {data['toluen'] ? (
+        {data.name.toLocaleLowerCase() === 'toluen' ? (
           <div className={styles.wrapper_content_info_item}>
             <OverviewPointCell
               text={TextTimeseries.Toluen}
-              param={`${data['toluen']}`}
+              param={`${data.weight} ${data.unit}`}
               backgroud={BackgroupColor.Toluen}
               color={Color.Toluen}
             />
           </div>
         ) : null}
-        {data['nh4'] ? (
+        {data.name.toLocaleLowerCase() === 'nh4' ? (
           <div className={styles.wrapper_content_info_item}>
             <OverviewPointCell
               text={TextTimeseries.NH4}
-              param={`${data['nh4']}`}
+              param={`${data.weight} ${data.unit}`}
               backgroud={BackgroupColor.NH4}
               color={Color.NH4}
             />
           </div>
         ) : null}
-        {data['aceton'] ? (
+        {data.name.toLocaleLowerCase() === 'aceton' ? (
           <div className={styles.wrapper_content_info_item}>
             <OverviewPointCell
               text={TextTimeseries.Aceton}
-              param={`${data['aceton']}`}
+              param={`${data.weight} ${data.unit}`}
               backgroud={BackgroupColor.Aceton}
               color={Color.Aceton}
             />
           </div>
         ) : null}
-        {data['tvoc'] ? (
+        {data.name.toLocaleLowerCase() === 'tvoc' ? (
           <div className={styles.wrapper_content_info_item}>
             <OverviewPointCell
               text={TextTimeseries.TVOC}
-              param={`${data['tvoc']}`}
+              param={`${data.weight} ${data.unit}`}
               backgroud={BackgroupColor.TVOC}
               color={Color.TVOC}
             />
@@ -149,7 +149,7 @@ const WidgetCollapse: React.FC<IProps> = ({ data, arrayTimes }) => {
   };
   return (
     <>
-      {data && arrayTimes.length > 2 ? (
+      {data ? (
         <div>{renderData(data)}</div>
       ) : (
         <Row justify={'center'}>

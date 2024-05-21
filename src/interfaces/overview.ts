@@ -1,4 +1,4 @@
-import { TypeFilterDate } from 'src/components/chart/line-bar-chart/line-bar-chart';
+// import { TypeFilterDate } from 'src/components/chart/line-bar-chart/line-bar-chart';
 import { IDevice, ILocation, IThingItem } from 'src/dto/thing.dto';
 
 export interface ITimeseriesData {
@@ -63,7 +63,7 @@ export interface IChart {
   nh4?: number;
   aceton?: number;
   tvoc?: number;
-  chartType?: TypeFilterDate;
+  // chartType?: TypeFilterDate;
   _id?: string;
   time?: string;
 }

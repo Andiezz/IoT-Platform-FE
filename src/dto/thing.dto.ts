@@ -85,6 +85,7 @@ export interface IThingListRequest {
   page?: number;
   pageSize?: number;
   limit?: number;
+  userId?: string;
 }
 
 export interface ResponseThingDTO {
