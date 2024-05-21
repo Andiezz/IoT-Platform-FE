@@ -21,8 +21,8 @@ const parameterEntity = {
   },
 
   placeholder: {
-    search: 'Search by Tenant, Plant, Location, Full Name, Email',
-    selectTenantPlantLocation: 'Select Tenant/Plant/Location',
+    search: 'Search by Tenant, Thing, Location, Full Name, Email',
+    selectTenantThingLocation: 'Select Tenant/Thing/Location',
     inputEmail: 'Please input email'
   },
 

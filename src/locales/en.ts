@@ -4,6 +4,7 @@ import accountEntity from './accountEntity';
 import thingEntity from './thingEntity';
 import parameterEntity from './prameterEntity';
 import deviceModelEntity from './deviceModelEntity';
+import dashboard from './dashboard';
 
 const en = {
   loginPage,
@@ -13,6 +14,7 @@ const en = {
   thingEntity,
   parameterEntity,
   deviceModelEntity,
+  dashboard,
   httpResponseMessage: {
     _400_BadRequest:
       'The server cannot process the request due to a client error.',

@@ -38,9 +38,7 @@ export interface IThingListStore {
     body: BodyCreateThingDTO,
     param: { id: string }
   ): Promise<ResponseDTO<ResponseThingDTO>>;
-  deleteThing(param: {
-    thingId: string;
-  }): Promise<ResponseDTO<ResponseThingDTO>>;
+  deleteThing(param: { id: string }): Promise<ResponseDTO<ResponseThingDTO>>;
   createThing(
     body: BodyCreateThingDTO
   ): Promise<ResponseDTO<{ files: IGetThingFile[]; id: string }>>;
@@ -97,7 +95,7 @@ export class ThingListStore implements IThingListStore {
     }
   }
 
-  public async deleteThing(param: { thingId: string }) {
+  public async deleteThing(param: { id: string }) {
     const deleteThingDTO = new DeleteThingDTO(param);
     const res: ResponseDTO<ResponseThingDTO> = await this.http.request(
       deleteThingDTO

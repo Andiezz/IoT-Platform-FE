@@ -1,0 +1,121 @@
+.wrapper {
+  background-color: #ffffff;
+  padding: 16px;
+  border-radius: 8px;
+  overflow: hidden;
+  &_header {
+    &_left {
+      background-color: #2f80ed;
+    }
+    &_title {
+      color: #212426;
+      font-size: 16px;
+      font-weight: 700;
+    }
+    &_date {
+      color: #848484;
+      font-size: 14px;
+      font-weight: 400;
+    }
+
+    &_systemState {
+      background: rgba(43, 122, 232, 0.20);
+      border-radius: 6px;
+      padding: 2px 8px;
+      &_label {
+        color: #333333;
+        font-weight: 400;
+        line-height: 25px;
+      }
+
+      &_text {
+        color: #2B7AE8;
+        font-weight: 400;
+        line-height: 25px;
+      }
+
+      [class~='ant-typography'] {
+        color: #2b7ae8;
+      }
+
+      span {
+        color: rgba(43, 122, 232, 0.7);
+      }
+    }
+
+    &_info {
+      background: rgba(47, 128, 237, 0.8);
+      border-radius: 4px;
+      padding: 8px 16px;
+      color: rgba(255, 255, 255, 0.8);
+
+      &_name {
+        color: #fff;
+        font-weight: 700;
+        line-height: 21px;
+      }
+
+      &_id {
+        line-height: 21px;
+      }
+    }
+
+    &_tagProp {
+      border-left: 1px solid #dbdee5;
+      border-radius: 6px;
+      span {
+        padding: 4px 8px;
+        font-size: 14px;
+        font-weight: 500;
+        font-family: DM Sans, sans-serif;
+      }
+    }
+  }
+  &_content {
+    height: 100%;
+  }
+
+  &_btn {
+    &_seeMore {
+      color: #2b7ae8;
+      border: 1px solid #2b7ae8;
+      border-radius: 8px;
+      padding: 4px 12px;
+      display: flex;
+      align-items: center;
+      height: auto;
+      span {
+        font-weight: 700;
+        line-height: 18px;
+      }
+    }
+  }
+}
+@media (max-width: 1400px) {
+  .wrapper {
+    &_header {
+      margin-bottom: 8px;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .wrapper {
+    &_header {
+      margin-bottom: 8px;
+      &_title {
+        margin-bottom: 8px;
+      }
+
+      &_systemState {
+        margin-bottom: 8px;
+      }
+    }
+
+    &_btn {
+      &_seeMore {
+        margin-bottom: 8px;
+      }
+    }
+  }
+}
