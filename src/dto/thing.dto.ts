@@ -39,6 +39,7 @@ export interface IParameterStandardModel {
 }
 
 export interface IDevice {
+  _id: string;
   name: string;
   status?: STATUS;
   model: ResponseDeviceModelDTO;

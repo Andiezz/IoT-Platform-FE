@@ -52,6 +52,10 @@ const privateRoutes: RouteType[] = [
     element: lazy(() => import('src/pages/dashboard/dashboard'))
   },
   {
+    path: PAGE_ROUTE.DASHBOARD_OVERVIEW_THING,
+    element: lazy(() => import('src/pages/dashboard/overview/ems-overview/ems-overview'))
+  },
+  {
     path: PAGE_ROUTE.THING_CENTER,
     element: lazy(() => import('src/pages/thing/thing'))
   },

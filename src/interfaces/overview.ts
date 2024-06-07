@@ -1,4 +1,4 @@
-// import { TypeFilterDate } from 'src/components/chart/line-bar-chart/line-bar-chart';
+import { TypeFilterDate } from 'src/components/line-bar-chart/line-bar-chart';
 import { IDevice, ILocation, IThingItem } from 'src/dto/thing.dto';
 
 export interface ITimeseriesData {
@@ -38,8 +38,11 @@ export interface IEvaluatedParameter {
   iaqiValue?: number;
 }
 
+export interface IGeneralIaqiReport {
+  generalIaqi: number;
+}
 export interface IAQResult {
-  generalIaqiReport: IParameterThreshold;
+  generalIaqiReport: IGeneralIaqiReport;
   acceptableSubstances: IEvaluatedParameter[];
   unAcceptableSubstances: IEvaluatedParameter[];
 }
@@ -63,7 +66,7 @@ export interface IChart {
   nh4?: number;
   aceton?: number;
   tvoc?: number;
-  // chartType?: TypeFilterDate;
+  chartType?: TypeFilterDate;
   _id?: string;
   time?: string;
 }
@@ -89,4 +92,62 @@ export interface IOverviewThing {
   timeseriesData?: IChart[];
   thingWarning?: any;
   qualityReport?: IQualityReport;
+}
+
+export interface IChartTemperature {
+  temperature: number;
+  chart_type: string;
+  time: string;
+}
+
+export interface IChartHumidity {
+  humidity: number;
+  chart_type: string;
+  time: string;
+}
+
+export interface IChartParticulateMatter {
+  'pm2.5': number;
+  pm10: number;
+  chart_type: string;
+  time: string;
+}
+
+export interface IChartToxicGases {
+  lpg: number;
+  co: number;
+  co2: number;
+  tvoc: number;
+  chart_type: string;
+  time: string;
+}
+
+export interface IChartParam {
+  'pm2.5': number;
+  pm10: number;
+  temperature: number;
+  humidity: number;
+  lpg: number;
+  ch4: number;
+  co: number;
+  alcohol: number;
+  co2: number;
+  toluen: number;
+  nh4: number;
+  aceton: number;
+  tvoc: number;
+  chartType: TypeFilterDate;
+  _id: string;
+  time: string;
+}
+
+export interface Receiver {
+  userId: string;
+  readAt: string;
+}
+export interface IThingWarning {
+  receivers: Receiver[];
+  type: number | string;
+  title: string;
+  _id: string;
 }
