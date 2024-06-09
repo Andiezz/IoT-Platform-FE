@@ -14,8 +14,8 @@ export interface IAccountManagement {
 
 export interface IAccountManagementItem {
   _id?: string;
-  firstName?: string;
-  lastName?: string;
+  firstName: string;
+  lastName: string;
   email?: string;
   phoneCode?: number;
   phoneNumber?: number;

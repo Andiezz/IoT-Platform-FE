@@ -16,7 +16,7 @@ module.exports = {
 	plugins: ['react', '@typescript-eslint'],
 	rules: {
 		'@typescript-eslint/ban-ts-comment': 'error',
-		'react/jsx-uses-react': 1,
+		'react/jsx-uses-react': 'error',
 		'@typescript-eslint/adjacent-overload-signatures': 'error',
 		'@typescript-eslint/consistent-type-assertions': 'error',
 		'@typescript-eslint/explicit-function-return-type': 'off',
@@ -31,7 +31,8 @@ module.exports = {
 		'@typescript-eslint/no-namespace': 'error',
 		'@typescript-eslint/no-non-null-assertion': 'warn',
 		'@typescript-eslint/no-this-alias': 'error',
-		'@typescript-eslint/no-unused-vars': 'error',
+		'@typescript-eslint/no-unused-vars': 'off',
+		"no-unused-vars": "off",
 		'no-use-before-define': 'off',
 		'@typescript-eslint/no-use-before-define': 'error',
 		'@typescript-eslint/no-var-requires': 'error',

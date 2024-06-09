@@ -3,12 +3,12 @@ import styles from './current-data.module.less';
 import { Col, Empty, Row } from 'antd';
 import OverviewPointWidget from 'src/components/overview/overview-point-widget/overview-point';
 import { BackgroupColor, Color, TextTimeseries } from 'src/constants/thing';
-import { IChart, ITimeseriesData } from 'src/interfaces/overview';
 import { useTranslation } from 'react-i18next';
 import { i18nKey } from 'src/locales/i18n';
+import { IParameterStandardModel } from 'src/dto/thing.dto';
 
 export interface IProps {
-  data?: IChart;
+  data?: IParameterStandardModel;
   arrayTimes: any[];
 }
 
@@ -21,114 +21,140 @@ const CurrentData: React.FC<IProps> = ({ data, arrayTimes }) => {
     }
   }, [arrayTimes]);
 
-  const renderTimeseriesThing = (data: IChart) => {
+  const renderData = (data: IParameterStandardModel) => {
     return (
-      <>
-        {data['pm2.5'] !== 0 && (
-          <OverviewPointWidget
-            text={TextTimeseries.PM25}
-            param={`${data['pm2.5']}`}
-            backgroud={BackgroupColor.PM25}
-            color={Color.PM25}
-          />
-        )}
-        {data['pm10'] !== 0 && (
-          <OverviewPointWidget
-            text={TextTimeseries.PM10}
-            param={`${data['pm10']}`}
-            backgroud={BackgroupColor.PM10}
-            color={Color.PM10}
-          />
-        )}
-        {data['co2'] !== 0 && (
-          <OverviewPointWidget
-            text={TextTimeseries.CO2}
-            param={`${data['co2']}`}
-            backgroud={BackgroupColor.CO2}
-            color={Color.CO2}
-          />
-        )}
-        {data['temperature'] !== 0 && (
-          <OverviewPointWidget
-            text={TextTimeseries.Temp}
-            param={`${data['temperature']}`}
-            backgroud={BackgroupColor.Temp}
-            color={Color.Temp}
-          />
-        )}
-        {data['humidity'] !== 0 && (
-          <OverviewPointWidget
-            text={TextTimeseries.Humi}
-            param={`${data['humidity']}`}
-            backgroud={BackgroupColor.Humi}
-            color={Color.Humi}
-          />
-        )}
-        {data['lpg'] !== 0 && (
-          <OverviewPointWidget
-            text={TextTimeseries.LPG}
-            param={`${data['lpg']}`}
-            backgroud={BackgroupColor.LPG}
-            color={Color.LPG}
-          />
-        )}
-        {data['ch4'] !== 0 && (
-          <OverviewPointWidget
-            text={TextTimeseries.CH4}
-            param={`${data['ch4']}`}
-            backgroud={BackgroupColor.CH4}
-            color={Color.CH4}
-          />
-        )}
-        {data['co'] !== 0 && (
-          <OverviewPointWidget
-            text={TextTimeseries.CO}
-            param={`${data['co']}`}
-            backgroud={BackgroupColor.CO}
-            color={Color.CO}
-          />
-        )}
-        {data['alcohol'] !== 0 && (
-          <OverviewPointWidget
-            text={TextTimeseries.Alcohol}
-            param={`${data['alcohol']}`}
-            backgroud={BackgroupColor.Alcohol}
-            color={Color.Alcohol}
-          />
-        )}
-        {data['toluen'] !== 0 && (
-          <OverviewPointWidget
-            text={TextTimeseries.Toluen}
-            param={`${data['toluen']}`}
-            backgroud={BackgroupColor.Toluen}
-            color={Color.Toluen}
-          />
-        )}
-        {data['nh4'] !== 0 && (
-          <OverviewPointWidget
-            text={TextTimeseries.NH4}
-            param={`${data['nh4']}`}
-            backgroud={BackgroupColor.NH4}
-            color={Color.NH4}
-          />
-        )}
-        {data['aceton'] !== 0 && (
-          <OverviewPointWidget
-            text={TextTimeseries.Aceton}
-            param={`${data['aceton']}`}
-            backgroud={BackgroupColor.Aceton}
-            color={Color.Aceton}
-          />
-        )}
-        {data['tvoc'] !== 0 && (
-          <OverviewPointWidget
-            text={TextTimeseries.TVOC}
-            param={`${data['tvoc']}`}
-            backgroud={BackgroupColor.TVOC}
-            color={Color.TVOC}
-          />
-        )}
-      </>
+      <Row className={styles.wrapper_content_info__fullHeight} gutter={16}>
+        {data.name.toLocaleLowerCase() === 'pm2.5' ? (
+          <div className={styles.wrapper_content_info_item}>
+            <OverviewPointWidget
+              text={TextTimeseries.PM25}
+              param={`${data.weight} ${data.unit}`}
+              backgroud={BackgroupColor.PM25}
+              color={Color.PM25}
+            />
+          </div>
+        ) : null}
+        {data.name.toLocaleLowerCase() === 'pm10' ? (
+          <div className={styles.wrapper_content_info_item}>
+            <OverviewPointWidget
+              text={TextTimeseries.PM10}
+              param={`${data.weight} ${data.unit}`}
+              backgroud={BackgroupColor.PM10}
+              color={Color.PM10}
+            />
+          </div>
+        ) : null}
+        {data.name.toLocaleLowerCase() === 'co2' ? (
+          <div className={styles.wrapper_content_info_item}>
+            <OverviewPointWidget
+              text={TextTimeseries.CO2}
+              param={`${data.weight} ${data.unit}`}
+              backgroud={BackgroupColor.CO2}
+              color={Color.CO2}
+            />
+          </div>
+        ) : null}
+        {data.name.toLocaleLowerCase() === 'temperature' ? (
+          <div className={styles.wrapper_content_info_item}>
+            <OverviewPointWidget
+              text={TextTimeseries.Temp}
+              param={`${data.weight} ${data.unit}`}
+              backgroud={BackgroupColor.Temp}
+              color={Color.Temp}
+            />
+          </div>
+        ) : null}
+        {data.name.toLocaleLowerCase() === 'humidity' ? (
+          <div className={styles.wrapper_content_info_item}>
+            <OverviewPointWidget
+              text={TextTimeseries.Humi}
+              param={`${data.weight} ${data.unit}`}
+              backgroud={BackgroupColor.Humi}
+              color={Color.Humi}
+            />
+          </div>
+        ) : null}
+        {data.name.toLocaleLowerCase() === 'lpg' ? (
+          <div className={styles.wrapper_content_info_item}>
+            <OverviewPointWidget
+              text={TextTimeseries.LPG}
+              param={`${data.weight} ${data.unit}`}
+              backgroud={BackgroupColor.LPG}
+              color={Color.LPG}
+            />
+          </div>
+        ) : null}
+        {data.name.toLocaleLowerCase() === 'ch4' ? (
+          <div className={styles.wrapper_content_info_item}>
+            <OverviewPointWidget
+              text={TextTimeseries.CH4}
+              param={`${data.weight} ${data.unit}`}
+              backgroud={BackgroupColor.CH4}
+              color={Color.CH4}
+            />
+          </div>
+        ) : null}
+        {data.name.toLocaleLowerCase() === 'co' ? (
+          <div className={styles.wrapper_content_info_item}>
+            <OverviewPointWidget
+              text={TextTimeseries.CO}
+              param={`${data.weight} ${data.unit}`}
+              backgroud={BackgroupColor.CO}
+              color={Color.CO}
+            />
+          </div>
+        ) : null}
+        {data.name.toLocaleLowerCase() === 'alcohol' ? (
+          <div className={styles.wrapper_content_info_item}>
+            <OverviewPointWidget
+              text={TextTimeseries.Alcohol}
+              param={`${data.weight} ${data.unit}`}
+              backgroud={BackgroupColor.Alcohol}
+              color={Color.Alcohol}
+            />
+          </div>
+        ) : null}
+        {data.name.toLocaleLowerCase() === 'toluen' ? (
+          <div className={styles.wrapper_content_info_item}>
+            <OverviewPointWidget
+              text={TextTimeseries.Toluen}
+              param={`${data.weight} ${data.unit}`}
+              backgroud={BackgroupColor.Toluen}
+              color={Color.Toluen}
+            />
+          </div>
+        ) : null}
+        {data.name.toLocaleLowerCase() === 'nh4' ? (
+          <div className={styles.wrapper_content_info_item}>
+            <OverviewPointWidget
+              text={TextTimeseries.NH4}
+              param={`${data.weight} ${data.unit}`}
+              backgroud={BackgroupColor.NH4}
+              color={Color.NH4}
+            />
+          </div>
+        ) : null}
+        {data.name.toLocaleLowerCase() === 'aceton' ? (
+          <div className={styles.wrapper_content_info_item}>
+            <OverviewPointWidget
+              text={TextTimeseries.Aceton}
+              param={`${data.weight} ${data.unit}`}
+              backgroud={BackgroupColor.Aceton}
+              color={Color.Aceton}
+            />
+          </div>
+        ) : null}
+        {data.name.toLocaleLowerCase() === 'tvoc' ? (
+          <div className={styles.wrapper_content_info_item}>
+            <OverviewPointWidget
+              text={TextTimeseries.TVOC}
+              param={`${data.weight} ${data.unit}`}
+              backgroud={BackgroupColor.TVOC}
+              color={Color.TVOC}
+            />
+          </div>
+        ) : null}
+      </Row>
     );
   };
 
@@ -144,7 +170,7 @@ const CurrentData: React.FC<IProps> = ({ data, arrayTimes }) => {
             }
             style={{ width: '100%' }}
             gutter={16}>
-            {renderTimeseriesThing(data)}
+            {renderData(data)}
           </Row>
           {arrayTimes.length > 5 && (
             <Row style={{ width: '100%' }}>

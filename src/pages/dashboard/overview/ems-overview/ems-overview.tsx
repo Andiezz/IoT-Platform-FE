@@ -1,20 +1,35 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from './ems-overview.module.less';
-import { Breadcrumb, Col, Empty, Row, Tabs, TabsProps, Typography } from 'antd';
+import { Breadcrumb, Col, Empty, Row, Typography } from 'antd';
 import { useTranslation } from 'react-i18next';
 import { i18nKey } from 'src/locales/i18n';
 import OverviewItemWidget from 'src/components/overview/overview-item-widget/overview-item';
-import { ReactComponent as IconLocation } from 'src/assets/icons/Location.svg';
+// import { ReactComponent as IconLocation } from 'src/assets/icons/Location.svg';
 import useStore from 'src/hooks/use-store';
-import { OverviewStore } from 'src/store/overview/overview.store';
-import { IOverviewFetch } from 'src/dto/overview.dto';
+// import { OverviewStore } from 'src/store/overview/overview.store';
+// import { IOverviewFetch } from 'src/dto/overview.dto';
 import moment from 'moment-timezone';
-import { useNavigate, useParams } from 'react-router';
+import { useNavigate } from 'react-router';
 import { observer } from 'mobx-react-lite';
 import { PAGE_ROUTE } from 'src/constants/route';
+import {
+  SearchField,
+  TypeFilterDate
+} from 'src/components/line-bar-chart/line-bar-chart';
 import Loader from 'src/components/loader';
+// import CurrentData from '../current-data/current-data';
+import { useParams } from 'react-router-dom';
+import { IThingListStore } from 'src/store/thing.store';
+import { IThingItem } from 'src/dto/thing.dto';
 import CurrentData from '../current-data/current-data';
-import { IOverviewThing } from 'src/interfaces/overview';
+import { IOverviewStore } from 'src/store/overview/overview.store';
+import { IOverviewFetch } from 'src/dto/overview.dto';
+import LineChart from 'src/components/line-chart/line-chart';
+import { IChartParam, IThingWarning } from 'src/interfaces/overview';
+import DoughnutChart from 'src/components/doughnut-chart/doughnut-chart';
+import { GaugeChart } from 'src/components/gauge-chart/gauge-chart';
+// import LineChart from 'src/components/chart/line-chart/line-chart';
+// import { IOverviewThing } from 'src/interfaces/overview';
 
 export interface DataType {
   key: React.Key;
@@ -23,20 +38,41 @@ export interface DataType {
   status: string;
 }
 
-interface IWrapperComponent {
-  children?: React.ReactNode;
-  isRenderNodata?: boolean;
-}
+// interface IWrapperComponent {
+//   children?: React.ReactNode;
+//   isRenderNodata?: boolean;
+// }
 
 const TenantOverview: React.FC = () => {
-  const overviewStore: OverviewStore = useStore('overviewStore');
+  const thingListStore: IThingListStore = useStore('listThingStore');
+  const overviewStore: IOverviewStore = useStore('overviewStore');
   const params = useParams();
   const navigate = useNavigate();
   const { t } = useTranslation();
   const arrayTimes: any = [];
   const [loadingChart, setLoadingChart] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
-  const [dataThing, setDataThing] = useState<IOverviewThing>();
+  const [searchField, setSearchField] = useState<SearchField>({
+    type: TypeFilterDate.day,
+    from: moment().startOf('day').toISOString(),
+    to: moment().endOf('day').toISOString()
+  });
+  const [dataThing, setDataThing] = useState<IThingItem>();
+  const [dataThingWarning, setDataThingWarning] = useState<IThingWarning>();
+
+  const result = overviewStore.overviewThing?.thingWarning.reduce((acc: any[], current: any) => {
+    const found = acc.find((item: any) => item.title === current.title && item.type === current.type);
+    if (found) {
+        found.receivers.push(...current.receivers);
+    } else {
+        acc.push({
+            title: current.title,
+            type: current.type,
+            receivers: [...current.receivers]
+        });
+    }
+    return acc;
+}, []);
 
   if (overviewStore?.overviewThing?.timeseriesData) {
     Object.entries(overviewStore?.overviewThing.timeseriesData).forEach(
@@ -46,13 +82,17 @@ const TenantOverview: React.FC = () => {
     );
   }
 
-  const getOverviewThing = async (id: string, request: IOverviewFetch) => {
+  const handleSetSearchField = (searchField: SearchField) => {
+    setSearchField({ ...searchField });
+  };
+
+  const getOverviewThing = async (id: string) => {
     setLoadingChart(true);
-    await overviewStore
-      .fetchThing({ id }, request)
-      .then(() => {
+    await thingListStore
+      .getDetailThing({ id })
+      .then((rs) => {
         setLoading(false);
-        setDataThing(overviewStore?.overviewThing);
+        setDataThing(rs.data);
       })
       .catch(() => {
         throw Error;
@@ -60,58 +100,93 @@ const TenantOverview: React.FC = () => {
     setLoadingChart(false);
   };
 
+  const getOverview = async (
+    param: { id: string },
+    request: IOverviewFetch | undefined
+  ) => {
+    setLoadingChart(true);
+    await overviewStore.fetchThing(param, request).catch(() => {
+      throw Error;
+    });
+    setLoadingChart(false);
+  };
+
+  useEffect(() => {
+    if (params?.id) {
+      getOverviewThing(params.id);
+    }
+  }, [params]);
+
+  useEffect(() => {
+    if (params?.id) {
+      getOverview(
+        { id: params.id },
+        {
+          timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+          ...searchField
+        }
+      );
+    }
+  }, [searchField]);
+
   const renderDashboard = () => {
-    const timeseriesData = overviewStore.overviewThing?.timeseriesData;
     return (
       <div className={styles.wrapper_content}>
         <Row gutter={24}>
           <Col span={24} className={styles.wrapper_content_info}>
-            <OverviewItemWidget
-              title={overviewStore.overviewThing?.thingDetail?.name}
-              info={overviewStore.overviewThing?.thingDetail?._id}>
-              {timeseriesData && timeseriesData.length > 0 && (
-                <CurrentData
-                  data={timeseriesData[timeseriesData.length - 1]}
-                  arrayTimes={arrayTimes}
-                />
+            <OverviewItemWidget title={dataThing?.name} info={dataThing?._id}>
+              {dataThing?.devices.map((item) =>
+                item.parameterStandards.map((param) => (
+                  <CurrentData
+                    key={param.name}
+                    data={param}
+                    arrayTimes={item.parameterStandards}
+                  />
+                ))
               )}
             </OverviewItemWidget>
           </Col>
         </Row>
         <Row style={{ marginTop: 24 }} gutter={[24, 24]}>
-          <Col sm={24} xs={24} md={24} lg={24} xl={24} xxl={16}>
-            <Row gutter={[0, 24]}>
-              <Col span={24}>
-                <Row gutter={[24, 24]}>
-                  <Col sm={24} xs={24} md={24} lg={24} xl={12} xxl={12}>
-                    <div className={styles.wrapper_content_weather}>
-                      <Row gutter={[0, 24]}>
-                        <Col span={24}>
-                          <div
-                            className={styles.wrapper_content_weather_address}>
-                            <IconLocation style={{ marginRight: 8 }} />
-                            <p>
-                              {
-                                overviewStore.overviewThing?.thingDetail
-                                  ?.location?.address
-                              }
-                            </p>
-                          </div>
-                        </Col>
-                      </Row>
-                    </div>
-                  </Col>
-                </Row>
+          <Col sm={24} xs={24} md={24} lg={24} xl={16} xxl={16}>
+            <Row className={styles.wrapper_content_alarms} gutter={[24, 24]}>
+              <Col sm={24} xs={24} md={24} lg={24} xl={24} xxl={24}>
+                <LineChart
+                  loadingChart={loadingChart}
+                  dataChart={
+                    overviewStore.overviewThing?.timeseriesData as IChartParam[]
+                  }
+                  searchField={searchField}
+                  onSetSearchField={handleSetSearchField}
+                />
               </Col>
-              <Col span={24}>
-                <Row>
-                  <Col span={24}>
-                  </Col>
-                </Row>
+            </Row>
+            <Row
+              style={{ marginTop: 20 }}
+              className={styles.wrapper_content_alarms}
+              gutter={[24, 24]}>
+              <Col sm={24} xs={24} md={24} lg={24} xl={12} xxl={12}>
+                <div className={styles.wrapper_content_alarms}>
+                  <DoughnutChart
+                    title={`${t(i18nKey.dashboard.label.thingWarning)}`}
+                    tooltip="Group by Alarm Description"
+                    datas={result}
+                  />
+                </div>
+              </Col>
+              <Col sm={24} xs={24} md={24} lg={24} xl={12} xxl={12}>
+                <div className={styles.wrapper_content_alarms}>
+                  <GaugeChart
+                    title={`${t(i18nKey.dashboard.label.thingWarning)}`}
+                    qualityReport={
+                      overviewStore.overviewThing?.qualityReport
+                    }
+                  />
+                </div>
               </Col>
             </Row>
           </Col>
-          <Col sm={24} xs={24} md={24} lg={24} xl={24} xxl={8}>
+          <Col sm={24} xs={24} md={24} lg={24} xl={8} xxl={8}>
             <Row gutter={[0, 24]}>
               <Col className={styles.drives_map} span={24}>
                 <Row gutter={[0, 16]}>
@@ -122,6 +197,54 @@ const TenantOverview: React.FC = () => {
                           className={styles.wrapper_content_driver_title}
                           span={24}>
                           {t(i18nKey.dashboard.label.deviceList)}
+                        </Col>
+                        <Col span={24}>
+                          <Row
+                            className={styles.wrapper_content_driver_list}
+                            gutter={[0, 16]}>
+                            {overviewStore.overviewThing?.thingDetail.devices
+                              .length ? (
+                              overviewStore.overviewThing?.thingDetail.devices.map(
+                                (item, key) => (
+                                  <Col
+                                    key={key}
+                                    className={
+                                      styles.wrapper_content_driver_item
+                                    }
+                                    onClick={() => {
+                                      navigate(`${PAGE_ROUTE.DEVICE_MODEL}`);
+                                    }}
+                                    span={24}>
+                                    <Row
+                                      gutter={[4, 4]}
+                                      justify={'space-between'}
+                                      align={'middle'}>
+                                      <Col>
+                                        <Row className={styles.name}>
+                                          {item.name}
+                                        </Row>
+                                        <Row
+                                          className={styles.driverID}
+                                          align={'middle'}>
+                                          <span>
+                                            {t(
+                                              i18nKey.dashboard.label
+                                                .deviceListId
+                                            )}
+                                          </span>
+                                          {item._id}
+                                        </Row>
+                                      </Col>
+                                    </Row>
+                                  </Col>
+                                )
+                              )
+                            ) : (
+                              <Col span={24}>
+                                <Empty image={Empty.PRESENTED_IMAGE_DEFAULT} />
+                              </Col>
+                            )}
+                          </Row>
                         </Col>
                       </Row>
                     </div>
@@ -163,20 +286,26 @@ const TenantOverview: React.FC = () => {
                           {t(i18nKey.dashboard.title.thingOverview)}
                         </Typography.Title>
                       </Col>
-                      {overviewStore?.overviewThing ? (
+                      {dataThing ? (
                         <Col span={24}>
                           <Breadcrumb
                             className={styles.wrapper_header_breadcrumb}
                             items={[
                               {
                                 title: (
-                                  <button onClick={onClickTenant}>
+                                  <button
+                                    style={{
+                                      cursor: 'pointer',
+                                      border: 0,
+                                      backgroundColor: 'transparent'
+                                    }}
+                                    onClick={onClickTenant}>
                                     {t(i18nKey.dashboard.title.dashboard)}
                                   </button>
                                 )
                               },
                               {
-                                title: `${overviewStore.overviewThing?.thingDetail?.name}`
+                                title: `${dataThing.name}`
                               }
                             ]}
                           />
@@ -192,9 +321,7 @@ const TenantOverview: React.FC = () => {
               </Col>
               <Col span={24}>
                 <Row justify={'space-between'}>
-                  <Col span={24}>
-                    {renderDashboard()}
-                  </Col>
+                  <Col span={24}>{renderDashboard()}</Col>
                 </Row>
               </Col>
             </Row>

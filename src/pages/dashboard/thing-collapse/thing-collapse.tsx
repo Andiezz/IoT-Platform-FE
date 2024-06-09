@@ -15,6 +15,13 @@ export interface IThingCollapse {
 const ThingCollapse: React.FC<IThingCollapse> = ({ data, onClickItem }) => {
   const [isOpenCollapse, setIsOpenCollapse] = useState<boolean>(true);
 
+  // const arrayTimes: any = [];
+  // if (data?.timeseriesData) {
+  //   Object.entries(data.timeseriesData).forEach((item) => {
+  //     return item[1] ? arrayTimes.push(item) : null;
+  //   });
+  // }
+
   const handleCollapse = () => {
     setIsOpenCollapse(!isOpenCollapse);
   };
@@ -30,11 +37,21 @@ const ThingCollapse: React.FC<IThingCollapse> = ({ data, onClickItem }) => {
     }
   };
 
+  // useEffect(() => {
+  //   if (arrayTimes.length < 3) {
+  //     setIsOpenCollapse(false);
+  //   }
+  // }, []);
+
   return (
     <Row gutter={[0, 12]} className={styles.wrapper}>
-      <Col span={24}>
+      <Col span={24} className={styles.wrapper_header}>
         <button
-          style={{ cursor: 'pointer' }}
+          style={{
+            cursor: 'pointer',
+            border: 0,
+            backgroundColor: 'transparent'
+          }}
           className={styles.wrapper_header_left}
           onClick={() => onClickItem && onClickItem(data?._id ?? '')}>
           <Row align={'middle'} justify={'space-between'} gutter={[16, 8]}>
@@ -53,7 +70,8 @@ const ThingCollapse: React.FC<IThingCollapse> = ({ data, onClickItem }) => {
         </button>
         <button
           className={styles.wrapper_header_right}
-          onClick={handleCollapse}>
+          onClick={handleCollapse}
+          style={{ cursor: 'pointer', border: 0, backgroundColor: 'transparent' }}>
           <Row gutter={8} justify={'end'} align={'middle'}>
             <Divider type="vertical" />
             <Col

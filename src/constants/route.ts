@@ -27,5 +27,6 @@ export enum PAGE_ROUTE {
   DEVICE_MODEL = '/device-model',
   NEW_DEVICE_MODEL = '/device-model/new',
   UPDATE_DEVICE_MODEL = '/device-model/update/:id',
+  DASHBOARD_OVERVIEW_THING = '/dashboard/overview/:id',
 }
 
