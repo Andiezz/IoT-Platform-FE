@@ -116,7 +116,6 @@ const RequestForm: React.FC = () => {
   const [action, setAction] = useState<'create' | 'update' | 'cancel'>(
     'cancel'
   );
-
   //store
   const dataThing: IThingListStore = useStore('listThingStore');
   const [downloadObj, setDownloadObj] = useState<IDownloadObj>({
@@ -488,6 +487,7 @@ const RequestForm: React.FC = () => {
           options={options}
           models={models}
           form={form}
+          listManagerThing={listManagerThing}
         />
       </div>
     );

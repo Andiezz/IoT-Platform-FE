@@ -114,9 +114,9 @@ const MainLayout: React.FC = () => {
                 <div
                   className={styles.container_collapse}
                   style={{ marginLeft: collapsed ? 20 : 0 }}>
-                  <button onClick={toggleCollapsed}>
+                  <div onClick={toggleCollapsed}>
                     <img src={menuIcon} alt="menu-icon" />
-                  </button>
+                  </div>
                 </div>
               </Col>
             </Row>
@@ -137,9 +137,9 @@ const MainLayout: React.FC = () => {
                   gutter={16}>
                   <Col xl={2} sm={8} xs={8}>
                     <div className={styles.container_sidebar}>
-                      <button onClick={toggleMenuBar}>
+                      <div onClick={toggleMenuBar}>
                         <img src={menuIcon} alt="menu-icon" />
-                      </button>
+                      </div>
                     </div>
                   </Col>
                   <Col xl={22} sm={16} xs={16}>

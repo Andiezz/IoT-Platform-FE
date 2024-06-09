@@ -14,10 +14,10 @@ import { createSearchParams } from 'react-router-dom';
 import useViewport from 'src/hooks/use-viewport';
 
 const backgroundColor = [
+  '#E1F45F',
+  '#FF8060',
   '#2B7AE8',
   '#59BDF0',
-  '#FF8060',
-  '#E1F45F',
   '#8CE6A4',
   '#EBEBF0'
 ];
@@ -180,10 +180,10 @@ function DoughnutChart({
         label: 'Value',
         data: values,
         backgroundColor: [
+          '#E1F45F',
+          '#FF8060',
           '#2B7AE8',
           '#59BDF0',
-          '#FF8060',
-          '#E1F45F',
           '#8CE6A4',
           '#EBEBF0'
         ],
@@ -271,58 +271,58 @@ function DoughnutChart({
           </Col>
         )}
         {/* {!isOpenCollapse && ( */}
-          <Row style={{ width: '100%' }} gutter={[0, 24]}>
-            <Col span={24}>
-              {datas?.length ? (
-                isRender && (
-                  <Row gutter={[0, 16]}>
-                    <Col span={24}>
-                      <div className={styles.wrapperChart}>
-                        <Doughnut
-                          style={{
-                            transition: 'all .2s ease',
-                            minHeight: !isOpenCollapse ? '114px' : '0px'
-                          }}
-                          height={'114px'}
-                          plugins={[textCenter]}
-                          data={dataDaughtnut ?? data}
-                          options={options}
-                        />
-                      </div>
-                    </Col>
-                    <Col span={24}>
-                      <Row gutter={[12, 12]}>
-                        {labels.map((item: any, index: number) => {
-                          return (
-                            <Col
-                              key={index}
-                              sm={12}
-                              xs={12}
-                              md={12}
-                              lg={12}
-                              xl={12}
-                              xxl={12}
-                              className={styles.wrapper_legend}>
-                              <span
-                                className={styles.wrapper_legend_label}
-                                style={{
-                                  backgroundColor: `${backgroundColor[index]}`
-                                }}></span>
-                              {item}: {values[index]}
-                            </Col>
-                          );
-                        })}
-                      </Row>
-                    </Col>
-                  </Row>
-                )
-              ) : (
-                <Row justify={'center'}>
-                  <Empty image={Empty.PRESENTED_IMAGE_DEFAULT} />
+        <Row style={{ width: '100%' }} gutter={[0, 24]}>
+          <Col span={24}>
+            {datas?.length ? (
+              isRender && (
+                <Row gutter={[0, 16]}>
+                  <Col span={24}>
+                    <div className={styles.wrapperChart}>
+                      <Doughnut
+                        style={{
+                          transition: 'all .2s ease',
+                          minHeight: !isOpenCollapse ? '114px' : '0px'
+                        }}
+                        height={'114px'}
+                        plugins={[textCenter]}
+                        data={dataDaughtnut ?? data}
+                        options={options}
+                      />
+                    </div>
+                  </Col>
+                  <Col span={24}>
+                    <Row gutter={[12, 12]}>
+                      {labels.map((item: any, index: number) => {
+                        return (
+                          <Col
+                            key={index}
+                            sm={12}
+                            xs={12}
+                            md={12}
+                            lg={12}
+                            xl={12}
+                            xxl={12}
+                            className={styles.wrapper_legend}>
+                            <span
+                              className={styles.wrapper_legend_label}
+                              style={{
+                                backgroundColor: `${backgroundColor[index]}`
+                              }}></span>
+                            {item}: {values[index]}
+                          </Col>
+                        );
+                      })}
+                    </Row>
+                  </Col>
                 </Row>
-              )}
-            </Col>
-            {/* {
+              )
+            ) : (
+              <Row justify={'center'}>
+                <Empty image={Empty.PRESENTED_IMAGE_DEFAULT} />
+              </Row>
+            )}
+          </Col>
+          {/* {
               !cellAlarm && <Col xs={24} sm={24} md={0} lg={0} xl={0} xxl={0}>
                 <Button
                   className={styles.wrapper_btn_alarm}
@@ -339,7 +339,7 @@ function DoughnutChart({
                 </Button>
               </Col>
             } */}
-          </Row>
+        </Row>
         {/* )} */}
       </Row>
     </div>

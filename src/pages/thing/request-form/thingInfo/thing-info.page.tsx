@@ -35,10 +35,13 @@ import FormItem from 'antd/es/form/FormItem';
 import { IUserStore } from 'src/store/user.store';
 import RenderAvatar from 'src/components/render-avatar/render-avatar';
 import { Role } from 'src/interfaces/user';
-import { IManager } from 'src/dto/thing.dto';
+import { IManager, IUserOwnerResponseGetByEmail } from 'src/dto/thing.dto';
 import { IDeviceModelItem } from 'src/store/device-model/device-model.store';
 // import { IParameterFormI } from 'src/pages/parameter/request-form/request-form.page';
 import ModelFiled from '../model-field/model-filed';
+import { IAccountListStore } from 'src/store/account-management/account-management-list.store';
+import { IAccountManagementListRequest } from 'src/dto/account-management-list.dto';
+import { ResponseDTO } from 'src/dto/base.dto';
 
 interface IThingInfoFormProps {
   onChangeMarker: (marker: MarkerLocation) => void;
@@ -56,7 +59,8 @@ interface IThingInfoFormProps {
   status?: string;
   options?: IOption[] | undefined;
   models?: IDeviceModelItem[];
-  form: FormInstance
+  form: FormInstance;
+  listManagerThing: IManager[];
 }
 
 export const defaultMarker = {
@@ -78,12 +82,16 @@ const ThingInfoForm: React.FC<IThingInfoFormProps> = ({
   status,
   options,
   models,
-  form
+  form,
+  listManagerThing,
 }: IThingInfoFormProps) => {
   const [t] = useTranslation();
   const params = useParams();
   const onboardingThingStore: IThingStore = useStore('thingStore');
   const userStore: IUserStore = useStore('userStore');
+  const accountManagementListStore: IAccountListStore = useStore(
+    'listAccountManagementListStore'
+  );
   // const [openParam, setOpenParam] = useState<boolean>(false);
   // const [isChangeDefault, setIsChangeDefault] = useState<boolean>(false);
   // const [isHasValue, setIsHasValue] = useState<boolean>(false);
@@ -109,10 +117,22 @@ const ThingInfoForm: React.FC<IThingInfoFormProps> = ({
   //   setParamList(selectedModel?.parameterStandards);
   // }, [model]);
 
+  const fetchData = async (request?: IAccountManagementListRequest) => {
+    try {
+      await accountManagementListStore.fetchList(request);
+      const listAccountManagement =
+      accountManagementListStore.listAccountManagement;
+      console.log('🚀 ~ fetchData ~ listAccountManagement:', listAccountManagement)
+    } catch (error) {
+      throw Error;
+    }
+  };
+
   useEffect(() => {
     if (!params.id) {
       onboardingThingStore.setThing(undefined as any, NaN);
     }
+    fetchData();
   }, []);
 
   const RenderOnlyAvatar = ({ value }: { value?: IManager[] }) => {
@@ -151,23 +171,25 @@ const ThingInfoForm: React.FC<IThingInfoFormProps> = ({
         <Form.Item name="owner" noStyle>
           {userStore.userInfo?.role === Role.ADMIN ? (
             <AddOwner
-              visibleDropdown={visibleDropdownAddOwner}
-              onChangeVisibleDropdown={handleChangeVisibleAddOnwer}
-              formInstane={formInstanseAddOwner}
-              textBtnAdd={t(i18nKey.thingEntity.button.addOwner)}
-              titleDrawer="Add Thing Owner"
-              onAddEmail={onAddEmailOwner}
-              sizeAvatar={25}
+            value={listManagerThing}
+            visibleDropdown={visibleDropdownAddOwner}
+            onChangeVisibleDropdown={handleChangeVisibleAddOnwer}
+            formInstane={formInstanseAddOwner}
+            textBtnAdd={t(i18nKey.thingEntity.button.addOwner)}
+            titleDrawer="Add Thing Owner"
+            onAddEmail={onAddEmailOwner}
+            sizeAvatar={25}
             />
-          ) : (
-            <RenderOnlyAvatar />
-          )}
+            ) : (
+              <RenderOnlyAvatar />
+              )}
         </Form.Item>
       );
-    }
+      }
     return (
       <Form.Item name="owner" noStyle>
         <AddOwner
+          value={listManagerThing}
           visibleDropdown={visibleDropdownAddOwner}
           onChangeVisibleDropdown={handleChangeVisibleAddOnwer}
           formInstane={formInstanseAddOwner}
@@ -227,6 +249,9 @@ const ThingInfoForm: React.FC<IThingInfoFormProps> = ({
                       <FormItem name={'viewers'}>
                         {userStore.userInfo?.role === Role.ADMIN ? (
                           <AddOwner
+                            value={
+                              listManagerThing
+                            }
                             titleDrawer={`${t(
                               i18nKey.thingEntity.button.ownerAssignment
                             )}`}
@@ -245,29 +270,29 @@ const ThingInfoForm: React.FC<IThingInfoFormProps> = ({
                       </FormItem>
                     </Col>
                     <Col span={24}>
-                          <Form.Item
-                            label={t(i18nKey.thingEntity.label.ThingInfo)}
-                            className={styles.formWrapper_locations_field}
-                            name={['information']}
-                            normalize={normalizeTrimStart}
-                            required
-                            rules={[
-                              {
-                                required: true,
-                                message: `${t(
-                                  i18nKey.validation.common.requiredField
-                                )}`
-                              },
-                              {
-                                whitespace: true,
-                                message: `${t(
-                                  i18nKey.validation.common.requiredField
-                                )}`
-                              }
-                            ]}>
-                            <Input />
-                          </Form.Item>
-                        </Col>
+                      <Form.Item
+                        label={t(i18nKey.thingEntity.label.ThingInfo)}
+                        className={styles.formWrapper_locations_field}
+                        name={['information']}
+                        normalize={normalizeTrimStart}
+                        required
+                        rules={[
+                          {
+                            required: true,
+                            message: `${t(
+                              i18nKey.validation.common.requiredField
+                            )}`
+                          },
+                          {
+                            whitespace: true,
+                            message: `${t(
+                              i18nKey.validation.common.requiredField
+                            )}`
+                          }
+                        ]}>
+                        <Input />
+                      </Form.Item>
+                    </Col>
                   </Row>
                 </WhiteBox>
               </Form.Item>
@@ -425,7 +450,6 @@ const ThingInfoForm: React.FC<IThingInfoFormProps> = ({
                                               <Input />
                                             </Form.Item>
                                           </Col>
-                                          
 
                                           {/* <Col
                                             className="gutter-row"
@@ -518,7 +542,13 @@ const ThingInfoForm: React.FC<IThingInfoFormProps> = ({
                                             </Col>
                                           )} */}
                                         </Row>
-                                        <ModelFiled dataThingDetail={dataThingDetail} form={form} options={options} idx={idx} models={models}/>
+                                        <ModelFiled
+                                          dataThingDetail={dataThingDetail}
+                                          form={form}
+                                          options={options}
+                                          idx={idx}
+                                          models={models}
+                                        />
                                         {/* {isChangeDefault && (
                                           <Row gutter={[12, 16]}>
                                             <Col span={12} xl={12} xs={24}>

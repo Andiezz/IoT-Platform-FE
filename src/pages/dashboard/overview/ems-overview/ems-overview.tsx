@@ -60,6 +60,20 @@ const TenantOverview: React.FC = () => {
   const [dataThing, setDataThing] = useState<IThingItem>();
   const [dataThingWarning, setDataThingWarning] = useState<IThingWarning>();
 
+  const result = overviewStore.overviewThing?.thingWarning.reduce((acc: any[], current: any) => {
+    const found = acc.find((item: any) => item.title === current.title && item.type === current.type);
+    if (found) {
+        found.receivers.push(...current.receivers);
+    } else {
+        acc.push({
+            title: current.title,
+            type: current.type,
+            receivers: [...current.receivers]
+        });
+    }
+    return acc;
+}, []);
+
   if (overviewStore?.overviewThing?.timeseriesData) {
     Object.entries(overviewStore?.overviewThing.timeseriesData).forEach(
       (item) => {
@@ -156,7 +170,7 @@ const TenantOverview: React.FC = () => {
                   <DoughnutChart
                     title={`${t(i18nKey.dashboard.label.thingWarning)}`}
                     tooltip="Group by Alarm Description"
-                    datas={overviewStore.overviewThing?.thingWarning}
+                    datas={result}
                   />
                 </div>
               </Col>

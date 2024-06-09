@@ -5,6 +5,7 @@ import React, { useState } from 'react';
 import ReactApexChart from 'react-apexcharts';
 import { IQualityReport } from 'src/interfaces/overview';
 import ProgressBar from '../progress-bar/ProgressBar';
+import { round } from 'lodash';
 
 type Props = {
   title: string;
@@ -97,7 +98,7 @@ export const GaugeChart = ({ title, qualityReport }: Props) => {
                 }}>
                 <Col>
                   <Row style={{ fontSize: 20, fontWeight: 'bold' }}>Acceptable Subtances</Row>
-                  <Row style={{ marginLeft: 20 }}>
+                  <Row style={{ marginLeft: 5 }}>
                     <Col>
                       {qualityReport?.iaqResult.acceptableSubstances.map(
                         (item) => (
@@ -115,7 +116,7 @@ export const GaugeChart = ({ title, qualityReport }: Props) => {
                                   padding: 3,
                                   alignItems: 'center'
                                 }}>
-                                {item.value}
+                                {round(item.value,2)}
                               </div>
                               <div
                                 style={{
@@ -136,7 +137,7 @@ export const GaugeChart = ({ title, qualityReport }: Props) => {
                     </Col>
                   </Row>
                   <Row style={{ fontSize: 20, fontWeight: 'bold' }}>Unacceptable Subtances</Row>
-                  <Row style={{ marginLeft: 20 }}>
+                  <Row style={{ marginLeft: 5 }}>
                     <Col>
                       {qualityReport?.iaqResult.unAcceptableSubstances.map(
                         (item) => (
@@ -154,7 +155,7 @@ export const GaugeChart = ({ title, qualityReport }: Props) => {
                                   padding: 3,
                                   alignItems: 'center'
                                 }}>
-                                {item.value}
+                                {round(item.value,2)}
                               </div>
                               <div
                                 style={{
@@ -177,12 +178,12 @@ export const GaugeChart = ({ title, qualityReport }: Props) => {
                 </Col>
               </div>
             ) : (
-              <Row justify={'center'} style={{ position: 'relative' }}>
+              <Row justify={'center'} style={{ position: 'relative', padding: 5 }}>
                 <ReactApexChart
                   options={options}
                   type="radialBar"
                   series={series}
-                  height={400}
+                  height={300}
                 />
                 <Row
                   className={styles.title}
@@ -191,7 +192,7 @@ export const GaugeChart = ({ title, qualityReport }: Props) => {
                     width: '100%',
                     justifyContent: 'center'
                   }}>
-                  {qualityReport.iaqResult.generalIaqiReport.generalIaqi}
+                  {round(qualityReport.iaqResult.generalIaqiReport.generalIaqi,2)}
                 </Row>
               </Row>
             )}
