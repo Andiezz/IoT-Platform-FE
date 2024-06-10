@@ -13,7 +13,7 @@ class EventEmitter {
 
   public emit(event: string, ...args: EventAgrs): void {
     const handlers = this.listenersMap.get(event);
-    if (!handlers || !handlers.length) {
+    if (!handlers?.length) {
       return;
     }
     handlers.forEach((h) => {
