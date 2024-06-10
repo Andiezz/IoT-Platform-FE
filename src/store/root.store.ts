@@ -17,6 +17,11 @@ import {
   IDeviceModelStore
 } from './device-model/device-model.store';
 import { IOverviewStore, OverviewStore } from './overview/overview.store';
+import {
+  INotificationStore,
+  NotificationStore
+} from './notification/notification.store';
+import eventEmitter from 'src/store/event';
 
 export interface IRootStore {
   configuration: IConfiguration;
@@ -28,6 +33,7 @@ export interface IRootStore {
   parameterStore: IParameterStore;
   deviceModelStore: IDeviceModelStore;
   overviewStore: IOverviewStore;
+  notificationStore: INotificationStore;
 }
 export type StoreChildKeyType = keyof IRootStore;
 
@@ -41,6 +47,7 @@ export class RootStore implements IRootStore {
   parameterStore: IParameterStore;
   deviceModelStore: IDeviceModelStore;
   overviewStore: IOverviewStore;
+  notificationStore: INotificationStore;
   constructor() {
     this.httpClient = httpClient;
     this.configuration = new ConfigurationStore();
@@ -53,6 +60,11 @@ export class RootStore implements IRootStore {
     this.parameterStore = new ParameterStore(this.httpClient);
     this.deviceModelStore = new DeviceModelStore(this.httpClient);
     this.overviewStore = new OverviewStore(this.httpClient);
+    this.notificationStore = new NotificationStore(this.httpClient);
+
+    eventEmitter.on('logout',()=>{
+      this.notificationStore.destroyStoreWhenLogout();
+    })
   }
 }
 

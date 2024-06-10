@@ -5,7 +5,7 @@ const dashboard = {
   },
   label: {
     temperature:'Temperature',
-    deviceList: 'Device List',
+    thingList: 'Thing List',
     deviceListId: 'Device List ID',
     thingWarning: 'Thing Warning',
     iaqResult: 'IAQ Result',

@@ -1,4 +1,4 @@
-import { Col, Drawer, Layout, Row, theme } from 'antd';
+import { Col, Drawer, Layout, Row, theme, notification } from 'antd';
 import { observer } from 'mobx-react-lite';
 import React, { useEffect, useState } from 'react';
 import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
@@ -18,6 +18,12 @@ import AppHeader from './components/header/header';
 import AppMenu from './components/menu/menu';
 import ProfileMenu from './components/profile/menu';
 import styles from './main.layout.module.less';
+import { INotification, ISocketMessage } from 'src/dto/notification.dto';
+import { INotificationStore } from 'src/store/notification/notification.store';
+import { useTranslation } from 'react-i18next';
+import { i18nKey } from 'src/locales/i18n';
+import { ISocketService } from 'src/services/socket.service';
+import { IHttpService } from 'src/services/http.service';
 
 const { Header, Sider, Content } = Layout;
 
@@ -25,8 +31,10 @@ const MainLayout: React.FC = () => {
   const {
     token: { colorBgContainer }
   } = theme.useToken();
+  const { t } = useTranslation();
   const [collapsed, setCollapsed] = useState(false);
   const [menuBar, setMenuBar] = useState(false);
+  const [data, setData] = useState<IUserInfo>();
   const userStore: IUserStore = useStore('userStore');
   const location = useLocation();
   const menu = useMenuProfile();
@@ -35,14 +43,79 @@ const MainLayout: React.FC = () => {
   const authService: IAuthenticationService = useService(
     'authenticationService'
   );
+  const socketService: ISocketService = useService('socketService');
+  const httpService: IHttpService = useService('httpService');
   const navigator = useNavigate();
+  const notificationService: INotificationStore = useStore('notificationStore');
+
+  const getNotification = async () => {
+    try {
+      notificationService.updateLoadingNotification(true);
+      await notificationService.getListNotification({
+        page: 1,
+        limit: 50
+      });
+    } finally {
+      notificationService.updateLoadingNotification(false);
+    }
+  };
 
   const getProfile = async () => {
     const res = await userService.getUserProfile();
     if (res.responseCode === HTTP_STATUS_RESPONSE_KEY.SUCCESS) {
       userStore.updateUserInfo(res.data as IUserInfo);
+      setData(res.data);
     }
   };
+
+  useEffect(() => {
+    if (data) {
+      socketService.authToken = httpService.getToken();
+      socketService.connect();
+      console.log(`/notification/${data.id}`);
+      socketService.subscribeEvent(
+        `/notification/${data.id}`,
+        (messageData) => {
+          console.log('messageData', messageData);
+          const message = messageData as ISocketMessage;
+          notificationService.onMessage(message);
+        }
+      );
+    }
+    return () => {
+      socketService.dispose();
+    };
+  }, [data]);
+
+  useEffect(() => {
+    if (authService.isAuthenticated) {
+      getProfile();
+      getNotification();
+    }
+    return () => {
+      notificationService.updateLoadingNotification(false);
+    };
+  }, [authService.isAuthenticated]);
+
+  useEffect(() => {
+    eventEmitter.on('forbidden', () => {
+      getProfile();
+      navigator(PAGE_ROUTE.ACCESS_DENIED, { replace: true });
+    });
+    eventEmitter.on('notification', (data) => {
+      const tempData: INotification = data as INotification;
+      notification.info({
+        message: t(`${i18nKey.notifications.title}`),
+        description: (
+          <div dangerouslySetInnerHTML={{ __html: tempData?.content }}></div>
+        )
+      });
+    });
+    return () => {
+      eventEmitter.listenersMap.delete('notification');
+      eventEmitter.listenersMap.delete('forbidden');
+    };
+  }, []);
 
   useEffect(() => {
     if (authService.isAuthenticated) {

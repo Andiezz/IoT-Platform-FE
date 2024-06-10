@@ -5,6 +5,7 @@ const URL = API_HOST ?? '';
 
 export interface ISocketService {
   authToken: string;
+  userId?: string;
   // connect: () => void;
   connect: () => void;
   subscribeEvent: (event: string, callback: (data: unknown) => unknown) => void;
@@ -14,9 +15,13 @@ export interface ISocketService {
   dispose(): void;
 }
 export class SocketService implements ISocketService {
-  private client?: Socket<{ [event: string]: any }, { [event: string]: (...args: any[]) => void }>;
+  private client?: Socket<
+    { [event: string]: any },
+    { [event: string]: (...args: any[]) => void }
+  >;
   private isConnect: boolean;
   public authToken = '';
+  public userId?: string;
   private mapEventListener: Map<string, Function> = new Map();
   // private options?: Partial<ManagerOptions & SocketOptions>;
   constructor() {
@@ -28,19 +33,21 @@ export class SocketService implements ISocketService {
       return;
     }
     this.client = io(URL, {
-      // autoConnect: false,
+      autoConnect: false,
       retries: 1,
-      // timeout: 6000,
-      extraHeaders: {
+      timeout: 6000,
+      auth: {
         Authorization: this.authToken ? 'Bearer ' + this.authToken : ''
       },
       transports: ['websocket', 'polling']
     });
     this.client.connect();
     this.client.on('connect', () => {
+      console.log('Socket Client connected');
       this.isConnect = true;
     });
-    this.client.on('disconnect', () => {
+    this.client.on('disconnect', (err) => {
+      console.log('Socket Client disconnected: ', err);
       this.isConnect = false;
     });
   }
