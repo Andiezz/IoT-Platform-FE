@@ -72,12 +72,15 @@ const MainLayout: React.FC = () => {
     if (data) {
       socketService.authToken = httpService.getToken();
       socketService.connect();
-      console.log(`/notification/${data.id}`)
-      socketService.subscribeEvent(`notification/${data.id}`, (messageData) => {
-        console.log('messageData', messageData);
-        const message = messageData as ISocketMessage;
-        notificationService.onMessageNotification(message);
-      });
+      console.log(`/notification/${data.id}`);
+      socketService.subscribeEvent(
+        `/notification/${data.id}`,
+        (messageData) => {
+          console.log('messageData', messageData);
+          const message = messageData as ISocketMessage;
+          notificationService.onMessage(message);
+        }
+      );
     }
     return () => {
       socketService.dispose();
@@ -103,7 +106,9 @@ const MainLayout: React.FC = () => {
       const tempData: INotification = data as INotification;
       notification.info({
         message: t(`${i18nKey.notifications.title}`),
-        description: <div>{tempData.content}</div>
+        description: (
+          <div dangerouslySetInnerHTML={{ __html: tempData?.content }}></div>
+        )
       });
     });
     return () => {

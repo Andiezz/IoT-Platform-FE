@@ -1,5 +1,4 @@
 import eventEmitter from 'src/store/event';
-import { MessageBody } from 'faye';
 import { action, makeAutoObservable, observable, runInAction } from 'mobx';
 import { LIMIT_RECORD } from 'src/constants';
 import { HTTP_STATUS_RESPONSE_KEY } from 'src/constants/api';
@@ -18,9 +17,8 @@ import _ from 'lodash';
 
 export interface INotificationStore {
   messages?: any[];
-  pushMessage: (message: MessageBody) => void;
+  pushMessage: (message: ISocketMessage) => void;
   listNotification: Array<INotification>;
-
   page: number;
   limit: number;
   total: number;
@@ -38,6 +36,7 @@ export interface INotificationStore {
   updateNotification(body: IBodyUpdateNotify): Promise<boolean>;
   destroyStoreWhenLogout(): void;
   onMessageNotification(message: ISocketMessage): void;
+  onMessage(message: ISocketMessage): void;
 }
 
 export class NotificationStore implements INotificationStore {
@@ -57,14 +56,14 @@ export class NotificationStore implements INotificationStore {
       limit: observable,
       total: observable,
       totalUnread: observable,
-      isLoadingNotify:observable,
+      isLoadingNotify: observable,
       pushMessage: action.bound,
       onMessage: action.bound
     });
     this.isLoadingNotify = false;
   }
 
-  public pushMessage(message: MessageBody): void {
+  public pushMessage(message: ISocketMessage): void {
     if (this.messages) {
       const cloned = this.messages.slice();
       cloned.push(message);
@@ -72,27 +71,6 @@ export class NotificationStore implements INotificationStore {
     } else {
       this.messages = [message];
     }
-  }
-
-  public onMessage(message: MessageBody, identify: string): void {
-    console.log(message, identify);
-    if (message.channel === 'in-app-notification') {
-      if (message.data) {
-        runInAction(() => {
-          this.listNotification = [
-            message.data,
-            ...this.listNotification.slice(
-              0,
-              this.total >= LIMIT_RECORD ? -1 : this.listNotification.length
-            )
-          ];
-          this.total < LIMIT_RECORD && ++this.total;
-          this.totalUnread = this.totalUnread + 1;
-          eventEmitter.emit('notification', message.data);
-        });
-      }
-    }
-    this.pushMessage(message);
   }
 
   private actionSetListDataNotification(
@@ -148,7 +126,10 @@ export class NotificationStore implements INotificationStore {
     const res = await this.getDataNotification(query);
     if (res.responseCode === HTTP_STATUS_RESPONSE_KEY.SUCCESS) {
       this.actionSetListDataNotification(
-        _.unionBy([...this.listNotification, ...res.data.paginatedResults],'_id'),
+        _.unionBy(
+          [...this.listNotification, ...res.data.paginatedResults],
+          '_id'
+        ),
         res.data.total,
         res.data.totalUnread,
         res.data.page,
@@ -159,10 +140,10 @@ export class NotificationStore implements INotificationStore {
     return false;
   }
 
-  public updateLoadingNotification(loadingNoifi: boolean){
-    runInAction(()=>{
-      this.isLoadingNotify = loadingNoifi
-    })
+  public updateLoadingNotification(loadingNoifi: boolean) {
+    runInAction(() => {
+      this.isLoadingNotify = loadingNoifi;
+    });
   }
 
   public async updateNotification(body: IBodyUpdateNotify): Promise<boolean> {
@@ -174,7 +155,7 @@ export class NotificationStore implements INotificationStore {
         this.totalUnread = res.data?.totalUnread ?? 0;
         if (body.isUpdateAll) {
           this.listNotification = this.listNotification.map((item) => ({
-            ...item,
+            ...item
           }));
         } else {
           this.listNotification = this.listNotification.map((item) => {
@@ -198,8 +179,28 @@ export class NotificationStore implements INotificationStore {
     eventEmitter.emit('notification', message);
   }
 
+  public onMessage(message: ISocketMessage): void {
+    console.log(message);
+    if (message.channel === 'in-app-notification' && message.data) {
+      runInAction(() => {
+        this.page = this.page + 1;
+        this.listNotification = [
+          message.data,
+          ...this.listNotification.slice(
+            0,
+            this.total >= LIMIT_RECORD ? -1 : this.listNotification.length
+          )
+        ];
+        this.total < LIMIT_RECORD && ++this.total;
+        this.totalUnread = this.totalUnread + 1;
+        eventEmitter.emit('notification', message.data);
+      });
+    }
+    this.pushMessage(message);
+  }
+
   public destroyStoreWhenLogout(): void {
-    runInAction(()=>{
+    runInAction(() => {
       this.messages = [];
       this.isLoadingNotify = false;
       this.page = 1;
@@ -207,6 +208,6 @@ export class NotificationStore implements INotificationStore {
       this.totalUnread = 0;
       this.limit = LIMIT_RECORD;
       this.listNotification = [];
-    })
+    });
   }
 }

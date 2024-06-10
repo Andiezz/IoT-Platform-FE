@@ -181,7 +181,7 @@ const CustomNotification = ({
                 }
                 description={
                   <div>
-                    <div className={styles.columnsText}>{item.content}</div>
+                    <div dangerouslySetInnerHTML={{ __html: item?.content }}></div>
                     <Row justify={'space-between'} align={'middle'}>
                       <Col className={styles.time}>
                         {moment(item.createdOn).format(
