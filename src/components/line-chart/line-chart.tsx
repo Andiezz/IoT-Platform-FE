@@ -116,7 +116,7 @@ interface IDataHumidity {
 }
 
 interface IDataParticulateMatter {
-  'pm2.5': number;
+  pm25: number;
   pm10: number;
 }
 
@@ -552,7 +552,7 @@ IProps) => {
   const convertData = () => {
     const listKeyTemperature: keyTemperature[] = ['temperature'];
     const listKeyHumidity: keyHumidity[] = ['humidity'];
-    const listKeyParticulateMatter: keyParticulateMatter[] = ['pm10', 'pm2.5'];
+    const listKeyParticulateMatter: keyParticulateMatter[] = ['pm10', 'pm25'];
     const listKeyToxicGases: keyToxicGases[] = ['lpg', 'co', 'co2', 'tvoc'];
 
     const dataTemperature: Map<keyTemperature, DataSeries[]> = new Map();

@@ -100,15 +100,15 @@ function DoughnutChart({
       let _contentOther = '';
       datas.forEach((item: IThingWarning, index: number) => {
         if (index > 4) {
-          _valuesOther += item.receivers.length;
-          _total += item.receivers.length;
+          _valuesOther += item.count;
+          _total += item.count;
           _contentOther = _contentOther.concat(
-            `${item.title || item._id} : ${item.receivers.length} \n`
+            `${item.title} : ${item.count} \n`
           );
         } else {
-          _values.push(item.receivers.length);
-          _labels.push(item.title || item._id);
-          _total += item.receivers.length;
+          _values.push(item.count);
+          _labels.push(item.title);
+          _total += item.count;
         }
       });
 
@@ -118,6 +118,9 @@ function DoughnutChart({
         setContentOther(_contentOther);
       }
 
+      console.log('values', _values);
+      console.log('labels', _labels);
+      console.log('total', _total);
       setValues(_values);
       setLabels(_labels);
       setTotal(_total);

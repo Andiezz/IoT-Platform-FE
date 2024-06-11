@@ -123,7 +123,7 @@ export interface IChartToxicGases {
 }
 
 export interface IChartParam {
-  'pm2.5': number;
+  pm25: number;
   pm10: number;
   temperature: number;
   humidity: number;
@@ -146,8 +146,6 @@ export interface Receiver {
   readAt: string;
 }
 export interface IThingWarning {
-  receivers: Receiver[];
-  type: number | string;
   title: string;
-  _id: string;
+  count: number
 }

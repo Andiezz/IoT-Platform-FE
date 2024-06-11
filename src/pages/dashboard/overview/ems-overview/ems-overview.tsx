@@ -58,21 +58,8 @@ const TenantOverview: React.FC = () => {
     to: moment().endOf('day').toISOString()
   });
   const [dataThing, setDataThing] = useState<IThingItem>();
-  const [dataThingWarning, setDataThingWarning] = useState<IThingWarning>();
 
-  const result = overviewStore.overviewThing?.thingWarning.reduce((acc: any[], current: any) => {
-    const found = acc.find((item: any) => item.title === current.title && item.type === current.type);
-    if (found) {
-        found.receivers.push(...current.receivers);
-    } else {
-        acc.push({
-            title: current.title,
-            type: current.type,
-            receivers: [...current.receivers]
-        });
-    }
-    return acc;
-}, []);
+  const result = overviewStore.overviewThing?.thingWarning;
 
   if (overviewStore?.overviewThing?.timeseriesData) {
     Object.entries(overviewStore?.overviewThing.timeseriesData).forEach(
@@ -178,9 +165,7 @@ const TenantOverview: React.FC = () => {
                 <div className={styles.wrapper_content_alarms}>
                   <GaugeChart
                     title={`${t(i18nKey.dashboard.label.thingWarning)}`}
-                    qualityReport={
-                      overviewStore.overviewThing?.qualityReport
-                    }
+                    qualityReport={overviewStore.overviewThing?.qualityReport}
                   />
                 </div>
               </Col>
@@ -196,7 +181,7 @@ const TenantOverview: React.FC = () => {
                         <Col
                           className={styles.wrapper_content_driver_title}
                           span={24}>
-                          {t(i18nKey.dashboard.label.deviceList)}
+                          {t(i18nKey.dashboard.label.thingList)}
                         </Col>
                         <Col span={24}>
                           <Row
