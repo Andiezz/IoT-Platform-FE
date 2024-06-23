@@ -25,7 +25,11 @@ import CurrentData from '../current-data/current-data';
 import { IOverviewStore } from 'src/store/overview/overview.store';
 import { IOverviewFetch } from 'src/dto/overview.dto';
 import LineChart from 'src/components/line-chart/line-chart';
-import { IChartParam, IThingWarning } from 'src/interfaces/overview';
+import {
+  IChartParam,
+  IOverviewDaily,
+  IThingWarning
+} from 'src/interfaces/overview';
 import DoughnutChart from 'src/components/doughnut-chart/doughnut-chart';
 import { GaugeChart } from 'src/components/gauge-chart/gauge-chart';
 // import LineChart from 'src/components/chart/line-chart/line-chart';
@@ -58,8 +62,10 @@ const TenantOverview: React.FC = () => {
     to: moment().endOf('day').toISOString()
   });
   const [dataThing, setDataThing] = useState<IThingItem>();
+  const [dataDaily, setDataDaily] = useState<IOverviewDaily[] | undefined>();
 
   const result = overviewStore.overviewThing?.thingWarning;
+  // console.log('🚀 ~ overviewStore.overviewThing:', overviewStore.overviewThing)
 
   if (overviewStore?.overviewThing?.timeseriesData) {
     Object.entries(overviewStore?.overviewThing.timeseriesData).forEach(
@@ -98,6 +104,15 @@ const TenantOverview: React.FC = () => {
     setLoadingChart(false);
   };
 
+  const getOverviewDaily = async (param: { id: string }) => {
+    setLoadingChart(true);
+    const res = await overviewStore.getDaily(param).catch(() => {
+      throw Error;
+    });
+    setDataDaily(res.data);
+    setLoadingChart(false);
+  };
+
   useEffect(() => {
     if (params?.id) {
       getOverviewThing(params.id);
@@ -106,6 +121,7 @@ const TenantOverview: React.FC = () => {
 
   useEffect(() => {
     if (params?.id) {
+      getOverviewDaily({ id: params.id });
       getOverview(
         { id: params.id },
         {
@@ -122,15 +138,14 @@ const TenantOverview: React.FC = () => {
         <Row gutter={24}>
           <Col span={24} className={styles.wrapper_content_info}>
             <OverviewItemWidget title={dataThing?.name} info={dataThing?._id}>
-              {dataThing?.devices.map((item) =>
-                item.parameterStandards.map((param) => (
-                  <CurrentData
-                    key={param.name}
-                    data={param}
-                    arrayTimes={item.parameterStandards}
-                  />
-                ))
-              )}
+              <CurrentData
+                data={dataDaily && dataDaily[0]}
+                arrayTimes={Object.values(
+                  dataDaily && dataDaily[0]
+                    ? dataDaily[0]
+                    : ({} as IOverviewDaily)
+                ).filter((value) => value !== null && value !== undefined)}
+              />
             </OverviewItemWidget>
           </Col>
         </Row>
@@ -164,7 +179,7 @@ const TenantOverview: React.FC = () => {
               <Col sm={24} xs={24} md={24} lg={24} xl={12} xxl={12}>
                 <div className={styles.wrapper_content_alarms}>
                   <GaugeChart
-                    title={`${t(i18nKey.dashboard.label.thingWarning)}`}
+                    title={`${t(i18nKey.dashboard.label.airQualityReport)}`}
                     qualityReport={overviewStore.overviewThing?.qualityReport}
                   />
                 </div>

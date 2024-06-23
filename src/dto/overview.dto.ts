@@ -22,3 +22,17 @@ export class OverviewThingDTO extends DTO {
     this.query = request;
   }
 }
+
+export class OverviewDailyDTO extends DTO {
+  public param: object | undefined;
+  public query: undefined;
+  public body: undefined;
+  public url: string = ENDPOINT.GET_OVERVIEW_DAILY;
+  public method: HTTP_METHOD = HTTP_METHOD.GET;
+  public readonly responseType: ResponseType = 'json';
+  constructor(param: { id: string }) {
+    super();
+    this.param = param;
+  }
+}
+

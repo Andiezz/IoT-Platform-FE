@@ -21,7 +21,7 @@ import { Owner } from 'src/constants/user';
 import { FormInstance } from 'antd/lib/form';
 
 interface IProps {
-  value?: Owner[];
+  value: Owner[];
   onChange?: (listOwner: Owner[]) => void;
   sizeAvatar: number;
   onAddEmail: (email: string) => Promise<void>;
@@ -32,7 +32,7 @@ interface IProps {
   onChangeVisibleDropdown: (visible: boolean) => void;
 }
 const AddOwner = ({
-  value = [],
+  value,
   sizeAvatar,
   onAddEmail,
   onChange,
@@ -42,6 +42,7 @@ const AddOwner = ({
   visibleDropdown,
   onChangeVisibleDropdown
 }: IProps) => {
+  console.log('🚀 ~ value:', value)
   const [loadingBtn, setLoadingBtn] = useState<boolean>(false);
   const screen = Grid.useBreakpoint();
   const [t] = useTranslation();
@@ -113,7 +114,7 @@ const AddOwner = ({
         </Form>
 
         <div className={styles.dropdown_wrapper}>
-          {value.map((item) => {
+          {value?.map((item) => {
             return item.isDisable ? (
               <Tooltip title={item.textDisable}>
                 <div
@@ -172,7 +173,7 @@ const AddOwner = ({
 
   return (
     <Avatar.Group style={{ cursor: 'pointer' }}>
-      {value.map((owner) => (
+      {value?.map((owner) => (
         <Tooltip title={owner.email} key={owner._id + 'abcdf'}>
           {renderAvatar(owner, sizeAvatar)}
         </Tooltip>

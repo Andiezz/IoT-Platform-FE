@@ -94,6 +94,22 @@ export interface IOverviewThing {
   qualityReport?: IQualityReport;
 }
 
+export interface IOverviewDaily {
+  pm25?: number;
+  pm10?: number;
+  temperature?: number;
+  humidity?: number;
+  lpg?: number;
+  ch4?: number;
+  co?: number;
+  alcohol?: number;
+  co2?: number;
+  toluen?: number;
+  nh4?: number;
+  aceton?: number;
+  tvoc?: number;
+}
+
 export interface IChartTemperature {
   temperature: number;
   chart_type: string;
@@ -147,5 +163,5 @@ export interface Receiver {
 }
 export interface IThingWarning {
   title: string;
-  count: number
+  count: number;
 }

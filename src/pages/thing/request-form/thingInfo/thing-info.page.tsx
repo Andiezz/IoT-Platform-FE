@@ -42,6 +42,7 @@ import ModelFiled from '../model-field/model-filed';
 import { IAccountListStore } from 'src/store/account-management/account-management-list.store';
 import { IAccountManagementListRequest } from 'src/dto/account-management-list.dto';
 import { ResponseDTO } from 'src/dto/base.dto';
+import { Owner } from 'src/constants/user';
 
 interface IThingInfoFormProps {
   onChangeMarker: (marker: MarkerLocation) => void;
@@ -85,6 +86,7 @@ const ThingInfoForm: React.FC<IThingInfoFormProps> = ({
   form,
   listManagerThing,
 }: IThingInfoFormProps) => {
+  console.log('🚀 ~ listManagerThing:', listManagerThing)
   const [t] = useTranslation();
   const params = useParams();
   const onboardingThingStore: IThingStore = useStore('thingStore');
@@ -135,7 +137,7 @@ const ThingInfoForm: React.FC<IThingInfoFormProps> = ({
     fetchData();
   }, []);
 
-  const RenderOnlyAvatar = ({ value }: { value?: IManager[] }) => {
+  const RenderOnlyAvatar = ({ value }: { value?: Owner[] }) => {
     return value?.length ? (
       <Avatar.Group>
         {value?.map((owner) => (

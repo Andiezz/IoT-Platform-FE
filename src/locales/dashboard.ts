@@ -9,6 +9,7 @@ const dashboard = {
     deviceListId: 'Device List ID',
     thingWarning: 'Thing Warning',
     iaqResult: 'IAQ Result',
+    airQualityReport: 'Air Quality Report',
   },
   chart: {
     duration: {

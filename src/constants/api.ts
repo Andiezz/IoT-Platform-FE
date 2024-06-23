@@ -47,6 +47,7 @@ export enum ENDPOINT {
 
   // Dashboard
   GET_OVERVIEW_THING = '/dashboard/thing/:id',
+  GET_OVERVIEW_DAILY = '/dashboard/daily/:id',
 
   // Thing
   THING_BASE_URL = '/thing',

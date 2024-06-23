@@ -540,7 +540,7 @@ IProps) => {
     Map<keyTemperature, DataSeries[]>
   >(new Map());
   const [dataMapHumidity, setDataMapHumidity] = useState<
-  Map<keyHumidity, DataSeries[]>
+    Map<keyHumidity, DataSeries[]>
   >(new Map());
   const [dataMapParticulateMatter, setDataMapParticulateMatter] = useState<
     Map<keyParticulateMatter, DataSeries[]>
@@ -556,7 +556,6 @@ IProps) => {
     const listKeyToxicGases: keyToxicGases[] = ['lpg', 'co', 'co2', 'tvoc'];
 
     const dataTemperature: Map<keyTemperature, DataSeries[]> = new Map();
-    console.log("🚀 ~ convertData ~ dataTemperature:", dataTemperature)
     const dataHumidity: Map<keyHumidity, DataSeries[]> = new Map();
     const dataParticulateMatter: Map<keyParticulateMatter, DataSeries[]> =
       new Map();
@@ -572,7 +571,7 @@ IProps) => {
             .add(timeFormat.minutes(), 'minute')
             .add(timeFormat.hour(), 'h');
         } else {
-          const timeA = item.time! 
+          const timeA = item.time!;
           return moment(timeA);
         }
         // return moment(searchField.from);
@@ -923,6 +922,8 @@ IProps) => {
             return val ? Math.ceil(+val).toString() : '0';
           }
         },
+        min: 0,
+        max: 100,
         title: {
           text: '°C'
         }

@@ -1,12 +1,21 @@
 import { makeAutoObservable, observable, runInAction } from 'mobx';
 import { HTTP_STATUS_RESPONSE_KEY } from 'src/constants/api';
 import { ResponseDTO } from 'src/dto/base.dto';
-import { IOverviewFetch, OverviewThingDTO } from 'src/dto/overview.dto';
-import { IChart, IOverviewThing } from 'src/interfaces/overview';
+import {
+  IOverviewFetch,
+  OverviewDailyDTO,
+  OverviewThingDTO
+} from 'src/dto/overview.dto';
+import {
+  IChart,
+  IOverviewDaily,
+  IOverviewThing
+} from 'src/interfaces/overview';
 import { IHttpService } from 'src/services/http.service';
 
 export interface IOverviewStore {
   fetchThing(param: { id: string }, request?: IOverviewFetch): Promise<void>;
+  getDaily(param: { id: string }): Promise<ResponseDTO<IOverviewDaily[]>>;
   overviewThing?: IOverviewThing;
   listChart: IChart[];
   dispose(): void;
@@ -41,6 +50,14 @@ export class OverviewStore implements IOverviewStore {
     } else {
       throw Error('fetch Thing failed');
     }
+  }
+
+  public async getDaily(param: { id: string }) {
+    const overviewDailyDto = new OverviewDailyDTO(param);
+    const res: ResponseDTO<IOverviewDaily[]> = await this.http.request(
+      overviewDailyDto
+    );
+    return res
   }
 
   public dispose(): void {

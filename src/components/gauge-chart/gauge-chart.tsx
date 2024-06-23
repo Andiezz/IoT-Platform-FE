@@ -61,148 +61,152 @@ export const GaugeChart = ({ title, qualityReport }: Props) => {
   };
 
   return (
-    <>
-      <div
-        className={styles.wrapper}
-        style={{
-          transition: 'all .2s ease'
-        }}>
-        {qualityReport?.iaqResult.generalIaqiReport.generalIaqi ? (
-          <Row gutter={[0, 16]}>
+    <div
+      className={styles.wrapper}
+      style={{
+        transition: 'all .2s ease'
+      }}>
+      <Row style={{ width: '100%' }} justify={'space-between'} align={'middle'}>
+        <Col>
+          <Row gutter={8} align={'middle'}>
+            <Col className={styles.title}>{title}</Col>
+          </Row>
+        </Col>
+        <Col>
+          <Button
+            onClick={() => setSeeDetail(!seeDetail)}
+            className={styles.wrapper_btn_alarm}>
+            See Detail
+          </Button>
+        </Col>
+      </Row>
+      {qualityReport?.iaqResult.generalIaqiReport.generalIaqi ? (
+        <Row gutter={[0, 16]}>
+          {seeDetail ? (
+            <div
+              style={{
+                width: '100%',
+                height: 'auto',
+                borderRadius: 10,
+                backdropFilter: 'blur',
+                color: 'black',
+                padding: 10
+              }}>
+              <Col>
+                <Row style={{ fontSize: 20, fontWeight: 'bold' }}>
+                  Acceptable Subtances
+                </Row>
+                <Row style={{ marginLeft: 5 }}>
+                  <Col>
+                    {qualityReport?.iaqResult.acceptableSubstances.map(
+                      (item) => (
+                        <div key={item.unit}>
+                          <div
+                            style={{
+                              display: 'flex',
+                              alignItems: 'center',
+                              gap: 5,
+                              width: '100%'
+                            }}>
+                            <div>{item.name}: </div>
+                            <div
+                              style={{
+                                padding: 3,
+                                alignItems: 'center'
+                              }}>
+                              {round(item.value, 2)}
+                            </div>
+                            <div
+                              style={{
+                                color: 'black',
+                                display: 'flex',
+                                backgroundColor: `${item.threshold.color}`,
+                                paddingLeft: 10,
+                                paddingRight: 10,
+                                borderRadius: 50,
+                                alignItems: 'center'
+                              }}>
+                              {item.threshold.name}
+                            </div>
+                          </div>
+                        </div>
+                      )
+                    )}
+                  </Col>
+                </Row>
+                <Row style={{ fontSize: 20, fontWeight: 'bold' }}>
+                  Unacceptable Subtances
+                </Row>
+                <Row style={{ marginLeft: 5 }}>
+                  <Col>
+                    {qualityReport?.iaqResult.unAcceptableSubstances.map(
+                      (item) => (
+                        <div key={item.unit}>
+                          <div
+                            style={{
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'space-between',
+                              gap: 5
+                            }}>
+                            <div>{item.name}: </div>
+                            <div
+                              style={{
+                                padding: 3,
+                                alignItems: 'center'
+                              }}>
+                              {round(item.value, 2)}
+                            </div>
+                            <div
+                              style={{
+                                color: 'black',
+                                display: 'flex',
+                                backgroundColor: `${item.threshold.color}`,
+                                paddingLeft: 10,
+                                paddingRight: 10,
+                                borderRadius: 50,
+                                alignItems: 'center'
+                              }}>
+                              {item.threshold.name}
+                            </div>
+                          </div>
+                        </div>
+                      )
+                    )}
+                  </Col>
+                </Row>
+              </Col>
+            </div>
+          ) : (
             <Row
-              style={{ width: '100%' }}
-              justify={'space-between'}
-              align={'middle'}>
-              <Col>
-                <Row gutter={8} align={'middle'}>
-                  <Col className={styles.title}>{title}</Col>
-                </Row>
-              </Col>
-              <Col>
-                <Button
-                  onClick={() => setSeeDetail(!seeDetail)}
-                  className={styles.wrapper_btn_alarm}>
-                  See Detail
-                </Button>
-              </Col>
-            </Row>
-            {seeDetail ? (
-              <div
+              justify={'center'}
+              style={{ position: 'relative', padding: 5 }}>
+              <ReactApexChart
+                options={options}
+                type="radialBar"
+                series={series}
+                height={300}
+              />
+              <Row
+                className={styles.title}
                 style={{
+                  position: 'absolute',
                   width: '100%',
-                  height: 'auto',
-                  borderRadius: 10,
-                  backdropFilter: 'blur',
-                  color: 'black',
-                  padding: 10
+                  justifyContent: 'center'
                 }}>
-                <Col>
-                  <Row style={{ fontSize: 20, fontWeight: 'bold' }}>Acceptable Subtances</Row>
-                  <Row style={{ marginLeft: 5 }}>
-                    <Col>
-                      {qualityReport?.iaqResult.acceptableSubstances.map(
-                        (item) => (
-                          <div key={item.unit}>
-                            <div
-                              style={{
-                                display: 'flex',
-                                alignItems: 'center',
-                                gap: 5,
-                                width: '100%'
-                              }}>
-                              <div>{item.name}: </div>
-                              <div
-                                style={{
-                                  padding: 3,
-                                  alignItems: 'center'
-                                }}>
-                                {round(item.value,2)}
-                              </div>
-                              <div
-                                style={{
-                                  color: 'black',
-                                  display: 'flex',
-                                  backgroundColor: `${item.threshold.color}`,
-                                  paddingLeft: 10,
-                                  paddingRight: 10,
-                                  borderRadius: 50,
-                                  alignItems: 'center'
-                                }}>
-                                {item.threshold.name}
-                              </div>
-                            </div>
-                          </div>
-                        )
-                      )}
-                    </Col>
-                  </Row>
-                  <Row style={{ fontSize: 20, fontWeight: 'bold' }}>Unacceptable Subtances</Row>
-                  <Row style={{ marginLeft: 5 }}>
-                    <Col>
-                      {qualityReport?.iaqResult.unAcceptableSubstances.map(
-                        (item) => (
-                          <div key={item.unit}>
-                            <div
-                              style={{
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'space-between',
-                                gap: 5
-                              }}>
-                              <div>{item.name}: </div>
-                              <div
-                                style={{
-                                  padding: 3,
-                                  alignItems: 'center'
-                                }}>
-                                {round(item.value,2)}
-                              </div>
-                              <div
-                                style={{
-                                  color: 'black',
-                                  display: 'flex',
-                                  backgroundColor: `${item.threshold.color}`,
-                                  paddingLeft: 10,
-                                  paddingRight: 10,
-                                  borderRadius: 50,
-                                  alignItems: 'center'
-                                }}>
-                                {item.threshold.name}
-                              </div>
-                            </div>
-                          </div>
-                        )
-                      )}
-                    </Col>
-                  </Row>
-                </Col>
-              </div>
-            ) : (
-              <Row justify={'center'} style={{ position: 'relative', padding: 5 }}>
-                <ReactApexChart
-                  options={options}
-                  type="radialBar"
-                  series={series}
-                  height={300}
-                />
-                <Row
-                  className={styles.title}
-                  style={{
-                    position: 'absolute',
-                    width: '100%',
-                    justifyContent: 'center'
-                  }}>
-                  {round(qualityReport.iaqResult.generalIaqiReport.generalIaqi,2)}
-                </Row>
+                {round(
+                  qualityReport.iaqResult.generalIaqiReport.generalIaqi,
+                  2
+                )}
               </Row>
-            )}
-          </Row>
-        ) : (
-          <Row justify={'center'}>
-            <Empty image={Empty.PRESENTED_IMAGE_DEFAULT} />
-          </Row>
-        )}
-      </div>
-    </>
+            </Row>
+          )}
+        </Row>
+      ) : (
+        <Row justify={'center'}>
+          <Empty image={Empty.PRESENTED_IMAGE_DEFAULT} />
+        </Row>
+      )}
+    </div>
   );
 };
