@@ -252,7 +252,8 @@ const FormProperty: React.FC<IParameterFormProps> = ({
                                                       (valueName ||
                                                         valueColor ||
                                                         valueMax) &&
-                                                      !value
+                                                      !value &&
+                                                      value !== 0
                                                     ) {
                                                       return Promise.reject(
                                                         new Error(

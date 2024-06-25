@@ -48,6 +48,7 @@ const DeviceModelPage: React.FC = () => {
     useState<IDeviceModelListRequest | null>(null);
   const [pageNumber, setPageNumber] = useState<number>(1);
   const [pageSize, setPageSize] = useState<number>(10);
+  const [listDeviceModel, setListDeviceModel] = useState<IDeviceModelItem[]>([]);
   const screen = Grid.useBreakpoint();
   const navigator = useNavigate();
   const [form] = Form.useForm();
@@ -67,8 +68,8 @@ const DeviceModelPage: React.FC = () => {
     setLoading(true);
     try {
       await deviceModelListStore.fetchList(request);
-      const listAccountManagement = deviceModelListStore.listDeviceModel;
-      if (listAccountManagement.length === 0) {
+      setListDeviceModel(deviceModelListStore.listDeviceModel);
+      if (listDeviceModel.length === 0) {
         setPageNumber(1);
       }
       setLoading(false);
@@ -88,6 +89,7 @@ const DeviceModelPage: React.FC = () => {
 
   useEffect(() => {
     getProfile();
+    fetchData();
   }, []);
 
   useEffect(() => {
@@ -278,7 +280,7 @@ const DeviceModelPage: React.FC = () => {
         <div className={styles.wrapperTable}>
           <Table
             className={styles.tableaccountManagement}
-            dataSource={deviceModelListStore.listDeviceModel}
+            dataSource={listDeviceModel}
             columns={columns}
             loading={loading}
             rowKey={'_id'}

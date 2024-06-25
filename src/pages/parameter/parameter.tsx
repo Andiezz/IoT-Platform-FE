@@ -61,6 +61,7 @@ const ParameterPage: React.FC = () => {
     useState<IParameterListRequest | null>(null);
   const [pageNumber, setPageNumber] = useState<number>(1);
   const [pageSize, setPageSize] = useState<number>(10);
+  const [listParameter, setListParameter] = useState<ResponseParameterDTO[]>([]);
   const screen = Grid.useBreakpoint();
   const navigator = useNavigate();
   const [form] = Form.useForm();
@@ -80,8 +81,8 @@ const ParameterPage: React.FC = () => {
     setLoading(true);
     try {
       await parameterListStore.fetchList(request);
-      const listAccountManagement = parameterListStore.listParameter;
-      if (listAccountManagement.length === 0) {
+      setListParameter(parameterListStore.listParameter);
+      if (listParameter.length === 0) {
         setPageNumber(1);
       }
       setLoading(false);
@@ -328,7 +329,7 @@ const ParameterPage: React.FC = () => {
         <div className={styles.wrapperTable}>
           <Table
             className={styles.tableaccountManagement}
-            dataSource={parameterListStore.listParameter}
+            dataSource={listParameter}
             columns={columns}
             loading={loading}
             rowKey={'_id'}

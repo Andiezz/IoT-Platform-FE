@@ -150,7 +150,7 @@ const RequestForm: React.FC = () => {
       const bodyCreateParameter: BodyCreateParameterDTO = {
         name: values.name,
         unit: values.unit,
-        weight: values.weight,
+        weight: Number(values.weight),
         thresholds
       };
 
@@ -196,7 +196,7 @@ const RequestForm: React.FC = () => {
       const bodyUpdateParameter: BodyUpdateParameterDTO = {
         name: values.name,
         unit: values.unit,
-        weight: values.weight,
+        weight: Number(values.weight),
         thresholds
       };
       const rs = await dataParameter.updateParameter(bodyUpdateParameter, {
