@@ -31,7 +31,17 @@ const parameterEntity = {
     updateParameter: 'Update Parameter',
     deleteParameter: 'Delete Parameter',
     detailParameter: 'Detail Parameter'
+  },
+
+  thresholdName: {
+    good: 'Good',
+    moderate: 'Moderate',
+    'sensitive-unhealthy': 'Sensitive Unhealthy',
+    unhealthy: 'Unhealthy',
+    'very-unhealthy': 'Very Unhealthy',
+    hazardous: 'Hazardous'
   }
+
 };
 
 export default parameterEntity;

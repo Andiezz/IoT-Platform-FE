@@ -1,7 +1,7 @@
 import moment from 'moment';
 
 export function normalizeInputBlockCharacter(value: string) {
-  return value.replace(/\D/, '');
+  return value?.replace(/\D/, '');
 }
 
 export function normalizeFormatDate(value?: string) {

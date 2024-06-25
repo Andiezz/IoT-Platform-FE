@@ -236,40 +236,9 @@ function DoughnutChart({
       }}>
       <Row gutter={[0, 16]}>
         {display && (
-          <Col span={24}>
+          <Col>
             <Row justify={'space-between'} align={'middle'}>
-              <Col>
-                <Row gutter={8} align={'middle'}>
-                  <Col className={styles.title}>{title}</Col>
-                  {/* <Col>
-                    {
-                      tooltip && renderTooltip()
-                    }
-                  </Col> */}
-                </Row>
-              </Col>
-              {/* <Col>
-                <Row justify={'end'} gutter={16} className={styles.wrapper_btn}>
-                  {
-                    !isMobile && !cellAlarm && <Col >
-                      <Button
-                        className={styles.wrapper_btn_alarm}
-                        onClick={() => {
-                          navigate({
-                            pathname: PAGE_ROUTE.DASHBOARD_ALARM,
-                            search: `?${createSearchParams({
-                              alarmType: title?.slice(0, -1) as string,
-                              emsOrPlantName: emsOrPlantName as string
-                            })}`,
-                          });
-                        }}>
-                        {t(i18nKey.dashboard.label.alarmDetails)}
-                      </Button>
-                    </Col>
-                  }
-
-                </Row>
-              </Col> */}
+              <Col className={styles.title}>{title}</Col>
             </Row>
           </Col>
         )}

@@ -40,6 +40,8 @@ export interface IEvaluatedParameter {
 
 export interface IGeneralIaqiReport {
   generalIaqi: number;
+  color: string;
+  name: string;
 }
 export interface IAQResult {
   generalIaqiReport: IGeneralIaqiReport;

@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import { CloseCircleOutlined, PlusOutlined } from '@ant-design/icons';
-import { Col, ColorPicker, Divider, Form, Input, Row } from 'antd';
+import { Col, ColorPicker, Divider, Form, Input, Row, InputNumber } from 'antd';
 import { observer } from 'mobx-react-lite';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
@@ -120,7 +120,7 @@ const FormProperty: React.FC<IParameterFormProps> = ({
                     <Form.List
                       name={'thresholds'}
                       initialValue={[
-                        { name: '', color: '', min: '', max: '' }
+                        { name: '', color: '', min: 0, max: 0 }
                       ]}>
                       {(fields, { add, remove }) => (
                         <div>
@@ -286,11 +286,8 @@ const FormProperty: React.FC<IParameterFormProps> = ({
                                                     return Promise.resolve();
                                                   }
                                                 })
-                                              ]}
-                                              normalize={
-                                                normalizeInputBlockCharacter
-                                              }>
-                                              <Input />
+                                              ]}>
+                                              <InputNumber />
                                             </Form.Item>
                                           </Col>
                                           <Col
@@ -365,11 +362,8 @@ const FormProperty: React.FC<IParameterFormProps> = ({
                                                     return Promise.resolve();
                                                   }
                                                 })
-                                              ]}
-                                              normalize={
-                                                normalizeInputBlockCharacter
-                                              }>
-                                              <Input />
+                                              ]}>
+                                              <InputNumber />
                                             </Form.Item>
                                           </Col>
                                         </Row>
