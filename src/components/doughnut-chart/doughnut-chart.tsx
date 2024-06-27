@@ -83,14 +83,6 @@ function DoughnutChart({
   const isMobile = viewPort.width < 768;
   const [isRender, setIsRender] = useState<boolean>(false);
 
-  // const renderTooltip = () => {
-  //   return (
-  //     <Tooltip title={tooltip}>
-  //       <InfoCircleFilled className={styles.iconTooltip} />
-  //     </Tooltip>
-  //   );
-  // };
-
   useEffect(() => {
     if (datas?.length) {
       const _values: number[] = [];
@@ -134,21 +126,6 @@ function DoughnutChart({
     plugins: {
       legend: {
         display: false
-        // position: 'bottom',
-        // maxHeight: 78,
-        // labels: {
-        //   font: {
-        //     family: 'DM Sans',
-        //     size: 12,
-        //     weight: 400,
-        //     lineHeight: '150%'
-        //   },
-        //   usePointStyle: true,
-        //   pointStyle: 'rectRounded',
-        //   padding: 12,
-        //   color: '#212426'
-        // },
-        // align: 'start'
       },
       tooltip: {
         rlt: true,
@@ -173,7 +150,8 @@ function DoughnutChart({
       }
     },
     borderWidth: 0,
-    actions: { actions }
+    actions: { actions },
+    total: total
   } as any;
 
   const data = {
@@ -207,7 +185,7 @@ function DoughnutChart({
       ctx.textAlign = 'center';
       ctx.textBaseLine = 'middle';
       ctx.fillText(
-        `${totalEmsStatus ?? total}`,
+        `${chart.config.options?.total}`,
         chart.getDatasetMeta(0).data[0]?.x,
         chart.getDatasetMeta(0).data[0]?.y - 5
       );
@@ -257,7 +235,7 @@ function DoughnutChart({
                         }}
                         height={'114px'}
                         plugins={[textCenter]}
-                        data={dataDaughtnut ?? data}
+                        data={data}
                         options={options}
                       />
                     </div>
@@ -294,25 +272,7 @@ function DoughnutChart({
               </Row>
             )}
           </Col>
-          {/* {
-              !cellAlarm && <Col xs={24} sm={24} md={0} lg={0} xl={0} xxl={0}>
-                <Button
-                  className={styles.wrapper_btn_alarm}
-                  onClick={() => {
-                    navigate({
-                      pathname: PAGE_ROUTE.DASHBOARD_ALARM,
-                      search: `?${createSearchParams({
-                        alarmType: title?.slice(0, -1) as string,
-                        emsOrPlantName: emsOrPlantName as string
-                      })}`,
-                    });
-                  }}>
-                  {t(i18nKey.dashboard.label.alarmDetails)}
-                </Button>
-              </Col>
-            } */}
         </Row>
-        {/* )} */}
       </Row>
     </div>
   );
