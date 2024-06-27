@@ -39,7 +39,7 @@ export class SocketService implements ISocketService {
       auth: {
         Authorization: this.authToken ? 'Bearer ' + this.authToken : ''
       },
-      transports: ['websocket', 'polling']
+      transports: ['polling', 'websocket']
     });
     this.client.connect();
     this.client.on('connect', () => {
