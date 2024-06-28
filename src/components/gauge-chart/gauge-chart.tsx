@@ -101,11 +101,11 @@ export const GaugeChart = ({ title, qualityReport }: Props) => {
                     Acceptable Subtances
                   </Row>
                   <Row>
-                    <Col>
+                    <Col flex={1}>
                       {qualityReport?.iaqResult.acceptableSubstances.map(
                         (item) => (
                           <div
-                            key={item.unit}
+                            key={item.name}
                             style={{
                               display: 'flex',
                               justifyContent: 'space-between',
@@ -120,8 +120,8 @@ export const GaugeChart = ({ title, qualityReport }: Props) => {
                                 flex: '1 1 0',
                                 textAlign: 'left',
                                 paddingLeft: '5px',
-                                position: 'relative',
-                                minWidth: '100px' // Fixed width for consistency
+                                position: 'relative'
+                                // minWidth: '100px' // Fixed width for consistency
                               }}>
                               {item.name}
                             </div>
@@ -143,7 +143,7 @@ export const GaugeChart = ({ title, qualityReport }: Props) => {
                                 padding: '3px',
                                 borderRadius: '50px',
                                 whiteSpace: 'nowrap', // Prevent text from wrapping
-                                minWidth: '150px', // Fixed width for consistency
+                                minWidth: '100px', // Fixed width for consistency
                                 fontWeight: 'revert'
                               }}>
                               {t(
@@ -157,15 +157,15 @@ export const GaugeChart = ({ title, qualityReport }: Props) => {
                       )}
                     </Col>
                   </Row>
-                  <Row style={{ fontSize: 15, fontWeight: 'bold' }}>
+                  <Row style={{ fontSize: 15, fontWeight: 'bold', marginTop: 10 }}>
                     Unacceptable Subtances
                   </Row>
-                  <Row style={{ marginLeft: 5 }}>
-                    <Col>
+                  <Row>
+                    <Col flex={1}>
                       {qualityReport?.iaqResult.unAcceptableSubstances.map(
                         (item) => (
                           <div
-                            key={item.unit}
+                            key={item.name}
                             style={{
                               display: 'flex',
                               justifyContent: 'space-between',
@@ -180,8 +180,8 @@ export const GaugeChart = ({ title, qualityReport }: Props) => {
                                 flex: '1 1 0',
                                 textAlign: 'left',
                                 paddingLeft: '5px',
-                                position: 'relative',
-                                minWidth: '100px' // Fixed width for consistency
+                                position: 'relative'
+                                // minWidth: '100px' // Fixed width for consistency
                               }}>
                               {item.name}
                             </div>
@@ -203,7 +203,7 @@ export const GaugeChart = ({ title, qualityReport }: Props) => {
                                 padding: '3px',
                                 borderRadius: '50px',
                                 whiteSpace: 'nowrap', // Prevent text from wrapping
-                                minWidth: '150px', // Fixed width for consistency
+                                minWidth: '100px', // Fixed width for consistency
                                 fontWeight: 'revert'
                               }}>
                               {t(

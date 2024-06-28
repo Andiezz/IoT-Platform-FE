@@ -94,6 +94,7 @@ const en = {
     goToDashboard: 'Go to Dashboard',
     thingLocation: 'Thing/Location',
     devices: 'Devices',
+    things: 'Things',
     location: 'Location',
     manager: 'Manager',
     information: 'Information',

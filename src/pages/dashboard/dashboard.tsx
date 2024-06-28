@@ -149,7 +149,7 @@ const Dashboard: React.FC = () => {
                 onClickItem={onClickItem}
                 items={dropDownThing}>
                 <Tag color="blue">
-                  {t(i18nKey.label.devices)}: {''}
+                  {t(i18nKey.label.things)}: {''}
                   {thingListStore.listThing.length}
                 </Tag>
               </DropDownWithSearch>
