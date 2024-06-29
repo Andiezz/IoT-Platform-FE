@@ -1,11 +1,15 @@
 import { Col, Divider, Row, Typography } from 'antd';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from './thing-collapse.module.less';
 import WidgetCollapse from './widget-collapse/widget-collapse';
 import ArrowDown from 'src/assets/icons/arrow-down.svg';
 // import { IThing } from 'src/interfaces/thing';
 import { STATUS } from 'src/constants/status';
 import { IThingItem } from 'src/dto/thing.dto';
+import useStore from 'src/hooks/use-store';
+import { IOverviewDaily } from 'src/interfaces/overview';
+import { IOverviewStore } from 'src/store/overview/overview.store';
+import CurrentData from '../overview/current-data/current-data';
 
 export interface IThingCollapse {
   data?: IThingItem;
@@ -14,13 +18,15 @@ export interface IThingCollapse {
 
 const ThingCollapse: React.FC<IThingCollapse> = ({ data, onClickItem }) => {
   const [isOpenCollapse, setIsOpenCollapse] = useState<boolean>(true);
+  const overviewStore: IOverviewStore = useStore('overviewStore');
+  const [dataDaily, setDataDaily] = useState<IOverviewDaily[] | undefined>();
 
-  // const arrayTimes: any = [];
-  // if (data?.timeseriesData) {
-  //   Object.entries(data.timeseriesData).forEach((item) => {
-  //     return item[1] ? arrayTimes.push(item) : null;
-  //   });
-  // }
+  const getOverviewDaily = async (param: { id: string }) => {
+    const res = await overviewStore.getDaily(param).catch(() => {
+      throw Error;
+    });
+    setDataDaily(res.data);
+  };
 
   const handleCollapse = () => {
     setIsOpenCollapse(!isOpenCollapse);
@@ -37,11 +43,11 @@ const ThingCollapse: React.FC<IThingCollapse> = ({ data, onClickItem }) => {
     }
   };
 
-  // useEffect(() => {
-  //   if (arrayTimes.length < 3) {
-  //     setIsOpenCollapse(false);
-  //   }
-  // }, []);
+  useEffect(() => {
+    if (data?._id) {
+      getOverviewDaily({ id: data._id });
+    }
+  }, [data]);
 
   return (
     <Row gutter={[0, 12]} className={styles.wrapper}>
@@ -71,7 +77,11 @@ const ThingCollapse: React.FC<IThingCollapse> = ({ data, onClickItem }) => {
         <button
           className={styles.wrapper_header_right}
           onClick={handleCollapse}
-          style={{ cursor: 'pointer', border: 0, backgroundColor: 'transparent' }}>
+          style={{
+            cursor: 'pointer',
+            border: 0,
+            backgroundColor: 'transparent'
+          }}>
           <Row gutter={8} justify={'end'} align={'middle'}>
             <Divider type="vertical" />
             <Col
@@ -106,11 +116,14 @@ const ThingCollapse: React.FC<IThingCollapse> = ({ data, onClickItem }) => {
           </Col>
           <Col span={24}>
             <Row gutter={[0, 12]}>
-              {data?.devices.map((item) =>
-                item.parameterStandards.map((item) => (
-                  <WidgetCollapse key={item.name} data={item} />
-                ))
-              )}
+              <CurrentData
+                data={dataDaily && dataDaily[0]}
+                arrayTimes={Object.values(
+                  dataDaily && dataDaily[0]
+                    ? dataDaily[0]
+                    : ({} as IOverviewDaily)
+                ).filter((value) => value !== null && value !== undefined)}
+              />
             </Row>
           </Col>
         </Row>
