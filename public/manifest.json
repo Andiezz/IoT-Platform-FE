@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "IntellAir",
+  "name": "Intelligent Air Quality Monitoring System",
   "icons": [
     {
       "src": "favicon.ico",
