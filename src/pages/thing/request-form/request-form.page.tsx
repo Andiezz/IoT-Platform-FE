@@ -263,6 +263,8 @@ const RequestForm: React.FC = () => {
     switch (value.type) {
       case TypeFile.Device:
         return setDeviceFile(value);
+      case TypeFile.Thing:
+        return setDeviceFile(value);
       case TypeFile.Private:
         return setPrivateFile(value);
       case TypeFile.Public:
