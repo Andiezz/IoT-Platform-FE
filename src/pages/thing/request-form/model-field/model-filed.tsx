@@ -186,12 +186,6 @@ const ModelField: React.FC<ModelFieldProps> = ({
                       </List.Item>
                     ))}
                   </List>
-                  {/* <Button
-                    type="dashed"
-                    onClick={() => setOpenParam(true)}
-                    block>
-                    + Add Sub Item
-                  </Button> */}
                 </Col>
               </Row>
             )}

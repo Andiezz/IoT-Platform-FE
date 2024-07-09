@@ -1,9 +1,5 @@
 /* eslint-disable react/prop-types */
-import {
-  CloseCircleOutlined,
-  // EnvironmentOutlined,
-  PlusOutlined
-} from '@ant-design/icons';
+import { CloseCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import {
   Avatar,
   Button,
@@ -22,13 +18,9 @@ import WhiteBox from 'src/components/white-box/white-box';
 import useStore from 'src/hooks/use-store';
 import { i18nKey } from 'src/locales/i18n';
 import { IThingStore } from 'src/store/thing.store';
-// import ModalLocation from '../modal-location/modal-location';
 import styles from './thing-info.module.less';
 import { useParams } from 'react-router-dom';
-import {
-  normalizeTrimStart
-  // normalizeInputBlockCharacter
-} from 'src/helpers/common.utils';
+import { normalizeTrimStart } from 'src/helpers/common.utils';
 import AddOwner from 'src/components/add-owner/add-owner';
 import { IOption, IThingForm, MarkerLocation } from '../request-form.page';
 import FormItem from 'antd/es/form/FormItem';
@@ -37,7 +29,6 @@ import RenderAvatar from 'src/components/render-avatar/render-avatar';
 import { Role } from 'src/interfaces/user';
 import { IManager, IUserOwnerResponseGetByEmail } from 'src/dto/thing.dto';
 import { IDeviceModelItem } from 'src/store/device-model/device-model.store';
-// import { IParameterFormI } from 'src/pages/parameter/request-form/request-form.page';
 import ModelFiled from '../model-field/model-filed';
 import { IAccountListStore } from 'src/store/account-management/account-management-list.store';
 import { IAccountManagementListRequest } from 'src/dto/account-management-list.dto';
@@ -84,9 +75,9 @@ const ThingInfoForm: React.FC<IThingInfoFormProps> = ({
   options,
   models,
   form,
-  listManagerThing,
+  listManagerThing
 }: IThingInfoFormProps) => {
-  console.log('🚀 ~ listManagerThing:', listManagerThing)
+  console.log('🚀 ~ listManagerThing:', listManagerThing);
   const [t] = useTranslation();
   const params = useParams();
   const onboardingThingStore: IThingStore = useStore('thingStore');
@@ -94,16 +85,7 @@ const ThingInfoForm: React.FC<IThingInfoFormProps> = ({
   const accountManagementListStore: IAccountListStore = useStore(
     'listAccountManagementListStore'
   );
-  // const [openParam, setOpenParam] = useState<boolean>(false);
-  // const [isChangeDefault, setIsChangeDefault] = useState<boolean>(false);
-  // const [isHasValue, setIsHasValue] = useState<boolean>(false);
-  // const [model, setModel] = useState<string>();
   const [loadingBtnDownload, setLoadingBtnDownload] = useState<boolean>(false);
-  // const [paramList, setParamList] = useState<IParameterFormI[] | undefined>([]);
-  // const { Text } = Typography;
-  // const handleModal = () => {
-  //   setOpen(true);
-  // };
 
   const handleDownloadCerfiticate = async () => {
     try {
@@ -114,17 +96,15 @@ const ThingInfoForm: React.FC<IThingInfoFormProps> = ({
     }
   };
 
-  // useEffect(() => {
-  //   const selectedModel = models?.find((item) => item._id === model);
-  //   setParamList(selectedModel?.parameterStandards);
-  // }, [model]);
-
   const fetchData = async (request?: IAccountManagementListRequest) => {
     try {
       await accountManagementListStore.fetchList(request);
       const listAccountManagement =
-      accountManagementListStore.listAccountManagement;
-      console.log('🚀 ~ fetchData ~ listAccountManagement:', listAccountManagement)
+        accountManagementListStore.listAccountManagement;
+      console.log(
+        '🚀 ~ fetchData ~ listAccountManagement:',
+        listAccountManagement
+      );
     } catch (error) {
       throw Error;
     }
@@ -162,10 +142,6 @@ const ThingInfoForm: React.FC<IThingInfoFormProps> = ({
     return false;
   };
 
-  // const onCheck = (checked: boolean) => {
-  //   setIsChangeDefault(!checked);
-  // };
-
   const renderAddOwner = () => {
     const isUpdateThing = params?.id;
     if (isUpdateThing) {
@@ -173,21 +149,21 @@ const ThingInfoForm: React.FC<IThingInfoFormProps> = ({
         <Form.Item name="owner" noStyle>
           {userStore.userInfo?.role === Role.ADMIN ? (
             <AddOwner
-            value={listManagerThing}
-            visibleDropdown={visibleDropdownAddOwner}
-            onChangeVisibleDropdown={handleChangeVisibleAddOnwer}
-            formInstane={formInstanseAddOwner}
-            textBtnAdd={t(i18nKey.thingEntity.button.addOwner)}
-            titleDrawer="Add Thing Owner"
-            onAddEmail={onAddEmailOwner}
-            sizeAvatar={25}
+              value={listManagerThing}
+              visibleDropdown={visibleDropdownAddOwner}
+              onChangeVisibleDropdown={handleChangeVisibleAddOnwer}
+              formInstane={formInstanseAddOwner}
+              textBtnAdd={t(i18nKey.thingEntity.button.addOwner)}
+              titleDrawer="Add Thing Owner"
+              onAddEmail={onAddEmailOwner}
+              sizeAvatar={25}
             />
-            ) : (
-              <RenderOnlyAvatar />
-              )}
+          ) : (
+            <RenderOnlyAvatar />
+          )}
         </Form.Item>
       );
-      }
+    }
     return (
       <Form.Item name="owner" noStyle>
         <AddOwner
@@ -251,9 +227,7 @@ const ThingInfoForm: React.FC<IThingInfoFormProps> = ({
                       <FormItem name={'viewers'}>
                         {userStore.userInfo?.role === Role.ADMIN ? (
                           <AddOwner
-                            value={
-                              listManagerThing
-                            }
+                            value={listManagerThing}
                             titleDrawer={`${t(
                               i18nKey.thingEntity.button.ownerAssignment
                             )}`}
@@ -353,15 +327,7 @@ const ThingInfoForm: React.FC<IThingInfoFormProps> = ({
                                 )}`
                               }
                             ]}>
-                            <Input
-                            // onClick={() => handleModal()}
-                            // readOnly={true}
-                            // suffix={
-                            //   <EnvironmentOutlined
-                            //     onClick={() => handleModal()}
-                            //   />
-                            // }
-                            />
+                            <Input />
                           </Form.Item>
                         </Col>
                       </Row>
@@ -452,97 +418,6 @@ const ThingInfoForm: React.FC<IThingInfoFormProps> = ({
                                               <Input />
                                             </Form.Item>
                                           </Col>
-
-                                          {/* <Col
-                                            className="gutter-row"
-                                            span={8}
-                                            xl={8}
-                                            xs={12}>
-                                            <Form.Item
-                                              className={styles.subForm_item}
-                                              name={[idx, 'model']}
-                                              dependencies={[
-                                                'name',
-                                                'parameterStandardDefault'
-                                              ]}
-                                              rules={[
-                                                ({ getFieldValue }) => ({
-                                                  validator(_, value) {
-                                                    const valueName =
-                                                      getFieldValue([
-                                                        'devices',
-                                                        idx,
-                                                        'name'
-                                                      ]);
-                                                    const valueParameterStandardDefault =
-                                                      getFieldValue([
-                                                        'devices',
-                                                        idx,
-                                                        'parameterStandardDefault'
-                                                      ]);
-                                                    if (
-                                                      (valueName ||
-                                                        valueParameterStandardDefault) &&
-                                                      !value?.trim()
-                                                    ) {
-                                                      return Promise.reject(
-                                                        new Error(
-                                                          `${t(
-                                                            i18nKey.validation
-                                                              .common
-                                                              .requiredField
-                                                          )}`
-                                                        )
-                                                      );
-                                                    }
-                                                    return Promise.resolve();
-                                                  }
-                                                })
-                                              ]}
-                                              label={t(
-                                                i18nKey.thingEntity.devices
-                                                  .model
-                                              )}>
-                                              <Select
-                                                // list device model
-                                                options={options}
-                                                allowClear
-                                                showSearch
-                                                onChange={(e) => {
-                                                  if (e) {
-                                                    setIsHasValue(true);
-                                                    setModel(e);
-                                                  } else setIsHasValue(false);
-                                                }}
-                                              />
-                                            </Form.Item>
-                                          </Col>
-                                          {isHasValue && (
-                                            <Col
-                                              className="gutter-row"
-                                              span={8}
-                                              xl={8}
-                                              xs={12}
-                                              style={{
-                                                display: 'flex',
-                                                flexDirection: 'column'
-                                              }}>
-                                              <Form.Item
-                                                label={t(
-                                                  i18nKey.thingEntity.devices
-                                                    .defaultParameter
-                                                )}
-                                                className={styles.subForm_item}
-                                                name={
-                                                  'parameterStandardDefault'
-                                                }>
-                                                <Switch
-                                                  defaultChecked
-                                                  onChange={onCheck}
-                                                />
-                                              </Form.Item>
-                                            </Col>
-                                          )} */}
                                         </Row>
                                         <ModelFiled
                                           dataThingDetail={dataThingDetail}
@@ -551,43 +426,6 @@ const ThingInfoForm: React.FC<IThingInfoFormProps> = ({
                                           idx={idx}
                                           models={models}
                                         />
-                                        {/* {isChangeDefault && (
-                                          <Row gutter={[12, 16]}>
-                                            <Col span={12} xl={12} xs={24}>
-                                              <List>
-                                                {paramList?.map(
-                                                  (param, index) => (
-                                                    <List.Item key={index}>
-                                                      <Text>{param.name}</Text>
-                                                      <CloseCircleOutlined
-                                                        style={{ color: 'red' }}
-                                                        onClick={() => {
-                                                          const newParamLists =
-                                                            paramList.filter(
-                                                              (item) =>
-                                                                item.name !==
-                                                                param.name
-                                                            );
-                                                          setParamList(
-                                                            newParamLists
-                                                          );
-                                                        }}
-                                                      />
-                                                    </List.Item>
-                                                  )
-                                                )}
-                                              </List>
-                                              <Button
-                                                type="dashed"
-                                                onClick={() =>
-                                                  setOpenParam(true)
-                                                }
-                                                block>
-                                                + Add Sub Item
-                                              </Button>
-                                            </Col>
-                                          </Row>
-                                        )} */}
                                       </Col>
                                       {fieldList.length > 1 && (
                                         <Col>
@@ -598,24 +436,6 @@ const ThingInfoForm: React.FC<IThingInfoFormProps> = ({
                                         </Col>
                                       )}
                                     </Row>
-                                    {/* <Row
-                                      gutter={5}
-                                      wrap={false}
-                                      align={'middle'}>
-                                      <Col flex={1}>
-                                        <Row gutter={[12, 16]}>
-                                          <Col span={8} xl={8} xs={24}>
-                                            
-                                            <Button
-                                              type="dashed"
-                                              // onClick={() => subOpt.add()}
-                                              block>
-                                              + Add Sub Item
-                                            </Button>
-                                          </Col>
-                                        </Row>
-                                      </Col>
-                                    </Row> */}
                                   </Col>
                                 </Row>
                               </Form.Item>

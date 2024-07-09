@@ -3,67 +3,17 @@ import ReactApexChart from 'react-apexcharts';
 import React, { useEffect, useMemo, useState } from 'react';
 import { ApexOptions } from 'apexcharts';
 import moment from 'moment-timezone';
-import {
-  Button,
-  Col,
-  DatePicker,
-  Form,
-  Modal,
-  Radio,
-  Row,
-  Select,
-  Spin
-} from 'antd';
+import { Col, DatePicker, Form, Radio, Row, Select, Spin } from 'antd';
 import { useTranslation } from 'react-i18next';
 import { i18nKey } from 'src/locales/i18n';
 import dayJs, { Dayjs } from 'dayjs';
-import ArrowDown from 'src/assets/icons/arrow-down.svg';
-import ArrowDownBottom from 'src/assets/icons/arrow-down-bottom.svg';
 import styles from 'src/components/line-bar-chart/line-bar-chart.module.less';
-import {
-  // IAlarmChartData,
-  IChart,
-  IChartHumidity,
-  IChartParam,
-  IChartParticulateMatter,
-  IChartTemperature,
-  IChartToxicGases
-} from 'src/interfaces/overview';
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  Colors,
-  PointElement,
-  LineElement,
-  Title,
-  Tooltip,
-  Legend,
-  BarElement,
-  TimeScale,
-  Chart
-} from 'chart.js';
+import { IChartParam } from 'src/interfaces/overview';
 import 'chartjs-adapter-moment';
-import { Bar } from 'react-chartjs-2';
-import zoomPlugin from 'chartjs-plugin-zoom';
-import { observer } from 'mobx-react-lite';
 import _ from 'lodash';
 
 const { RangePicker } = DatePicker;
 
-// ChartJS.register(
-//   CategoryScale,
-//   LinearScale,
-//   PointElement,
-//   LineElement,
-//   Title,
-//   Colors,
-//   Tooltip,
-//   Legend,
-//   BarElement,
-//   TimeScale,
-//   zoomPlugin
-// );
 enum OptionParam {
   UNIT_TEMPERATURE = '°C',
   UNIT_HUMIDITY = '%',
@@ -144,390 +94,14 @@ interface IProps {
   onSetSearchField: (newSearchField: SearchField) => void;
   dataChart: IChartParam[]; //ICurrentData,
   loadingChart: boolean;
-  // dataChartAlarm?: IAlarmChartData[];
-  // dataChartHumidity: IChartHumidity[];
-  // dataChartParticulateMatter: IChartParticulateMatter[];
-  // dataChartTemperature: IChartTemperature[];
-  // dataChartToxicGases: IChartToxicGases[];
 }
-
-// interface IPropsAlarm {
-//   searchField: SearchField;
-//   //   loadingChart: boolean;
-
-//   dataChartAlarm?: IAlarmChartData[];
-//   selectUnit: OptionParam;
-// }
-//------------------Alarm Component--------------------//
-// const AlarmChartComponent = ({
-//   searchField,
-//   //   loadingChart,
-//   dataChartAlarm,
-//   selectUnit
-// }: IPropsAlarm) => {
-//   const dataAlarmClone: IAlarmChartData[] | undefined = useMemo(
-//     () => JSON.parse(JSON.stringify(dataChartAlarm)),
-//     [dataChartAlarm]
-//   );
-//   const [t] = useTranslation();
-//   const renderDataChartAlarm = () => {
-//     return dataAlarmClone?.map((item) => {
-//       //   const notFound = { count: 0 };
-//       const alarmNew = item.alarms.find((alarm) => alarm.status === 'new');
-//       const alarmResolved = item.alarms.find(
-//         (alarm) => alarm.status === 'resolved'
-//       );
-//       const alarmAcknowledged = item.alarms.find(
-//         (alarm) => alarm.status === 'acknowledged'
-//       );
-//       return {
-//         new: alarmNew,
-//         resolved: alarmResolved,
-//         acknowledged: alarmAcknowledged,
-//         time:
-//           searchField.type === TypeFilterDate.day
-//             ? moment(searchField.from).add(+item.time!, 'hour')
-//             :  moment(item.time!)
-//       };
-//     });
-//   };
-
-//   const renderUnitTime = (type: TypeFilterDate, selectOption: OptionParam)   => {
-//     if (type === TypeFilterDate.total) {
-//       const lengthTime = dataAlarmClone?.at(0)?.time?.length;
-
-//       const newUnit =
-//         lengthTime && lengthTime > String('YYYY').length ? 'month' : 'year';
-//       return newUnit;
-//     }
-//     return unitTime[type];
-//   };
-
-//   const datasetAlarm = () => {
-//     return [
-//       {
-//         fill: false,
-//         tension: 0.5,
-//         label: 'New',
-//         data: renderDataChartAlarm(),
-//         pointRadius: 7,
-//         pointHoverRadius: 7,
-//         backgroundColor: '#FF8060',
-//         showLine: false,
-//         parsing: {
-//           yAxisKey: 'new.count',
-//           xAxisKey: 'time'
-//         },
-//         yAxisID: 'countAlarm'
-//       },
-//       {
-//         fill: false,
-//         tension: 0.5,
-//         label: 'Resolved',
-//         pointRadius: 7,
-//         pointHoverRadius: 7,
-//         data: renderDataChartAlarm(),
-//         backgroundColor: '#5E6984',
-//         parsing: {
-//           yAxisKey: 'resolved.count',
-//           xAxisKey: 'time'
-//         },
-//         yAxisID: 'countAlarm'
-//       },
-//       {
-//         fill: false,
-//         tension: 0.5,
-//         pointRadius: 7,
-//         pointHoverRadius: 7,
-//         label: 'Acknowledge',
-//         data: renderDataChartAlarm(),
-//         backgroundColor: '#FFA300',
-//         parsing: {
-//           yAxisKey: 'acknowledged.count',
-//           xAxisKey: 'time'
-//         },
-//         yAxisID: 'countAlarm'
-//       }
-//     ];
-//   };
-
-//   const scalesAlarm = {
-//     x: {
-//       stacked: true,
-//       min: searchField.from,
-//       max: searchField.to,
-//       type: 'time',
-//       time: {
-//         unit: renderUnitTime(searchField.type, selectUnit),
-//         displayFormats: formatTime
-//       },
-//       grid: {
-//         drawTicks: false,
-//         color: '#DBDEE5'
-//       },
-//       ticks: {
-//         color: '#848484',
-//         font: {
-//           family: 'DM Sans',
-//           size: 12,
-//           weight: 'normal'
-//         },
-//         padding: 19
-//       }
-//     },
-//     countAlarm: {
-//       stacked: true,
-//       min: 0,
-//       position: 'left',
-//       grid: {
-//         display: false,
-//         drawTicks: false
-//       },
-//       title: {
-//         display: true
-//       },
-//       ticks: {
-//         stepSize: 1,
-//         color: '#212426',
-//         font: {
-//           family: 'DM Sans',
-//           size: 12,
-//           weight: 'normal'
-//         },
-//         padding: 19
-//       }
-//     }
-//   };
-
-//   // const optionBar = {
-//   //   scales: scalesAlarm,
-//   //   interaction: {
-//   //     mode: 'index',
-//   //     intersect: false,
-//   //     events: ['mousemove', 'click', 'touchstart', 'touchmove']
-//   //   },
-
-//   //   maintainAspectRatio: false,
-//   //   plugins: {
-//   //     legend: {
-//   //       position: 'bottom' as const,
-//   //       labels: {
-//   //         usePointStyle: true,
-//   //         padding: 30,
-//   //         pointStyle: 'rectRounded'
-//   //       }
-//   //     },
-//   //     tooltip:
-//   //       selectUnit === OptionParam.ALARM_STATUS &&
-//   //       searchField.type === TypeFilterDate.day
-//   //         ? {
-//   //             enabled: false,
-
-//   //             external: function (context: any) {
-//   //               // Tooltip Element
-//   //               let tooltipEl: any = document.getElementById('chartjs-tooltip');
-//   //               // Create element on first render
-//   //               if (!tooltipEl) {
-//   //                 tooltipEl = document.createElement('div');
-//   //                 tooltipEl.id = 'chartjs-tooltip';
-//   //                 tooltipEl.innerHTML = '<table></table>';
-//   //                 document.body.appendChild(tooltipEl);
-//   //               }
-
-//   //               // Hide if no tooltip
-//   //               const tooltipModel = context.tooltip;
-//   //               if (tooltipModel.opacity === 0) {
-//   //                 tooltipEl.style.opacity = 0;
-//   //                 return;
-//   //               }
-
-//   //               // // Set caret Position
-//   //               tooltipEl.classList.remove('above', 'below', 'no-transform');
-//   //               if (tooltipModel.yAlign) {
-//   //                 tooltipEl.classList.add(tooltipModel.yAlign);
-//   //               } else {
-//   //                 tooltipEl.classList.add('no-transform');
-//   //               }
-
-//   //               // // function getBody(bodyItem: any) {
-//   //               // //   return bodyItem.lines;
-//   //               // // }
-
-//   //               // Set Text
-//   //               if (tooltipModel.body) {
-//   //                 // const titleLines = tooltipModel.title || [];
-//   //                 // const bodyLines = tooltipModel.body.map(getBody);
-
-//   //                 let innerHtml = '<thead>';
-
-//   //                 context.tooltip.dataPoints?.forEach((itemData: any) => {
-//   //                   const dataLabel: any =
-//   //                     itemData?.dataset?.data[itemData.dataIndex] ?? {};
-//   //                   const dataWithDataset = (dataLabel ?? {})[
-//   //                     itemData?.dataset?.parsing?.yAxisKey?.replace(
-//   //                       '.count',
-//   //                       ''
-//   //                     )
-//   //                   ]?.info;
-//   //                   dataWithDataset &&
-//   //                     (innerHtml += `<tr><td>------------${itemData.dataset.parsing.yAxisKey.replace(
-//   //                       '.count',
-//   //                       ''
-//   //                     )}: ${
-//   //                       (dataLabel ?? {})[
-//   //                         itemData.dataset.parsing.yAxisKey.replace(
-//   //                           '.count',
-//   //                           ''
-//   //                         )
-//   //                       ]?.count
-//   //                     }-------------</td></tr>`);
-
-//   //                   (dataWithDataset ?? []).forEach((item: any) => {
-//   //                     const time = moment(item.timestamp).format(
-//   //                       'YYYY/MM/DD HH:ss'
-//   //                     );
-//   //                     const faultType = `${t(
-//   //                       i18nKey.alarmCenter.label.faultType
-//   //                     )}: ${item?.faultType}`;
-//   //                     const phase = `${t(i18nKey.alarmCenter.label.phase)}: ${
-//   //                       item?.phase || '-'
-//   //                     }`;
-//   //                     const phaseVac = `${t(
-//   //                       i18nKey.alarmCenter.label.phaseVAC
-//   //                     )}: ${item?.phaseVac || '-'}`;
-//   //                     const systemState = `${t(
-//   //                       i18nKey.alarmCenter.label.systemState
-//   //                     )}: ${item?.systemState || '-'}`;
-//   //                     const systemAlarm = `${t(
-//   //                       i18nKey.alarmCenter.label.systemAlarm
-//   //                     )}: ${item?.systemAlarms || '-'}`;
-//   //                     const batteryAlarm = `${t(
-//   //                       i18nKey.alarmCenter.label.batteryAlarm
-//   //                     )}: ${item?.batteryAlarms || '-'}`;
-//   //                     [
-//   //                       `--- Time: ${time}`,
-//   //                       faultType,
-//   //                       phase,
-//   //                       phaseVac,
-//   //                       systemState,
-//   //                       systemAlarm,
-//   //                       batteryAlarm
-//   //                     ].forEach((item) => {
-//   //                       innerHtml += `<tr><td>${item}</td></tr>`;
-//   //                     });
-//   //                   });
-//   //                 });
-
-//   //                 innerHtml += '</thead><tbody>';
-//   //                 innerHtml += '</tbody>';
-
-//   //                 const tableRoot = tooltipEl.querySelector('table');
-//   //                 tableRoot.innerHTML = innerHtml;
-//   //               }
-
-//   //               const position = context.chart.canvas.getBoundingClientRect();
-//   //               // const bodyFont = (barChartRef as any)?.helpers?.toFont(tooltipModel.options.bodyFont);
-
-//   //               // Display, position, and set styles for font
-//   //               tooltipEl.style.opacity = 1;
-//   //               tooltipEl.style.position = 'absolute';
-//   //               tooltipEl.style.left =
-//   //                 position.left +
-//   //                 window.pageXOffset +
-//   //                 tooltipModel.caretX +
-//   //                 'px';
-//   //               tooltipEl.style.top =
-//   //                 position.top +
-//   //                 window.pageYOffset +
-//   //                 tooltipModel.caretY +
-//   //                 'px';
-//   //               tooltipEl.style.maxHeight = 500 + 'px';
-//   //               (tooltipEl.style.overflow = 'auto'),
-//   //                 (tooltipEl.style.background = 'black');
-//   //               tooltipEl.style.color = '#fff';
-//   //               tooltipEl.style.padding = '5px 0';
-//   //               tooltipEl.style.borderRadius = '6px';
-//   //               tooltipEl.style.fontSize = '14px';
-//   //               // // tooltipEl.style.font = bodyFont.string;
-//   //               // tooltipEl.style.padding = tooltipModel.padding + 'px ' + tooltipModel.padding + 'px';
-//   //               // tooltipEl.style.pointerEvents = 'none';
-//   //             }
-//   //           }
-//   //         : {
-//   //             callbacks: {
-//   //               title: function (context?: { label: string }[]) {
-//   //                 const label = context?.at(0)?.label || '';
-//   //                 const lengthTime = dataAlarmClone?.at(0)?.time?.length;
-
-//   //                 const newUnit =
-//   //                   lengthTime && lengthTime > String('YYYY').length
-//   //                     ? 'year'
-//   //                     : 'total';
-//   //                 if (searchField.type === TypeFilterDate.total) {
-//   //                   return moment(label).format(formatTimeTooltip[newUnit]);
-//   //                 } else {
-//   //                   return moment(label).format(
-//   //                     formatTimeTooltip[searchField.type]
-//   //                   );
-//   //                 }
-//   //               }
-//   //             }
-//   //           },
-//   //     zoom: {
-//   //       limits: {
-//   //         x: {
-//   //           min: moment(searchField.from).valueOf(),
-//   //           max: moment(searchField.to).valueOf()
-//   //         }
-//   //       },
-//   //       zoom: {
-//   //         mode: 'x',
-//   //         wheel: {
-//   //           enabled: true
-//   //         },
-//   //         drag: {
-//   //           enabled: true,
-//   //           threshold: 7,
-//   //           backgroundColor: 'rgba(0,255,255,0.3)'
-//   //         }
-//   //       }
-//   //     }
-//   //   }
-//   // } as any;
-
-//   useEffect(() => {
-//     const handleRemoveTooltip = () => {
-//       const tooltipEl = document.getElementById('chartjs-tooltip') || {
-//         style: { opacity: 1 }
-//       };
-//       tooltipEl.style.opacity = 0;
-//     };
-//     window.addEventListener('click', handleRemoveTooltip);
-//     return () => {
-//       window.removeEventListener('click', handleRemoveTooltip);
-//       const tooltipEl = document.getElementById('chartjs-tooltip') || {
-//         style: { opacity: 1 }
-//       };
-//       tooltipEl.style.opacity = 0;
-//     };
-//   }, [selectUnit, searchField]);
-
-//   return (
-//     <div className="canvas-container">
-//       <Bar data={{ datasets: datasetAlarm() }} options={optionBar} />
-//     </div>
-//   );
-// };
-
-//------------------------------------------///
 
 const LineChart = ({
   searchField,
   onSetSearchField,
   dataChart,
   loadingChart
-}: // dataChartAlarm
-IProps) => {
+}: IProps) => {
   const { t } = useTranslation();
   const [selectUnit, setSelectUnit] = useState<OptionParam>(
     OptionParam.UNIT_TOXICGASES
@@ -535,7 +109,6 @@ IProps) => {
 
   const [isOpenConsolapse, setIsOpenConsolapse] = useState<boolean>(true);
   const [form] = Form.useForm();
-  const [loadingChartUpdate, setLoadingChartUpdate] = useState();
   const [dataMapTemperature, setDataMapTemperature] = useState<
     Map<keyTemperature, DataSeries[]>
   >(new Map());
@@ -574,7 +147,6 @@ IProps) => {
           const timeA = item.time!;
           return moment(timeA);
         }
-        // return moment(searchField.from);
       })();
 
       listKeyHumidity.forEach((key: keyHumidity) => {
@@ -617,130 +189,6 @@ IProps) => {
         dataToxicGases.set(key, newData);
       });
     });
-
-    // dataChartHumidity?.forEach((item) => {
-    //   const timeX = (() => {
-    //     if (searchField.type === TypeFilterDate.day) {
-    //       const timeA = item.time!;
-
-    //       const timeFormat = moment(timeA, ['HH:mm']);
-    //       return moment(searchField.from)
-    //         .add(timeFormat.minutes(), 'minute')
-    //         .add(timeFormat.hour(), 'h');
-    //     } else {
-    //       const timeA = item.time! as unknown as {
-    //         overallTime: string | Date;
-    //         interval: number;
-    //       };
-
-    //       return moment(timeA.overallTime).add(timeA.interval * 15, 'minute');
-    //     }
-    //     // return moment(searchField.from);
-    //   })();
-
-    //   listKeyHumidity.forEach((key: keyHumidity) => {
-    //     const currentData = dataHumidity.get(key) || [];
-    //     // currentData
-    //     const newData: DataSeries[] = [
-    //       ...currentData,
-    //       [timeX.valueOf(), item[key]]
-    //     ];
-    //     dataHumidity.set(key, newData);
-    //   });
-    // });
-
-    // dataChartTemperature?.forEach((item) => {
-    //   const timeX = (() => {
-    //     if (searchField.type === TypeFilterDate.day) {
-    //       const timeA = item.time!;
-
-    //       const timeFormat = moment(timeA, ['HH:mm']);
-    //       return moment(searchField.from)
-    //         .add(timeFormat.minutes(), 'minute')
-    //         .add(timeFormat.hour(), 'h');
-    //     } else {
-    //       const timeA = item.time! as unknown as {
-    //         overallTime: string | Date;
-    //         interval: number;
-    //       };
-
-    //       return moment(timeA.overallTime).add(timeA.interval * 15, 'minute');
-    //     }
-    //     // return moment(searchField.from);
-    //   })();
-
-    //   listKeyTemperature.forEach((key: keyTemperature) => {
-    //     const currentData = dataTemperature.get(key) || [];
-    //     // currentData
-    //     const newData: DataSeries[] = [
-    //       ...currentData,
-    //       [timeX.valueOf(), item[key]]
-    //     ];
-    //     dataTemperature.set(key, newData);
-    //   });
-    // });
-
-    // dataChartParticulateMatter?.forEach((item) => {
-    //   const timeX = (() => {
-    //     if (searchField.type === TypeFilterDate.day) {
-    //       const timeA = item.time!;
-
-    //       const timeFormat = moment(timeA, ['HH:mm']);
-    //       return moment(searchField.from)
-    //         .add(timeFormat.minutes(), 'minute')
-    //         .add(timeFormat.hour(), 'h');
-    //     } else {
-    //       const timeA = item.time! as unknown as {
-    //         overallTime: string | Date;
-    //         interval: number;
-    //       };
-
-    //       return moment(timeA.overallTime).add(timeA.interval * 15, 'minute');
-    //     }
-    //     // return moment(searchField.from);
-    //   })();
-
-    //   listKeyParticulateMatter.forEach((key: keyParticulateMatter) => {
-    //     const currentData = dataParticulateMatter.get(key) || [];
-    //     // currentData
-    //     const newData: DataSeries[] = [
-    //       ...currentData,
-    //       [timeX.valueOf(), item[key]]
-    //     ];
-    //     dataParticulateMatter.set(key, newData);
-    //   });
-    // });
-
-    // dataChartToxicGases?.forEach((item) => {
-    //   const timeX = (() => {
-    //     if (searchField.type === TypeFilterDate.day) {
-    //       const timeA = item.time!;
-
-    //       const timeFormat = moment(timeA, ['HH:mm']);
-    //       return moment(searchField.from)
-    //         .add(timeFormat.minutes(), 'minute')
-    //         .add(timeFormat.hour(), 'h');
-    //     } else {
-    //       const timeA = item.time! as unknown as {
-    //         overallTime: string | Date;
-    //         interval: number;
-    //       };
-
-    //       return moment(timeA.overallTime).add(timeA.interval * 15, 'minute');
-    //     }
-    //     // return moment(searchField.from);
-    //   })();
-
-    //   listKeyToxicGases.forEach((key: keyToxicGases) => {
-    //     const currentData = dataToxicGases.get(key) || [];
-    //     // currentData
-    //     const newData: DataSeries[] = [
-    //       ...currentData,
-    //       [timeX.valueOf(), item[key]]
-    //     ];
-    //     dataToxicGases.set(key, newData);
-    //   });
-    // });
 
     setDataMapHumidity(() => {
       const temp = new Map(dataHumidity);
@@ -876,9 +324,6 @@ IProps) => {
       '#8be04e',
       '#ebdc78'
     ],
-    // markers: {
-    //   size: [1, 0]
-    // },
     stroke: {
       curve: 'smooth',
       width: 2
@@ -1276,12 +721,6 @@ IProps) => {
       label: 'μg/m³'
     },
     { key: 'toxicGases', value: OptionParam.UNIT_TOXICGASES, label: 'ppm' }
-
-    // {
-    //   key: 'alarm',
-    //   value: OptionParam.ALARM_STATUS,
-    //   label: `${t(i18nKey.alarmCenter.label.alarmStatus)}`
-    // }
   ];
 
   const renderDatePicked: { [key in TypeFilterDate]: React.ReactNode } = {
@@ -1353,88 +792,58 @@ IProps) => {
   };
 
   return (
-    <>
-      <div className={styles.container}>
-        <Form
-          onValuesChange={handleFormChange}
-          form={form}
-          className={styles.form_chart}
-          initialValues={{
-            type: searchField.type,
-            date: dayJs()
-          }}>
-          <Row gutter={[16, 16]}>
-            <Col sm={24} xs={24} md={24} lg={24} xl={10} xxl={10}>
-              <Row gutter={16} className={styles.form_chart_right}>
-                <Col xs={12} sm={12} md={8} lg={8} xl={10} xxl={10}>
-                  <Select
-                    value={selectUnit}
-                    style={{ width: '100%' }}
-                    placeholder="Select Pramater"
-                    onChange={handleOnChangeUnit}
-                    options={optionParam}
-                  />
-                </Col>
-                <Col xs={12} sm={12} md={12} lg={12} xl={12} xxl={12}>
-                  <Form.Item name="date" style={{ width: '100%' }}>
-                    {renderDatePicked[searchField.type]}
-                  </Form.Item>
-                </Col>
-              </Row>
-            </Col>
-            <Col sm={24} xs={24} md={24} lg={24} xl={14} xxl={14}>
-              <Row gutter={16} className={styles.form_chart_left}>
-                <Col flex={1} className={styles.form_chart_date}>
-                  <Form.Item name="type">{renderFilterDate()}</Form.Item>.
-                </Col>
-                {/* <Col
-                  onClick={handleOpenChart}
-                  className={styles.form_chart_collapse}>
-                  <Button>
-                    {isOpenConsolapse
-                      ? t(i18nKey.dashboard.collapse)
-                      : t(i18nKey.dashboard.expand)}
-                    <img
-                      className={
-                        isOpenConsolapse ? styles.form_chart_collapse_open : ''
-                      }
-                      src={
-                        isOpenConsolapse ? ArrowDown : ArrowDownBottom
-                      }></img>
-                  </Button>
-                </Col> */}
-              </Row>
-            </Col>
-          </Row>
-        </Form>
-        {/* {isOpenConsolapse && */}
-        {loadingChart ? (
-          <Row
-            justify="center"
-            align="middle"
-            style={{ width: '100%', height: '60vh' }}>
-            <Spin />
-          </Row>
-        ) : (
-          <>
-            {/* {selectUnit === OptionParam.ALARM_STATUS ? (
-                <AlarmChartComponent
-                  searchField={searchField}
-                  selectUnit={selectUnit}
-                  dataChartAlarm={dataChartAlarm || []}
+    <div className={styles.container}>
+      <Form
+        onValuesChange={handleFormChange}
+        form={form}
+        className={styles.form_chart}
+        initialValues={{
+          type: searchField.type,
+          date: dayJs()
+        }}>
+        <Row gutter={[16, 16]}>
+          <Col sm={24} xs={24} md={24} lg={24} xl={10} xxl={10}>
+            <Row gutter={16} className={styles.form_chart_right}>
+              <Col xs={12} sm={12} md={8} lg={8} xl={10} xxl={10}>
+                <Select
+                  value={selectUnit}
+                  style={{ width: '100%' }}
+                  placeholder="Select Pramater"
+                  onChange={handleOnChangeUnit}
+                  options={optionParam}
                 />
-              ) : ( */}
-            <ReactApexChart
-              options={renderOption[selectUnit]}
-              series={renderSeries[selectUnit]}
-              height={300}
-            />
-            {/* )} */}
-          </>
-        )}
-        {/* } */}
-      </div>
-    </>
+              </Col>
+              <Col xs={12} sm={12} md={12} lg={12} xl={12} xxl={12}>
+                <Form.Item name="date" style={{ width: '100%' }}>
+                  {renderDatePicked[searchField.type]}
+                </Form.Item>
+              </Col>
+            </Row>
+          </Col>
+          <Col sm={24} xs={24} md={24} lg={24} xl={14} xxl={14}>
+            <Row gutter={16} className={styles.form_chart_left}>
+              <Col flex={1} className={styles.form_chart_date}>
+                <Form.Item name="type">{renderFilterDate()}</Form.Item>.
+              </Col>
+            </Row>
+          </Col>
+        </Row>
+      </Form>
+      {loadingChart ? (
+        <Row
+          justify="center"
+          align="middle"
+          style={{ width: '100%', height: '60vh' }}>
+          <Spin />
+        </Row>
+      ) : (
+        <ReactApexChart
+          options={renderOption[selectUnit]}
+          series={renderSeries[selectUnit]}
+          height={300}
+        />
+      )}
+    </div>
   );
 };
 

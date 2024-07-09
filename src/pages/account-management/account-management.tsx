@@ -164,9 +164,6 @@ const AccountManagementPage: React.FC = () => {
       record.isFirstLogin && record.isExpiredActivationCode;
     
     const isDisable = false
-      // !listMyPermission.includes(Permission.cudAccount) || !!record.isFirstLogin ||
-      // (record.role === 'admin' &&
-      //   record._id !== userStore.userInfo?.id);
 
     return (
       <Popover

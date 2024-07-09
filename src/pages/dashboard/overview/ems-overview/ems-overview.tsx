@@ -4,10 +4,7 @@ import { Breadcrumb, Col, Empty, Row, Typography } from 'antd';
 import { useTranslation } from 'react-i18next';
 import { i18nKey } from 'src/locales/i18n';
 import OverviewItemWidget from 'src/components/overview/overview-item-widget/overview-item';
-// import { ReactComponent as IconLocation } from 'src/assets/icons/Location.svg';
 import useStore from 'src/hooks/use-store';
-// import { OverviewStore } from 'src/store/overview/overview.store';
-// import { IOverviewFetch } from 'src/dto/overview.dto';
 import moment from 'moment-timezone';
 import { useNavigate } from 'react-router';
 import { observer } from 'mobx-react-lite';
@@ -17,7 +14,6 @@ import {
   TypeFilterDate
 } from 'src/components/line-bar-chart/line-bar-chart';
 import Loader from 'src/components/loader';
-// import CurrentData from '../current-data/current-data';
 import { useParams } from 'react-router-dom';
 import { IThingListStore } from 'src/store/thing.store';
 import { IThingItem } from 'src/dto/thing.dto';
@@ -32,8 +28,6 @@ import {
 } from 'src/interfaces/overview';
 import DoughnutChart from 'src/components/doughnut-chart/doughnut-chart';
 import { GaugeChart } from 'src/components/gauge-chart/gauge-chart';
-// import LineChart from 'src/components/chart/line-chart/line-chart';
-// import { IOverviewThing } from 'src/interfaces/overview';
 
 export interface DataType {
   key: React.Key;
@@ -41,11 +35,6 @@ export interface DataType {
   version: number;
   status: string;
 }
-
-// interface IWrapperComponent {
-//   children?: React.ReactNode;
-//   isRenderNodata?: boolean;
-// }
 
 const TenantOverview: React.FC = () => {
   const thingListStore: IThingListStore = useStore('listThingStore');
