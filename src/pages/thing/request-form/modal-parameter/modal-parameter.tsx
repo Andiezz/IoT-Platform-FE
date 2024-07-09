@@ -41,9 +41,9 @@ const ModalParameter: React.FC<IModalParameter> = ({
   const handleUpdate = async () => {
     if (paramList) {
       const newParam: IParameterFormI = formParam.getFieldsValue();
-      const newParamList: IParameterFormI[] = paramList.filter((item) => {
-        item.name !== updateParam.name;
-      });
+      const newParamList: IParameterFormI[] = paramList.filter(
+        (item) => item.name !== updateParam.name
+      );
       newParamList.push(newParam);
       setParamList(newParamList);
       setOpen(false);
@@ -68,8 +68,8 @@ const ModalParameter: React.FC<IModalParameter> = ({
       onOk={handleUpdate}
       onCancel={handleCancel}
       className={styles.modal}
-      okText={t(i18nKey.button.update)}
-      width={'50%'}>
+      okText={t(i18nKey.button.confirm)}
+      width={'60%'}>
       <div className={styles.modal_wrapper}>
         <Row>
           <Form
