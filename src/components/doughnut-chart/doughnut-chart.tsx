@@ -53,34 +53,16 @@ interface IDoughnutChartProps {
   title?: string;
   datas?: IThingWarning[];
   display?: boolean;
-  dataDaughtnut?: any;
-  totalEmsStatus?: number;
-  emsOrPlantName?: string;
   tooltip?: string;
-  cellAlarm?: boolean;
 }
 
-function DoughnutChart({
-  title,
-  datas,
-  display = true,
-  dataDaughtnut,
-  totalEmsStatus,
-  emsOrPlantName,
-  cellAlarm
-}: IDoughnutChartProps) {
+function DoughnutChart({ title, datas, display = true }: IDoughnutChartProps) {
   const { t } = useTranslation();
   const [isOpenCollapse, setIsOpenConllapse] = useState<boolean>(false);
   const [values, setValues] = useState<number[]>([]);
   const [labels, setLabels] = useState<string[]>([]);
   const [contentOther, setContentOther] = useState<string>('');
   const [total, setTotal] = useState<number>(0);
-  const navigate = useNavigate();
-  const handleOpenChart = () => {
-    setIsOpenConllapse(!isOpenCollapse);
-  };
-  const viewPort = useViewport();
-  const isMobile = viewPort.width < 768;
   const [isRender, setIsRender] = useState<boolean>(false);
 
   useEffect(() => {

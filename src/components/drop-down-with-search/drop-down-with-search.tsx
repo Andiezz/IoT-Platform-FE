@@ -35,25 +35,7 @@ const DropDownWithSearch = ({
     <Dropdown
       menu={{ items: addEventItem() }}
       dropdownRender={(menu) => (
-        <div style={{ maxHeight: '300px' }}>
-          {isShowSearch && (
-            <Input
-              placeholder="Search"
-              autoFocus
-              prefix={<SearchOutlined />}
-              onChange={(e) =>
-                setItemData(() => {
-                  return (
-                    items &&
-                    items.filter((item) => item.label.includes(e.target.value))
-                  );
-                })
-              }
-              allowClear
-            />
-          )}
-          {menu}
-        </div>
+        <div style={{ maxHeight: '300px' }}>{menu}</div>
       )}>
       {children}
     </Dropdown>
