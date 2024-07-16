@@ -136,7 +136,7 @@ export const GaugeChart = ({ title, qualityReport }: Props) => {
                             </div>
                             <div
                               style={{
-                                flex: '1 1 0',
+                                // flex: '',
                                 textAlign: 'center',
                                 color: 'black',
                                 backgroundColor: `${item.threshold.color}`,
@@ -144,7 +144,7 @@ export const GaugeChart = ({ title, qualityReport }: Props) => {
                                 borderRadius: '50px',
                                 whiteSpace: 'nowrap', // Prevent text from wrapping
                                 minWidth: '100px', // Fixed width for consistency
-                                fontWeight: 'revert'
+                                fontWeight: 'bold'
                               }}>
                               {t(
                                 (i18nKey.parameterEntity.thresholdName as any)[
@@ -204,7 +204,7 @@ export const GaugeChart = ({ title, qualityReport }: Props) => {
                                 borderRadius: '50px',
                                 whiteSpace: 'nowrap', // Prevent text from wrapping
                                 minWidth: '100px', // Fixed width for consistency
-                                fontWeight: 'revert'
+                                fontWeight: 'bold'
                               }}>
                               {t(
                                 (i18nKey.parameterEntity.thresholdName as any)[
